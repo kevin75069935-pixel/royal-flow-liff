@@ -1,4 +1,4 @@
-export async function onRequestPost(context) {
+export async function onRequest(context) {
   try {
     const gasUrl = context.env.GAS_WEB_APP_URL;
     const payload = await context.request.json();
