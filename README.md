@@ -51,3 +51,5 @@ line_display_name
 ```
 
 Apps Script 會把 `line_user_id` 與 `line_display_name` 寫入 `orders` 試算表。
+<img width="942" height="1001" alt="image" src="https://github.com/user-attachments/assets/048d05dc-02b1-486b-a71b-f70df05f0fc7" />
+
