@@ -8,331 +8,331 @@
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
-  :root {
-    --bg: #030303;
-    --card: rgba(10, 10, 10, 0.96);
-    --black: #000000;
-    --gold: #d6b35f;
-    --gold-2: #b58a3a;
-    --gold-3: #7b5520;
-    --line: rgba(214, 179, 95, 0.38);
-    --muted: #c9c0ae;
-    --danger: #ff657a;
-    --success: #26b36a;
-    --white: #ffffff;
-  }
+    :root {
+      --bg: #030303;
+      --card: rgba(10, 10, 10, 0.96);
+      --black: #000000;
+      --gold: #d6b35f;
+      --gold-2: #b58a3a;
+      --gold-3: #7b5520;
+      --line: rgba(214, 179, 95, 0.38);
+      --muted: #c9c0ae;
+      --danger: #ff657a;
+      --success: #26b36a;
+      --white: #ffffff;
+    }
 
-  * {
-    box-sizing: border-box;
-  }
+    * {
+      box-sizing: border-box;
+    }
 
-  body {
-    margin: 0;
-    padding: 0;
-    background:
-      radial-gradient(circle at top center, rgba(214,179,95,0.12) 0%, transparent 34%),
-      linear-gradient(180deg, #000000 0%, #080808 45%, #030303 100%);
-    color: var(--white);
-    font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-    font-size: 18px;
-    line-height: 1.55;
-  }
-
-  .page {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 18px 16px 110px;
-  }
-
-  .brand {
-    text-align: center;
-    padding: 22px 8px 18px;
-    border-bottom: 1px solid rgba(214,179,95,0.18);
-    margin-bottom: 16px;
-  }
-
-  .brand-title {
-    font-size: 30px;
-    font-weight: 900;
-    letter-spacing: 4px;
-    color: var(--gold);
-    text-shadow: 0 0 18px rgba(214,179,95,0.28);
-  }
-
-  .brand-sub {
-    margin-top: 6px;
-    color: #f2d28b;
-    font-size: 14px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .card {
-    background:
-      linear-gradient(180deg, rgba(20,20,20,0.98), rgba(5,5,5,0.98));
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 18px;
-    box-shadow:
-      0 16px 40px rgba(0,0,0,0.55),
-      inset 0 1px 0 rgba(255,255,255,0.04);
-  }
-
-  .step-title {
-    font-size: 25px;
-    font-weight: 900;
-    margin-bottom: 12px;
-    color: var(--gold);
-    letter-spacing: 1px;
-  }
-
-  .step-sub {
-    color: var(--muted);
-    font-size: 16px;
-    margin-bottom: 16px;
-  }
-
-  label {
-    display: block;
-    font-weight: 800;
-    margin: 16px 0 7px;
-    color: #f5d98f;
-    letter-spacing: 0.5px;
-  }
-
-  input,
-  select,
-  textarea {
-    width: 100%;
-    min-height: 52px;
-    border: 1px solid rgba(214,179,95,0.34);
-    border-radius: 14px;
-    padding: 12px 14px;
-    font-size: 18px;
-    background: #070707;
-    color: #ffffff;
-    outline: none;
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
-  }
-
-  textarea {
-    min-height: 96px;
-    resize: vertical;
-  }
-
-  input::placeholder,
-  textarea::placeholder {
-    color: #8c8578;
-  }
-
-  input:focus,
-  select:focus,
-  textarea:focus {
-    border-color: var(--gold);
-    box-shadow:
-      0 0 0 3px rgba(214,179,95,0.16),
-      0 0 18px rgba(214,179,95,0.16);
-  }
-
-  select option {
-    background: #0b0b0b;
-    color: #ffffff;
-  }
-
-  .row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  .hidden {
-    display: none !important;
-  }
-
-  .notice {
-    background: linear-gradient(180deg, rgba(214,179,95,0.13), rgba(214,179,95,0.05));
-    border: 1px solid rgba(214,179,95,0.42);
-    color: #f5d98f;
-    border-radius: 16px;
-    padding: 13px;
-    margin-top: 14px;
-    font-size: 15px;
-  }
-
-  .quote-box {
-    background:
-      linear-gradient(180deg, #050505, #000000);
-    color: #ffffff;
-    border: 1px solid rgba(214,179,95,0.46);
-    border-radius: 18px;
-    padding: 16px;
-    margin-top: 16px;
-    box-shadow: 0 12px 28px rgba(0,0,0,0.45);
-  }
-
-  .quote-box strong {
-    color: #f5d98f;
-  }
-
-  .quote-line {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    border-bottom: 1px solid rgba(214,179,95,0.18);
-    padding: 9px 0;
-  }
-
-  .quote-line:last-child {
-    border-bottom: none;
-  }
-
-  .btn {
-    border: none;
-    border-radius: 14px;
-    min-height: 54px;
-    padding: 13px 16px;
-    font-size: 18px;
-    font-weight: 900;
-    cursor: pointer;
-    letter-spacing: 1px;
-  }
-
-  .btn-primary {
-    background: linear-gradient(135deg, #f0d27a 0%, #c9a24d 44%, #8a5f1f 100%);
-    color: #050505;
-    box-shadow:
-      0 8px 20px rgba(214,179,95,0.25),
-      inset 0 1px 0 rgba(255,255,255,0.34);
-  }
-
-  .btn-gold {
-    background: linear-gradient(135deg, #f3d98a 0%, #c9a24d 48%, #8d6425 100%);
-    color: #050505;
-    box-shadow:
-      0 8px 20px rgba(214,179,95,0.22),
-      inset 0 1px 0 rgba(255,255,255,0.28);
-  }
-
-  .btn-light {
-    background: #070707;
-    color: #f5d98f;
-    border: 1px solid rgba(214,179,95,0.46);
-  }
-
-  .btn:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-  }
-
-  .action-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-    margin-top: 18px;
-  }
-
-  .bottom-bar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.96);
-    border-top: 1px solid rgba(214,179,95,0.35);
-    padding: 10px 14px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    z-index: 50;
-    box-shadow: 0 -10px 30px rgba(0,0,0,0.65);
-  }
-
-  .status {
-    padding: 13px;
-    border-radius: 16px;
-    margin-top: 12px;
-    font-size: 15px;
-  }
-
-  .status.success {
-    background: rgba(38,179,106,0.12);
-    color: #62e39d;
-    border: 1px solid rgba(38,179,106,0.34);
-  }
-
-  .status.error {
-    background: rgba(255,101,122,0.12);
-    color: #ff98a7;
-    border: 1px solid rgba(255,101,122,0.34);
-  }
-
-  .status.info {
-    background: rgba(214,179,95,0.10);
-    color: #f5d98f;
-    border: 1px solid rgba(214,179,95,0.34);
-  }
-
-  .step {
-    display: none;
-  }
-
-  .step.active {
-    display: block;
-  }
-
-  .progress {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 7px;
-    margin-bottom: 16px;
-  }
-
-  .progress span {
-    height: 7px;
-    background: #242424;
-    border: 1px solid rgba(214,179,95,0.18);
-    border-radius: 99px;
-  }
-
-  .progress span.active {
-    background: linear-gradient(90deg, #8a5f1f, #f0d27a, #b58a3a);
-    box-shadow: 0 0 14px rgba(214,179,95,0.42);
-  }
-
-  @media (max-width: 560px) {
     body {
-      font-size: 17px;
-    }
-
-    .row {
-      grid-template-columns: 1fr;
-    }
-
-    .brand-title {
-      font-size: 26px;
-      letter-spacing: 3px;
-    }
-
-    .brand-sub {
-      font-size: 13px;
+      margin: 0;
+      padding: 0;
+      background:
+        radial-gradient(circle at top center, rgba(214,179,95,0.12) 0%, transparent 34%),
+        linear-gradient(180deg, #000000 0%, #080808 45%, #030303 100%);
+      color: var(--white);
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      font-size: 18px;
+      line-height: 1.55;
     }
 
     .page {
-      padding-left: 12px;
-      padding-right: 12px;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 18px 16px 110px;
+    }
+
+    .brand {
+      text-align: center;
+      padding: 22px 8px 18px;
+      border-bottom: 1px solid rgba(214,179,95,0.18);
+      margin-bottom: 16px;
+    }
+
+    .brand-title {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-shadow: 0 0 18px rgba(214,179,95,0.28);
+    }
+
+    .brand-sub {
+      margin-top: 6px;
+      color: #f2d28b;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .card {
+      background:
+        linear-gradient(180deg, rgba(20,20,20,0.98), rgba(5,5,5,0.98));
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow:
+        0 16px 40px rgba(0,0,0,0.55),
+        inset 0 1px 0 rgba(255,255,255,0.04);
     }
 
     .step-title {
-      font-size: 24px;
+      font-size: 25px;
+      font-weight: 900;
+      margin-bottom: 12px;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+
+    .step-sub {
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: 800;
+      margin: 16px 0 7px;
+      color: #f5d98f;
+      letter-spacing: 0.5px;
     }
 
     input,
     select,
     textarea {
-      font-size: 17px;
+      width: 100%;
+      min-height: 52px;
+      border: 1px solid rgba(214,179,95,0.34);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 18px;
+      background: #070707;
+      color: #ffffff;
+      outline: none;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
     }
-  }
-</style>
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #8c8578;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--gold);
+      box-shadow:
+        0 0 0 3px rgba(214,179,95,0.16),
+        0 0 18px rgba(214,179,95,0.16);
+    }
+
+    select option {
+      background: #0b0b0b;
+      color: #ffffff;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .notice {
+      background: linear-gradient(180deg, rgba(214,179,95,0.13), rgba(214,179,95,0.05));
+      border: 1px solid rgba(214,179,95,0.42);
+      color: #f5d98f;
+      border-radius: 16px;
+      padding: 13px;
+      margin-top: 14px;
+      font-size: 15px;
+    }
+
+    .quote-box {
+      background:
+        linear-gradient(180deg, #050505, #000000);
+      color: #ffffff;
+      border: 1px solid rgba(214,179,95,0.46);
+      border-radius: 18px;
+      padding: 16px;
+      margin-top: 16px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.45);
+    }
+
+    .quote-box strong {
+      color: #f5d98f;
+    }
+
+    .quote-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(214,179,95,0.18);
+      padding: 9px 0;
+    }
+
+    .quote-line:last-child {
+      border-bottom: none;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 14px;
+      min-height: 54px;
+      padding: 13px 16px;
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+      letter-spacing: 1px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f0d27a 0%, #c9a24d 44%, #8a5f1f 100%);
+      color: #050505;
+      box-shadow:
+        0 8px 20px rgba(214,179,95,0.25),
+        inset 0 1px 0 rgba(255,255,255,0.34);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #f3d98a 0%, #c9a24d 48%, #8d6425 100%);
+      color: #050505;
+      box-shadow:
+        0 8px 20px rgba(214,179,95,0.22),
+        inset 0 1px 0 rgba(255,255,255,0.28);
+    }
+
+    .btn-light {
+      background: #070707;
+      color: #f5d98f;
+      border: 1px solid rgba(214,179,95,0.46);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.96);
+      border-top: 1px solid rgba(214,179,95,0.35);
+      padding: 10px 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      z-index: 50;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.65);
+    }
+
+    .status {
+      padding: 13px;
+      border-radius: 16px;
+      margin-top: 12px;
+      font-size: 15px;
+    }
+
+    .status.success {
+      background: rgba(38,179,106,0.12);
+      color: #62e39d;
+      border: 1px solid rgba(38,179,106,0.34);
+    }
+
+    .status.error {
+      background: rgba(255,101,122,0.12);
+      color: #ff98a7;
+      border: 1px solid rgba(255,101,122,0.34);
+    }
+
+    .status.info {
+      background: rgba(214,179,95,0.10);
+      color: #f5d98f;
+      border: 1px solid rgba(214,179,95,0.34);
+    }
+
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    .progress {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 7px;
+      margin-bottom: 16px;
+    }
+
+    .progress span {
+      height: 7px;
+      background: #242424;
+      border: 1px solid rgba(214,179,95,0.18);
+      border-radius: 99px;
+    }
+
+    .progress span.active {
+      background: linear-gradient(90deg, #8a5f1f, #f0d27a, #b58a3a);
+      box-shadow: 0 0 14px rgba(214,179,95,0.42);
+    }
+
+    @media (max-width: 560px) {
+      body {
+        font-size: 17px;
+      }
+
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-title {
+        font-size: 26px;
+        letter-spacing: 3px;
+      }
+
+      .brand-sub {
+        font-size: 13px;
+      }
+
+      .page {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .step-title {
+        font-size: 24px;
+      }
+
+      input,
+      select,
+      textarea {
+        font-size: 17px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -447,16 +447,22 @@
         </select>
 
         <div class="notice">
-          旅遊包車以套裝行程報價為主；客製化旅遊可使用 Google Routes 估算距離後再由客服確認最終報價。
+          旅遊包車每日以 8 小時為計算基礎，超過後依各車型超時費累計；客製化旅遊由禮賓專員確認最終報價。
         </div>
       </div>
     </section>
 
     <section id="step3" class="step card">
       <div class="step-title">3. 路線資訊</div>
-      <div class="step-sub">機場接送可使用機場選單；一般地址可直接輸入。</div>
+      <div class="step-sub">請依服務類型選擇機場、港口或填寫一般地址。</div>
 
       <div id="airportBlock" class="hidden">
+        <label>機場服務分類</label>
+        <select id="airportServiceType" onchange="handleAirportServiceTypeChange()">
+          <option value="接機服務">接機服務｜機場 → 市區 / 飯店 / 指定地點</option>
+          <option value="送機服務">送機服務｜指定地點 → 機場</option>
+        </select>
+
         <label>上車機場</label>
         <select id="pickupAirport" onchange="syncAirportFields()">
           <option value="">非機場 / 手動輸入</option>
@@ -480,16 +486,74 @@
           <option value="RMQ 台中國際機場">RMQ 台中國際機場</option>
           <option value="KHH 高雄國際機場 / 小港機場">KHH 高雄國際機場 / 小港機場</option>
         </select>
+
+        <div class="notice">
+          接機服務請優先選「上車機場」；送機服務請優先選「下車機場」，另一端請填寫飯店、住家或指定地址。
+        </div>
+      </div>
+
+      <div id="portBlock" class="hidden">
+        <label>上車港口</label>
+        <select id="pickupPort" onchange="syncPortFields()">
+          <option value="">非港口 / 手動輸入</option>
+
+          <optgroup label="豪華郵輪 / 國際港口">
+            <option value="基隆港｜Keelung Port">基隆港｜Keelung Port</option>
+            <option value="台北港｜Taipei Port">台北港｜Taipei Port</option>
+            <option value="蘇澳港｜Suao Port">蘇澳港｜Suao Port</option>
+            <option value="台中港｜Taichung Port">台中港｜Taichung Port</option>
+            <option value="高雄港｜Kaohsiung Port">高雄港｜Kaohsiung Port</option>
+            <option value="花蓮港｜Hualien Port">花蓮港｜Hualien Port</option>
+          </optgroup>
+
+          <optgroup label="離島快速船 / 客運港口">
+            <option value="嘉義布袋港｜Budai Harbor">嘉義布袋港｜Budai Harbor</option>
+            <option value="屏東東港碼頭｜Donggang Ferry Terminal">屏東東港碼頭｜Donggang Ferry Terminal</option>
+            <option value="台東富岡漁港｜Fugang Harbor">台東富岡漁港｜Fugang Harbor</option>
+            <option value="宜蘭南方澳港｜Nanfang’ao Harbor">宜蘭南方澳港｜Nanfang’ao Harbor</option>
+            <option value="澎湖馬公港｜Magong Harbor">澎湖馬公港｜Magong Harbor</option>
+            <option value="金門水頭碼頭｜Shuitou Pier">金門水頭碼頭｜Shuitou Pier</option>
+            <option value="小琉球白沙尾漁港｜Baishawei Harbor">小琉球白沙尾漁港｜Baishawei Harbor</option>
+          </optgroup>
+        </select>
+
+        <label>下車港口</label>
+        <select id="dropoffPort" onchange="syncPortFields()">
+          <option value="">非港口 / 手動輸入</option>
+
+          <optgroup label="豪華郵輪 / 國際港口">
+            <option value="基隆港｜Keelung Port">基隆港｜Keelung Port</option>
+            <option value="台北港｜Taipei Port">台北港｜Taipei Port</option>
+            <option value="蘇澳港｜Suao Port">蘇澳港｜Suao Port</option>
+            <option value="台中港｜Taichung Port">台中港｜Taichung Port</option>
+            <option value="高雄港｜Kaohsiung Port">高雄港｜Kaohsiung Port</option>
+            <option value="花蓮港｜Hualien Port">花蓮港｜Hualien Port</option>
+          </optgroup>
+
+          <optgroup label="離島快速船 / 客運港口">
+            <option value="嘉義布袋港｜Budai Harbor">嘉義布袋港｜Budai Harbor</option>
+            <option value="屏東東港碼頭｜Donggang Ferry Terminal">屏東東港碼頭｜Donggang Ferry Terminal</option>
+            <option value="台東富岡漁港｜Fugang Harbor">台東富岡漁港｜Fugang Harbor</option>
+            <option value="宜蘭南方澳港｜Nanfang’ao Harbor">宜蘭南方澳港｜Nanfang’ao Harbor</option>
+            <option value="澎湖馬公港｜Magong Harbor">澎湖馬公港｜Magong Harbor</option>
+            <option value="金門水頭碼頭｜Shuitou Pier">金門水頭碼頭｜Shuitou Pier</option>
+            <option value="小琉球白沙尾漁港｜Baishawei Harbor">小琉球白沙尾漁港｜Baishawei Harbor</option>
+          </optgroup>
+        </select>
+
+        <div class="notice">
+          港口接送適用豪華郵輪、離島快速船與商務港口接待。實際上車點依港區管制、碼頭公告與司機現場回報為準。
+        </div>
       </div>
 
       <label>上車地點 *</label>
-      <input id="pickup" type="text" placeholder="例：台北市信義區某飯店 / 桃園機場第二航廈">
+      <input id="pickup" type="text" placeholder="例：台北市信義區某飯店 / 桃園機場第二航廈 / 基隆港">
 
       <label>下車地點 *</label>
-      <input id="dropoff" type="text" placeholder="例：台北市信義區市府路45號">
+      <input id="dropoff" type="text" placeholder="例：台北市信義區市府路45號 / 台北港">
 
-      <label>航班資訊</label>
-      <input id="flight" type="text" placeholder="例：BR198 / CI100 / 無">
+      <label>航班 / 船班資訊</label>
+      <input id="flight" type="text" placeholder="例：BR198 / 郵輪名稱 / 船班時間 / 無">
 
       <label>停靠點數</label>
       <select id="stopCount">
@@ -500,7 +564,7 @@
       </select>
 
       <label>多點 / 行程說明</label>
-      <textarea id="multiStopNote" placeholder="例：先到飯店接A客，再到公司接B客，最後前往機場。"></textarea>
+      <textarea id="multiStopNote" placeholder="例：先到飯店接A客，再到公司接B客，最後前往機場或港口。"></textarea>
 
       <div class="action-row">
         <button class="btn btn-gold" onclick="getRouteEstimate()">取得 Google Routes 估價</button>
@@ -688,11 +752,33 @@
       const service = valueOf("service");
       const tourBlock = document.getElementById("tourBlock");
       const airportBlock = document.getElementById("airportBlock");
+      const portBlock = document.getElementById("portBlock");
 
       tourBlock.classList.toggle("hidden", service !== "旅遊包車");
       airportBlock.classList.toggle("hidden", service !== "機場接送");
+      portBlock.classList.toggle("hidden", service !== "港口接送");
 
+      handleAirportServiceTypeChange();
       handleTourModeChange();
+    }
+
+    function handleAirportServiceTypeChange() {
+      const service = valueOf("service");
+      const type = valueOf("airportServiceType");
+
+      if (service !== "機場接送") {
+        return;
+      }
+
+      if (type === "接機服務") {
+        document.getElementById("dropoffAirport").value = "";
+      }
+
+      if (type === "送機服務") {
+        document.getElementById("pickupAirport").value = "";
+      }
+
+      syncAirportFields();
     }
 
     function handleTourModeChange() {
@@ -739,6 +825,19 @@
 
       if (dropoffAirport) {
         document.getElementById("dropoff").value = dropoffAirport;
+      }
+    }
+
+    function syncPortFields() {
+      const pickupPort = valueOf("pickupPort");
+      const dropoffPort = valueOf("dropoffPort");
+
+      if (pickupPort) {
+        document.getElementById("pickup").value = pickupPort;
+      }
+
+      if (dropoffPort) {
+        document.getElementById("dropoff").value = dropoffPort;
       }
     }
 
@@ -818,6 +917,7 @@
 
       if (step === 3) {
         syncAirportFields();
+        syncPortFields();
 
         if (!valueOf("pickup")) {
           alert("請填寫上車地點");
@@ -835,6 +935,7 @@
 
     async function getRouteEstimate() {
       syncAirportFields();
+      syncPortFields();
 
       if (!valueOf("pickup") || !valueOf("dropoff")) {
         setStatus("routeStatus", "error", "請先填寫上車與下車地點。");
@@ -892,6 +993,9 @@
     }
 
     async function submitBooking() {
+      syncAirportFields();
+      syncPortFields();
+
       if (!validateStep(1) || !validateStep(2) || !validateStep(3)) {
         return;
       }
@@ -928,6 +1032,7 @@
 
     function collectData() {
       syncAirportFields();
+      syncPortFields();
 
       return {
         routeSessionId: routeSessionId,
@@ -935,10 +1040,15 @@
         lineUserId: lineUserId,
         lineDisplayName: valueOf("lineDisplayName") || lineDisplayName,
 
+        line_user_id: lineUserId,
+        line_display_name: valueOf("lineDisplayName") || lineDisplayName,
+
         name: valueOf("name"),
         phone: valueOf("phone"),
 
         service: valueOf("service"),
+        airportServiceType: valueOf("airportServiceType"),
+
         date: valueOf("date"),
         time: valueOf("time"),
 
@@ -947,6 +1057,9 @@
 
         pickupAirport: valueOf("pickupAirport"),
         dropoffAirport: valueOf("dropoffAirport"),
+
+        pickupPort: valueOf("pickupPort"),
+        dropoffPort: valueOf("dropoffPort"),
 
         carType: valueOf("carType"),
 
@@ -983,7 +1096,7 @@
         "<strong>請確認以下資料：</strong><br><br>" +
         "姓名：" + escapeHtml(data.name) + "<br>" +
         "電話：" + escapeHtml(data.phone) + "<br>" +
-        "服務：" + escapeHtml(data.service) + "<br>" +
+        "服務：" + escapeHtml(data.service + (data.airportServiceType ? "｜" + data.airportServiceType : "")) + "<br>" +
         "車型：" + escapeHtml(data.carType) + "<br>" +
         "日期時間：" + escapeHtml(data.date + " " + data.time) + "<br>" +
         "上車：" + escapeHtml(data.pickup) + "<br>" +
