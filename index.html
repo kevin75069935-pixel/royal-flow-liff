@@ -22,9 +22,7 @@
       --white: #ffffff;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -38,11 +36,7 @@
       line-height: 1.55;
     }
 
-    .page {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 18px 16px 110px;
-    }
+    .page { max-width: 760px; margin: 0 auto; padding: 18px 16px 110px; }
 
     .brand {
       text-align: center;
@@ -68,8 +62,7 @@
     }
 
     .card {
-      background:
-        linear-gradient(180deg, rgba(20,20,20,0.98), rgba(5,5,5,0.98));
+      background: linear-gradient(180deg, rgba(20,20,20,0.98), rgba(5,5,5,0.98));
       border: 1px solid var(--line);
       border-radius: 20px;
       padding: 20px;
@@ -87,11 +80,7 @@
       letter-spacing: 1px;
     }
 
-    .step-sub {
-      color: var(--muted);
-      font-size: 16px;
-      margin-bottom: 16px;
-    }
+    .step-sub { color: var(--muted); font-size: 16px; margin-bottom: 16px; }
 
     label {
       display: block;
@@ -101,9 +90,7 @@
       letter-spacing: 0.5px;
     }
 
-    input,
-    select,
-    textarea {
+    input, select, textarea {
       width: 100%;
       min-height: 52px;
       border: 1px solid rgba(214,179,95,0.34);
@@ -116,39 +103,38 @@
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
     }
 
-    textarea {
-      min-height: 96px;
-      resize: vertical;
-    }
+    textarea { min-height: 96px; resize: vertical; }
 
-    input::placeholder,
-    textarea::placeholder {
-      color: #8c8578;
-    }
+    input::placeholder, textarea::placeholder { color: #8c8578; }
 
-    input:focus,
-    select:focus,
-    textarea:focus {
+    input:focus, select:focus, textarea:focus {
       border-color: var(--gold);
       box-shadow:
         0 0 0 3px rgba(214,179,95,0.16),
         0 0 18px rgba(214,179,95,0.16);
     }
 
-    select option {
-      background: #0b0b0b;
-      color: #ffffff;
-    }
+    select option { background: #0b0b0b; color: #ffffff; }
 
-    .row {
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .hidden { display: none !important; }
+
+    .airport-extra-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: end;
     }
 
-    .hidden {
-      display: none !important;
+    .add-point-btn {
+      min-width: 58px;
+      font-size: 24px;
+      line-height: 1;
+      padding: 10px 14px;
     }
+
+    .airport-point-note { color: #c9c0ae; font-size: 14px; margin-top: 8px; }
 
     .notice {
       background: linear-gradient(180deg, rgba(214,179,95,0.13), rgba(214,179,95,0.05));
@@ -161,8 +147,7 @@
     }
 
     .quote-box {
-      background:
-        linear-gradient(180deg, #050505, #000000);
+      background: linear-gradient(180deg, #050505, #000000);
       color: #ffffff;
       border: 1px solid rgba(214,179,95,0.46);
       border-radius: 18px;
@@ -171,9 +156,7 @@
       box-shadow: 0 12px 28px rgba(0,0,0,0.45);
     }
 
-    .quote-box strong {
-      color: #f5d98f;
-    }
+    .quote-box strong { color: #f5d98f; }
 
     .quote-line {
       display: flex;
@@ -183,9 +166,7 @@
       padding: 9px 0;
     }
 
-    .quote-line:last-child {
-      border-bottom: none;
-    }
+    .quote-line:last-child { border-bottom: none; }
 
     .btn {
       border: none;
@@ -220,17 +201,9 @@
       border: 1px solid rgba(214,179,95,0.46);
     }
 
-    .btn:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
-    .action-row {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-top: 18px;
-    }
+    .action-row { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 18px; }
 
     .bottom-bar {
       position: fixed;
@@ -272,13 +245,8 @@
       border: 1px solid rgba(214,179,95,0.34);
     }
 
-    .step {
-      display: none;
-    }
-
-    .step.active {
-      display: block;
-    }
+    .step { display: none; }
+    .step.active { display: block; }
 
     .progress {
       display: grid;
@@ -300,37 +268,13 @@
     }
 
     @media (max-width: 560px) {
-      body {
-        font-size: 17px;
-      }
-
-      .row {
-        grid-template-columns: 1fr;
-      }
-
-      .brand-title {
-        font-size: 26px;
-        letter-spacing: 3px;
-      }
-
-      .brand-sub {
-        font-size: 13px;
-      }
-
-      .page {
-        padding-left: 12px;
-        padding-right: 12px;
-      }
-
-      .step-title {
-        font-size: 24px;
-      }
-
-      input,
-      select,
-      textarea {
-        font-size: 17px;
-      }
+      body { font-size: 17px; }
+      .row { grid-template-columns: 1fr; }
+      .brand-title { font-size: 26px; letter-spacing: 3px; }
+      .brand-sub { font-size: 13px; }
+      .page { padding-left: 12px; padding-right: 12px; }
+      .step-title { font-size: 24px; }
+      input, select, textarea { font-size: 17px; }
     }
   </style>
 </head>
@@ -457,38 +401,128 @@
       <div class="step-sub">請依服務類型選擇機場、港口或填寫一般地址。</div>
 
       <div id="airportBlock" class="hidden">
-        <label>機場服務分類</label>
+        <label>機場接送服務分類</label>
         <select id="airportServiceType" onchange="handleAirportServiceTypeChange()">
-          <option value="接機服務">接機服務｜機場 → 市區 / 飯店 / 指定地點</option>
-          <option value="送機服務">送機服務｜指定地點 → 機場</option>
+          <option value="送機服務">送機服務｜接待地址 → 預約機場</option>
+          <option value="接機服務">接機服務｜預約機場 → 接待地址</option>
         </select>
 
-        <label>上車機場</label>
-        <select id="pickupAirport" onchange="syncAirportFields()">
-          <option value="">非機場 / 手動輸入</option>
-          <option value="TSA 台北松山機場－國內線">TSA 台北松山機場－國內線</option>
-          <option value="TSA 台北松山機場－國際線">TSA 台北松山機場－國際線</option>
-          <option value="TPE 台北桃園國際機場－第一航廈">TPE 台北桃園國際機場－第一航廈</option>
-          <option value="TPE 台北桃園國際機場－第二航廈">TPE 台北桃園國際機場－第二航廈</option>
-          <option value="TPE 寰宇商務中心">TPE 寰宇商務中心</option>
-          <option value="RMQ 台中國際機場">RMQ 台中國際機場</option>
-          <option value="KHH 高雄國際機場 / 小港機場">KHH 高雄國際機場 / 小港機場</option>
-        </select>
+        <div id="departureAirportFlow">
+          <label>接待地址 *</label>
+          <div class="airport-extra-row">
+            <input id="departureAddress" type="text" placeholder="例：台北市信義區某飯店 / 公司 / 住家地址" oninput="syncAirportFields()">
+            <button type="button" class="btn btn-light add-point-btn" onclick="addAirportPoint('departure')">＋</button>
+          </div>
 
-        <label>下車機場</label>
-        <select id="dropoffAirport" onchange="syncAirportFields()">
-          <option value="">非機場 / 手動輸入</option>
-          <option value="TSA 台北松山機場－國內線">TSA 台北松山機場－國內線</option>
-          <option value="TSA 台北松山機場－國際線">TSA 台北松山機場－國際線</option>
-          <option value="TPE 台北桃園國際機場－第一航廈">TPE 台北桃園國際機場－第一航廈</option>
-          <option value="TPE 台北桃園國際機場－第二航廈">TPE 台北桃園國際機場－第二航廈</option>
-          <option value="TPE 寰宇商務中心">TPE 寰宇商務中心</option>
-          <option value="RMQ 台中國際機場">RMQ 台中國際機場</option>
-          <option value="KHH 高雄國際機場 / 小港機場">KHH 高雄國際機場 / 小港機場</option>
-        </select>
+          <div id="departurePoint2Block" class="hidden">
+            <label>增加接待點 2</label>
+            <input id="departurePoint2" type="text" placeholder="例：第二位貴賓接待地址" oninput="syncAirportFields()">
+          </div>
+
+          <div id="departurePoint3Block" class="hidden">
+            <label>增加接待點 3</label>
+            <input id="departurePoint3" type="text" placeholder="例：第三位貴賓接待地址" oninput="syncAirportFields()">
+          </div>
+
+          <div id="departurePoint4Block" class="hidden">
+            <label>增加接待點 4</label>
+            <input id="departurePoint4" type="text" placeholder="例：第四位貴賓接待地址" oninput="syncAirportFields()">
+          </div>
+
+          <div id="departurePoint5Block" class="hidden">
+            <label>增加接待點 5</label>
+            <input id="departurePoint5" type="text" placeholder="例：第五位貴賓接待地址" oninput="syncAirportFields()">
+          </div>
+
+          <div class="airport-point-note">
+            可點選「＋」新增接待點，最多可增加 4 個接待點。
+          </div>
+
+          <label>預約機場 *</label>
+          <select id="departureAirportName" onchange="syncAirportFields()">
+            <option value="">請選擇預約機場</option>
+            <option value="桃園國際機場">桃園國際機場</option>
+            <option value="台北松山機場">台北松山機場</option>
+            <option value="台中機場">台中機場</option>
+            <option value="高雄小港機場">高雄小港機場</option>
+          </select>
+
+          <label>接送航廈 *</label>
+          <select id="departureAirportTerminal" onchange="syncAirportFields()">
+            <option value="">請選擇接送航廈</option>
+            <option value="第一航廈">第一航廈</option>
+            <option value="第二航廈">第二航廈</option>
+            <option value="國際線">國際線</option>
+            <option value="國內線">國內線</option>
+          </select>
+
+          <label>航班資訊</label>
+          <input id="departureFlight" type="text" placeholder="例：BR198 / CI100 / JX802" oninput="syncAirportFields()">
+
+          <label>起飛時間</label>
+          <input id="departureFlightTime" type="time" oninput="syncAirportFields()">
+        </div>
+
+        <div id="arrivalAirportFlow" class="hidden">
+          <label>預約機場 *</label>
+          <select id="arrivalAirportName" onchange="syncAirportFields()">
+            <option value="">請選擇預約機場</option>
+            <option value="桃園國際機場">桃園國際機場</option>
+            <option value="台北松山機場">台北松山機場</option>
+            <option value="台中機場">台中機場</option>
+            <option value="高雄小港機場">高雄小港機場</option>
+          </select>
+
+          <label>接送航廈 *</label>
+          <select id="arrivalAirportTerminal" onchange="syncAirportFields()">
+            <option value="">請選擇接送航廈</option>
+            <option value="第一航廈">第一航廈</option>
+            <option value="第二航廈">第二航廈</option>
+            <option value="國際線">國際線</option>
+            <option value="國內線">國內線</option>
+          </select>
+
+          <label>航班資訊</label>
+          <input id="arrivalFlight" type="text" placeholder="例：BR198 / CI100 / JX802" oninput="syncAirportFields()">
+
+          <label>抵達時間</label>
+          <input id="arrivalFlightTime" type="time" oninput="syncAirportFields()">
+
+          <label>接待地址 *</label>
+          <div class="airport-extra-row">
+            <input id="arrivalAddress" type="text" placeholder="例：台北市信義區某飯店 / 公司 / 住家地址" oninput="syncAirportFields()">
+            <button type="button" class="btn btn-light add-point-btn" onclick="addAirportPoint('arrival')">＋</button>
+          </div>
+
+          <div id="arrivalPoint2Block" class="hidden">
+            <label>增加接待點 2</label>
+            <input id="arrivalPoint2" type="text" placeholder="例：第二位貴賓接待地址" oninput="syncAirportFields()">
+          </div>
+
+          <div id="arrivalPoint3Block" class="hidden">
+            <label>增加接待點 3</label>
+            <input id="arrivalPoint3" type="text" placeholder="例：第三位貴賓接待地址" oninput="syncAirportFields()">
+          </div>
+
+          <div id="arrivalPoint4Block" class="hidden">
+            <label>增加接待點 4</label>
+            <input id="arrivalPoint4" type="text" placeholder="例：第四位貴賓接待地址" oninput="syncAirportFields()">
+          </div>
+
+          <div id="arrivalPoint5Block" class="hidden">
+            <label>增加接待點 5</label>
+            <input id="arrivalPoint5" type="text" placeholder="例：第五位貴賓接待地址" oninput="syncAirportFields()">
+          </div>
+
+          <div class="airport-point-note">
+            可點選「＋」新增接待點，最多可增加 4 個接待點。
+          </div>
+        </div>
 
         <div class="notice">
-          接機服務請優先選「上車機場」；送機服務請優先選「下車機場」，另一端請填寫飯店、住家或指定地址。
+          送機服務：接待地址 → 預約機場。<br>
+          接機服務：預約機場 → 接待地址。<br>
+          如有多個接待點，可點選「＋」新增，最多可增加 4 個接待點。
         </div>
       </div>
 
@@ -547,20 +581,21 @@
       </div>
 
       <label>上車地點 *</label>
-      <input id="pickup" type="text" placeholder="例：台北市信義區某飯店 / 桃園機場第二航廈 / 基隆港">
+      <input id="pickup" type="text" placeholder="系統會依機場 / 港口 / 地址自動帶入，也可手動修正">
 
       <label>下車地點 *</label>
-      <input id="dropoff" type="text" placeholder="例：台北市信義區市府路45號 / 台北港">
+      <input id="dropoff" type="text" placeholder="系統會依機場 / 港口 / 地址自動帶入，也可手動修正">
 
-      <label>航班 / 船班資訊</label>
-      <input id="flight" type="text" placeholder="例：BR198 / 郵輪名稱 / 船班時間 / 無">
+      <label>航班 / 船班 / 備註資訊</label>
+      <input id="flight" type="text" placeholder="港口接送可填郵輪名稱、船班時間；其他服務可填補充資訊">
 
       <label>停靠點數</label>
       <select id="stopCount">
         <option value="1">1 點上車 / 1 點下車</option>
         <option value="2">2 個停靠點</option>
         <option value="3">3 個停靠點</option>
-        <option value="4">4 個停靠點以上</option>
+        <option value="4">4 個停靠點</option>
+        <option value="5">5 個停靠點以上</option>
       </select>
 
       <label>多點 / 行程說明</label>
@@ -690,6 +725,7 @@
     document.addEventListener("DOMContentLoaded", function() {
       initLiff();
       refreshPackageRoutes();
+      handleServiceChange();
       updateStep();
     });
 
@@ -765,18 +801,21 @@
     function handleAirportServiceTypeChange() {
       const service = valueOf("service");
       const type = valueOf("airportServiceType");
+      const departureFlow = document.getElementById("departureAirportFlow");
+      const arrivalFlow = document.getElementById("arrivalAirportFlow");
 
-      if (service !== "機場接送") {
+      if (!departureFlow || !arrivalFlow) {
         return;
       }
 
-      if (type === "接機服務") {
-        document.getElementById("dropoffAirport").value = "";
+      if (service !== "機場接送") {
+        departureFlow.classList.add("hidden");
+        arrivalFlow.classList.add("hidden");
+        return;
       }
 
-      if (type === "送機服務") {
-        document.getElementById("pickupAirport").value = "";
-      }
+      departureFlow.classList.toggle("hidden", type !== "送機服務");
+      arrivalFlow.classList.toggle("hidden", type !== "接機服務");
 
       syncAirportFields();
     }
@@ -815,17 +854,90 @@
       };
     }
 
+    function getAirportAddressList(prefix) {
+      return [
+        valueOf(prefix + "Address"),
+        valueOf(prefix + "Point2"),
+        valueOf(prefix + "Point3"),
+        valueOf(prefix + "Point4"),
+        valueOf(prefix + "Point5")
+      ].filter(Boolean);
+    }
+
+    function getAirportFullName(prefix) {
+      const airportName = valueOf(prefix + "AirportName");
+      const airportTerminal = valueOf(prefix + "AirportTerminal");
+
+      return [airportName, airportTerminal].filter(Boolean).join("－");
+    }
+
     function syncAirportFields() {
-      const pickupAirport = valueOf("pickupAirport");
-      const dropoffAirport = valueOf("dropoffAirport");
+      const service = valueOf("service");
 
-      if (pickupAirport) {
-        document.getElementById("pickup").value = pickupAirport;
+      if (service !== "機場接送") {
+        return;
       }
 
-      if (dropoffAirport) {
-        document.getElementById("dropoff").value = dropoffAirport;
+      const type = valueOf("airportServiceType");
+
+      if (type === "送機服務") {
+        const addressList = getAirportAddressList("departure");
+        const airportFullName = getAirportFullName("departure");
+
+        if (addressList.length > 0) {
+          document.getElementById("pickup").value = addressList.join(" → ");
+        }
+
+        if (airportFullName) {
+          document.getElementById("dropoff").value = airportFullName;
+        }
       }
+
+      if (type === "接機服務") {
+        const airportFullName = getAirportFullName("arrival");
+        const addressList = getAirportAddressList("arrival");
+
+        if (airportFullName) {
+          document.getElementById("pickup").value = airportFullName;
+        }
+
+        if (addressList.length > 0) {
+          document.getElementById("dropoff").value = addressList.join(" → ");
+        }
+      }
+    }
+
+    function addAirportPoint(prefix) {
+      const point2Block = document.getElementById(prefix + "Point2Block");
+      const point3Block = document.getElementById(prefix + "Point3Block");
+      const point4Block = document.getElementById(prefix + "Point4Block");
+      const point5Block = document.getElementById(prefix + "Point5Block");
+
+      if (point2Block.classList.contains("hidden")) {
+        point2Block.classList.remove("hidden");
+        document.getElementById(prefix + "Point2").focus();
+        return;
+      }
+
+      if (point3Block.classList.contains("hidden")) {
+        point3Block.classList.remove("hidden");
+        document.getElementById(prefix + "Point3").focus();
+        return;
+      }
+
+      if (point4Block.classList.contains("hidden")) {
+        point4Block.classList.remove("hidden");
+        document.getElementById(prefix + "Point4").focus();
+        return;
+      }
+
+      if (point5Block.classList.contains("hidden")) {
+        point5Block.classList.remove("hidden");
+        document.getElementById(prefix + "Point5").focus();
+        return;
+      }
+
+      alert("目前最多可增加 4 個接待點。");
     }
 
     function syncPortFields() {
@@ -874,10 +986,7 @@
         document.getElementById("nextBtn").classList.remove("hidden");
       }
 
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function validateStep(step) {
@@ -918,6 +1027,49 @@
       if (step === 3) {
         syncAirportFields();
         syncPortFields();
+
+        if (valueOf("service") === "機場接送") {
+          const type = valueOf("airportServiceType");
+
+          if (!type) {
+            alert("請選擇機場接送服務分類");
+            return false;
+          }
+
+          if (type === "送機服務") {
+            if (!valueOf("departureAddress")) {
+              alert("請填寫接待地址");
+              return false;
+            }
+
+            if (!valueOf("departureAirportName")) {
+              alert("請選擇預約機場");
+              return false;
+            }
+
+            if (!valueOf("departureAirportTerminal")) {
+              alert("請選擇接送航廈");
+              return false;
+            }
+          }
+
+          if (type === "接機服務") {
+            if (!valueOf("arrivalAirportName")) {
+              alert("請選擇預約機場");
+              return false;
+            }
+
+            if (!valueOf("arrivalAirportTerminal")) {
+              alert("請選擇接送航廈");
+              return false;
+            }
+
+            if (!valueOf("arrivalAddress")) {
+              alert("請填寫接待地址");
+              return false;
+            }
+          }
+        }
 
         if (!valueOf("pickup")) {
           alert("請填寫上車地點");
@@ -1030,9 +1182,70 @@
       }
     }
 
+    function getUnifiedAirportData() {
+      const type = valueOf("airportServiceType");
+
+      if (type === "送機服務") {
+        return {
+          airportName: valueOf("departureAirportName"),
+          airportTerminal: valueOf("departureAirportTerminal"),
+          airportFullName: getAirportFullName("departure"),
+          airportMainAddress: valueOf("departureAddress"),
+          airportPoint2: valueOf("departurePoint2"),
+          airportPoint3: valueOf("departurePoint3"),
+          airportPoint4: valueOf("departurePoint4"),
+          airportPoint5: valueOf("departurePoint5"),
+          airportAddressList: getAirportAddressList("departure").join(" → "),
+          airportFlight: valueOf("departureFlight"),
+          airportFlightTime: valueOf("departureFlightTime"),
+          flightTimeLabel: "起飛時間",
+          pickupAirport: "",
+          dropoffAirport: getAirportFullName("departure")
+        };
+      }
+
+      if (type === "接機服務") {
+        return {
+          airportName: valueOf("arrivalAirportName"),
+          airportTerminal: valueOf("arrivalAirportTerminal"),
+          airportFullName: getAirportFullName("arrival"),
+          airportMainAddress: valueOf("arrivalAddress"),
+          airportPoint2: valueOf("arrivalPoint2"),
+          airportPoint3: valueOf("arrivalPoint3"),
+          airportPoint4: valueOf("arrivalPoint4"),
+          airportPoint5: valueOf("arrivalPoint5"),
+          airportAddressList: getAirportAddressList("arrival").join(" → "),
+          airportFlight: valueOf("arrivalFlight"),
+          airportFlightTime: valueOf("arrivalFlightTime"),
+          flightTimeLabel: "抵達時間",
+          pickupAirport: getAirportFullName("arrival"),
+          dropoffAirport: ""
+        };
+      }
+
+      return {
+        airportName: "",
+        airportTerminal: "",
+        airportFullName: "",
+        airportMainAddress: "",
+        airportPoint2: "",
+        airportPoint3: "",
+        airportPoint4: "",
+        airportPoint5: "",
+        airportAddressList: "",
+        airportFlight: "",
+        airportFlightTime: "",
+        flightTimeLabel: "",
+        pickupAirport: "",
+        dropoffAirport: ""
+      };
+    }
+
     function collectData() {
       syncAirportFields();
       syncPortFields();
+
+      const airportData = getUnifiedAirportData();
 
       return {
         routeSessionId: routeSessionId,
@@ -1049,14 +1262,27 @@
         service: valueOf("service"),
         airportServiceType: valueOf("airportServiceType"),
 
+        airportName: airportData.airportName,
+        airportTerminal: airportData.airportTerminal,
+        airportFullName: airportData.airportFullName,
+        airportFlight: airportData.airportFlight,
+        airportFlightTime: airportData.airportFlightTime,
+        flightTimeLabel: airportData.flightTimeLabel,
+        airportMainAddress: airportData.airportMainAddress,
+        airportPoint2: airportData.airportPoint2,
+        airportPoint3: airportData.airportPoint3,
+        airportPoint4: airportData.airportPoint4,
+        airportPoint5: airportData.airportPoint5,
+        airportAddressList: airportData.airportAddressList,
+
         date: valueOf("date"),
         time: valueOf("time"),
 
         pickup: valueOf("pickup"),
         dropoff: valueOf("dropoff"),
 
-        pickupAirport: valueOf("pickupAirport"),
-        dropoffAirport: valueOf("dropoffAirport"),
+        pickupAirport: airportData.pickupAirport,
+        dropoffAirport: airportData.dropoffAirport,
 
         pickupPort: valueOf("pickupPort"),
         dropoffPort: valueOf("dropoffPort"),
@@ -1065,7 +1291,13 @@
 
         passengers: valueOf("passengers"),
         luggage: valueOf("luggage"),
-        flight: valueOf("flight"),
+
+        flight: airportData.airportFlight || valueOf("flight"),
+        flightTime: airportData.airportFlightTime,
+        departureFlight: valueOf("departureFlight"),
+        departureFlightTime: valueOf("departureFlightTime"),
+        arrivalFlight: valueOf("arrivalFlight"),
+        arrivalFlightTime: valueOf("arrivalFlightTime"),
 
         signService: valueOf("signService"),
         englishDriver: valueOf("englishDriver"),
@@ -1101,6 +1333,8 @@
         "日期時間：" + escapeHtml(data.date + " " + data.time) + "<br>" +
         "上車：" + escapeHtml(data.pickup) + "<br>" +
         "下車：" + escapeHtml(data.dropoff) + "<br>" +
+        "航班資訊：" + escapeHtml(data.flight || "無") + "<br>" +
+        (data.flightTime ? escapeHtml(data.flightTimeLabel || "航班時間") + "：" + escapeHtml(data.flightTime) + "<br>" : "") +
         "乘客 / 行李：" + escapeHtml((data.passengers || "-") + " 人 / " + (data.luggage || "-") + " 件") + "<br>" +
         "備註：" + escapeHtml(data.note || "無") + "<br><br>" +
         "送出後將由禮賓專員確認最終車輛、司機與費用。";
