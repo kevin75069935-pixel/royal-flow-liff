@@ -883,6 +883,10 @@
       return service === "商務接送" || service === "商務包車";
     }
 
+    function isBusinessService(service) {
+      return isBusinessServiceName(service);
+    }
+
     function handleBusinessTripTypeChange() {
       if (!isBusinessServiceName(valueOf("service"))) {
         return;
