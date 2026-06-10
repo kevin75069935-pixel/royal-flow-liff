@@ -9,17 +9,15 @@
 
   <style>
     :root {
-      --bg: #030303;
-      --card: rgba(10, 10, 10, 0.96);
-      --black: #000000;
-      --gold: #d6b35f;
-      --gold-2: #b58a3a;
-      --gold-3: #7b5520;
-      --line: rgba(214, 179, 95, 0.38);
-      --muted: #c9c0ae;
-      --danger: #ff657a;
-      --success: #26b36a;
-      --white: #ffffff;
+      --bg: #f6f2ea;
+      --card: #ffffff;
+      --black: #111111;
+      --gold: #b58a3a;
+      --gold-dark: #8a6728;
+      --line: #ded6c8;
+      --muted: #777777;
+      --danger: #b00020;
+      --success: #0a7f45;
     }
 
     * {
@@ -29,10 +27,8 @@
     body {
       margin: 0;
       padding: 0;
-      background:
-        radial-gradient(circle at top center, rgba(214,179,95,0.12) 0%, transparent 34%),
-        linear-gradient(180deg, #000000 0%, #080808 45%, #030303 100%);
-      color: var(--white);
+      background: var(--bg);
+      color: var(--black);
       font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       font-size: 18px;
       line-height: 1.55;
@@ -46,97 +42,72 @@
 
     .brand {
       text-align: center;
-      padding: 22px 8px 18px;
-      border-bottom: 1px solid rgba(214,179,95,0.18);
-      margin-bottom: 16px;
+      padding: 18px 8px 14px;
     }
 
     .brand-title {
-      font-size: 30px;
-      font-weight: 900;
-      letter-spacing: 4px;
-      color: var(--gold);
-      text-shadow: 0 0 18px rgba(214,179,95,0.28);
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 2px;
     }
 
     .brand-sub {
-      margin-top: 6px;
-      color: #f2d28b;
-      font-size: 14px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      margin-top: 4px;
+      color: var(--gold-dark);
+      font-size: 15px;
+      letter-spacing: 1px;
     }
 
     .card {
-      background: linear-gradient(180deg, rgba(20,20,20,0.98), rgba(5,5,5,0.98));
+      background: var(--card);
       border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 20px;
+      border-radius: 18px;
+      padding: 18px;
       margin-bottom: 18px;
-      box-shadow:
-        0 16px 40px rgba(0,0,0,0.55),
-        inset 0 1px 0 rgba(255,255,255,0.04);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.05);
     }
 
     .step-title {
-      font-size: 25px;
-      font-weight: 900;
+      font-size: 22px;
+      font-weight: 800;
       margin-bottom: 12px;
-      color: var(--gold);
-      letter-spacing: 1px;
     }
 
     .step-sub {
       color: var(--muted);
-      font-size: 16px;
+      font-size: 15px;
       margin-bottom: 16px;
     }
 
     label {
       display: block;
-      font-weight: 800;
+      font-weight: 700;
       margin: 16px 0 7px;
-      color: #f5d98f;
-      letter-spacing: 0.5px;
     }
 
     input,
     select,
     textarea {
       width: 100%;
-      min-height: 52px;
-      border: 1px solid rgba(214,179,95,0.34);
-      border-radius: 14px;
-      padding: 12px 14px;
+      min-height: 50px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 13px;
       font-size: 18px;
-      background: #070707;
-      color: #ffffff;
+      background: #fff;
       outline: none;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
     }
 
     textarea {
-      min-height: 96px;
+      min-height: 92px;
       resize: vertical;
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-      color: #8c8578;
     }
 
     input:focus,
     select:focus,
     textarea:focus {
       border-color: var(--gold);
-      box-shadow:
-        0 0 0 3px rgba(214,179,95,0.16),
-        0 0 18px rgba(214,179,95,0.16);
-    }
-
-    select option {
-      background: #0b0b0b;
-      color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(181,138,58,0.16);
     }
 
     .row {
@@ -149,56 +120,34 @@
       display: none !important;
     }
 
-    .airport-extra-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-      align-items: end;
-    }
-
-    .add-point-btn {
-      min-width: 58px;
-      font-size: 24px;
-      line-height: 1;
-      padding: 10px 14px;
-    }
-
-    .airport-point-note {
-      color: #c9c0ae;
-      font-size: 14px;
-      margin-top: 8px;
-    }
-
     .notice {
-      background: linear-gradient(180deg, rgba(214,179,95,0.13), rgba(214,179,95,0.05));
-      border: 1px solid rgba(214,179,95,0.42);
-      color: #f5d98f;
-      border-radius: 16px;
-      padding: 13px;
+      background: #fff9ec;
+      border: 1px solid #ead7ac;
+      color: #5d4311;
+      border-radius: 14px;
+      padding: 12px;
       margin-top: 14px;
       font-size: 15px;
     }
 
     .quote-box {
-      background: linear-gradient(180deg, #050505, #000000);
-      color: #ffffff;
-      border: 1px solid rgba(214,179,95,0.46);
-      border-radius: 18px;
+      background: #111;
+      color: #fff;
+      border-radius: 16px;
       padding: 16px;
       margin-top: 16px;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.45);
     }
 
     .quote-box strong {
-      color: #f5d98f;
+      color: #f5d083;
     }
 
     .quote-line {
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      border-bottom: 1px solid rgba(214,179,95,0.18);
-      padding: 9px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      padding: 8px 0;
     }
 
     .quote-line:last-child {
@@ -208,38 +157,30 @@
     .btn {
       border: none;
       border-radius: 14px;
-      min-height: 54px;
+      min-height: 52px;
       padding: 13px 16px;
       font-size: 18px;
-      font-weight: 900;
+      font-weight: 800;
       cursor: pointer;
-      letter-spacing: 1px;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #f0d27a 0%, #c9a24d 44%, #8a5f1f 100%);
-      color: #050505;
-      box-shadow:
-        0 8px 20px rgba(214,179,95,0.25),
-        inset 0 1px 0 rgba(255,255,255,0.34);
+      background: var(--black);
+      color: #fff;
     }
 
     .btn-gold {
-      background: linear-gradient(135deg, #f3d98a 0%, #c9a24d 48%, #8d6425 100%);
-      color: #050505;
-      box-shadow:
-        0 8px 20px rgba(214,179,95,0.22),
-        inset 0 1px 0 rgba(255,255,255,0.28);
+      background: var(--gold);
+      color: #fff;
     }
 
     .btn-light {
-      background: #070707;
-      color: #f5d98f;
-      border: 1px solid rgba(214,179,95,0.46);
+      background: #eee7da;
+      color: #222;
     }
 
     .btn:disabled {
-      opacity: 0.45;
+      opacity: 0.55;
       cursor: not-allowed;
     }
 
@@ -250,44 +191,62 @@
       margin-top: 18px;
     }
 
+    .inline-action {
+      display: grid;
+      grid-template-columns: 1fr 54px;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .icon-btn {
+      min-height: 50px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #111;
+      color: #fff;
+      font-size: 28px;
+      font-weight: 800;
+      cursor: pointer;
+      line-height: 1;
+    }
+
     .bottom-bar {
       position: fixed;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0,0,0,0.96);
-      border-top: 1px solid rgba(214,179,95,0.35);
+      background: rgba(255,255,255,0.96);
+      border-top: 1px solid var(--line);
       padding: 10px 14px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       z-index: 50;
-      box-shadow: 0 -10px 30px rgba(0,0,0,0.65);
     }
 
     .status {
-      padding: 13px;
-      border-radius: 16px;
+      padding: 12px;
+      border-radius: 14px;
       margin-top: 12px;
       font-size: 15px;
     }
 
     .status.success {
-      background: rgba(38,179,106,0.12);
-      color: #62e39d;
-      border: 1px solid rgba(38,179,106,0.34);
+      background: #e9f7ef;
+      color: var(--success);
+      border: 1px solid #bde6cd;
     }
 
     .status.error {
-      background: rgba(255,101,122,0.12);
-      color: #ff98a7;
-      border: 1px solid rgba(255,101,122,0.34);
+      background: #fdecef;
+      color: var(--danger);
+      border: 1px solid #f4b9c2;
     }
 
     .status.info {
-      background: rgba(214,179,95,0.10);
-      color: #f5d98f;
-      border: 1px solid rgba(214,179,95,0.34);
+      background: #edf4ff;
+      color: #234c82;
+      border: 1px solid #c5d9f5;
     }
 
     .step {
@@ -301,20 +260,18 @@
     .progress {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 7px;
-      margin-bottom: 16px;
+      gap: 6px;
+      margin-bottom: 14px;
     }
 
     .progress span {
       height: 7px;
-      background: #242424;
-      border: 1px solid rgba(214,179,95,0.18);
+      background: #dfd7ca;
       border-radius: 99px;
     }
 
     .progress span.active {
-      background: linear-gradient(90deg, #8a5f1f, #f0d27a, #b58a3a);
-      box-shadow: 0 0 14px rgba(214,179,95,0.42);
+      background: var(--gold);
     }
 
     @media (max-width: 560px) {
@@ -327,27 +284,12 @@
       }
 
       .brand-title {
-        font-size: 26px;
-        letter-spacing: 3px;
-      }
-
-      .brand-sub {
-        font-size: 13px;
+        font-size: 23px;
       }
 
       .page {
         padding-left: 12px;
         padding-right: 12px;
-      }
-
-      .step-title {
-        font-size: 24px;
-      }
-
-      input,
-      select,
-      textarea {
-        font-size: 17px;
       }
     }
   </style>
@@ -428,6 +370,50 @@
         </div>
       </div>
 
+      <div id="businessBlock" class="hidden">
+        <label>商務行程型態</label>
+        <select id="businessTripType" onchange="handleBusinessTripTypeChange()">
+          <option value="3 小時市區商務">3 小時市區商務</option>
+          <option value="8 小時市區商務">8 小時市區商務</option>
+          <option value="客製化商務行程">客製化商務行程</option>
+        </select>
+
+        <label>預計用車小時</label>
+        <select id="businessHours">
+          <option value="3">3 小時</option>
+          <option value="4">4 小時</option>
+          <option value="5">5 小時</option>
+          <option value="6">6 小時</option>
+          <option value="7">7 小時</option>
+          <option value="8">8 小時</option>
+          <option value="9">9 小時</option>
+          <option value="10">10 小時</option>
+          <option value="11">11 小時</option>
+          <option value="12">12 小時</option>
+          <option value="客服確認">12 小時以上，客服確認</option>
+        </select>
+
+        <label>是否跨縣市</label>
+        <select id="businessCrossRegion">
+          <option value="否，雙北市區內">否，雙北市區內</option>
+          <option value="桃園市區">桃園市</option>
+          <option value="桃園機場">桃園機場</option>
+          <option value="基隆市區">基隆市</option>
+          <option value="新竹市區">新竹市 / 新竹縣</option>
+          <option value="苗栗市區">苗栗縣市</option>
+          <option value="台中市區">台中市</option>
+          <option value="宜蘭市區">宜蘭縣</option>
+          <option value="花蓮市區">花蓮縣</option>
+          <option value="台南市區">台南市</option>
+          <option value="高雄市區">高雄市</option>
+          <option value="其他，客服確認">其他，客服確認</option>
+        </select>
+
+        <div class="notice">
+          市區商務行程以雙北市區為出發基準，依車型套用 3 小時 / 8 小時包時車資，超過基礎時數另計超時費。
+        </div>
+      </div>
+
       <div id="tourBlock" class="hidden">
         <label>旅遊型態</label>
         <select id="tourMode" onchange="handleTourModeChange()">
@@ -466,55 +452,57 @@
         </select>
 
         <div class="notice">
-          旅遊包車每日以 8 小時為計算基礎，超過後依各車型超時費累計；客製化旅遊由禮賓專員確認最終報價。
+          旅遊包車以套裝行程報價為主；客製化旅遊可使用 Google Routes 估算距離後再由客服確認最終報價。
         </div>
       </div>
     </section>
 
     <section id="step3" class="step card">
       <div class="step-title">3. 路線資訊</div>
-      <div class="step-sub">請依服務類型選擇機場、港口或填寫一般地址。</div>
+      <div class="step-sub">機場接送可使用機場選單；一般地址可直接輸入。</div>
 
       <div id="airportBlock" class="hidden">
-        <label>機場接送服務分類</label>
+        <label>機場接送類型</label>
         <select id="airportServiceType" onchange="handleAirportServiceTypeChange()">
-          <option value="送機服務">送機服務｜接待地址 → 預約機場</option>
-          <option value="接機服務">接機服務｜預約機場 → 接待地址</option>
+          <option value="送機服務">送機服務</option>
+          <option value="接機服務">接機服務</option>
         </select>
 
-        <div id="departureAirportFlow">
-          <label>接待地址 *</label>
-          <div class="airport-extra-row">
-            <input id="departureAddress" type="text" placeholder="例：台北市信義區某飯店 / 公司 / 住家地址" oninput="syncAirportFields()">
-            <button type="button" class="btn btn-light add-point-btn" onclick="addAirportPoint('departure')">＋</button>
+        <div id="sendAirportFlow">
+          <div class="inline-action">
+            <div>
+              <label>接待地址 *</label>
+              <input id="airportReceptionAddress" type="text" placeholder="例：台北市信義區某飯店">
+            </div>
+            <button class="icon-btn" type="button" onclick="addAirportPoint()" title="增加接待點">+</button>
           </div>
 
-          <div id="departurePoint2Block" class="hidden">
-            <label>增加接待點 2</label>
-            <input id="departurePoint2" type="text" placeholder="例：第二位貴賓接待地址" oninput="syncAirportFields()">
-          </div>
+          <div id="sendAirportPointHost">
+            <div id="airportPointRows">
+              <div id="airportPoint2Row" class="hidden">
+                <label>增加接待點 2</label>
+                <input id="airportPoint2" type="text" placeholder="例：第二接待地址">
+              </div>
 
-          <div id="departurePoint3Block" class="hidden">
-            <label>增加接待點 3</label>
-            <input id="departurePoint3" type="text" placeholder="例：第三位貴賓接待地址" oninput="syncAirportFields()">
-          </div>
+              <div id="airportPoint3Row" class="hidden">
+                <label>增加接待點 3</label>
+                <input id="airportPoint3" type="text" placeholder="例：第三接待地址">
+              </div>
 
-          <div id="departurePoint4Block" class="hidden">
-            <label>增加接待點 4</label>
-            <input id="departurePoint4" type="text" placeholder="例：第四位貴賓接待地址" oninput="syncAirportFields()">
-          </div>
+              <div id="airportPoint4Row" class="hidden">
+                <label>增加接待點 4</label>
+                <input id="airportPoint4" type="text" placeholder="選填">
+              </div>
 
-          <div id="departurePoint5Block" class="hidden">
-            <label>增加接待點 5</label>
-            <input id="departurePoint5" type="text" placeholder="例：第五位貴賓接待地址" oninput="syncAirportFields()">
-          </div>
-
-          <div class="airport-point-note">
-            可點選「＋」新增接待點，最多可增加 4 個接待點。
+              <div id="airportPoint5Row" class="hidden">
+                <label>增加接待點 5</label>
+                <input id="airportPoint5" type="text" placeholder="選填">
+              </div>
+            </div>
           </div>
 
           <label>預約機場 *</label>
-          <select id="departureAirportName" onchange="syncAirportFields()">
+          <select id="reservedAirport" onchange="syncAirportFields()">
             <option value="">請選擇預約機場</option>
             <option value="桃園國際機場">桃園國際機場</option>
             <option value="台北松山機場">台北松山機場</option>
@@ -523,24 +511,18 @@
           </select>
 
           <label>接送航廈 *</label>
-          <select id="departureAirportTerminal" onchange="syncAirportFields()">
+          <select id="airportTerminal" onchange="syncAirportFields()">
             <option value="">請選擇接送航廈</option>
             <option value="第一航廈">第一航廈</option>
             <option value="第二航廈">第二航廈</option>
             <option value="國際線">國際線</option>
             <option value="國內線">國內線</option>
           </select>
-
-          <label>航班資訊</label>
-          <input id="departureFlight" type="text" placeholder="例：BR198 / CI100 / JX802" oninput="syncAirportFields()">
-
-          <label>起飛時間</label>
-          <input id="departureFlightTime" type="time" oninput="syncAirportFields()">
         </div>
 
-        <div id="arrivalAirportFlow" class="hidden">
+        <div id="pickupAirportFlow" class="hidden">
           <label>預約機場 *</label>
-          <select id="arrivalAirportName" onchange="syncAirportFields()">
+          <select id="pickupReservedAirport" onchange="syncAirportFields()">
             <option value="">請選擇預約機場</option>
             <option value="桃園國際機場">桃園國際機場</option>
             <option value="台北松山機場">台北松山機場</option>
@@ -549,7 +531,7 @@
           </select>
 
           <label>接送航廈 *</label>
-          <select id="arrivalAirportTerminal" onchange="syncAirportFields()">
+          <select id="pickupAirportTerminal" onchange="syncAirportFields()">
             <option value="">請選擇接送航廈</option>
             <option value="第一航廈">第一航廈</option>
             <option value="第二航廈">第二航廈</option>
@@ -557,55 +539,28 @@
             <option value="國內線">國內線</option>
           </select>
 
-          <label>航班資訊</label>
-          <input id="arrivalFlight" type="text" placeholder="例：BR198 / CI100 / JX802" oninput="syncAirportFields()">
-
-          <label>抵達時間</label>
-          <input id="arrivalFlightTime" type="time" oninput="syncAirportFields()">
-
-          <label>接待地址 *</label>
-          <div class="airport-extra-row">
-            <input id="arrivalAddress" type="text" placeholder="例：台北市信義區某飯店 / 公司 / 住家地址" oninput="syncAirportFields()">
-            <button type="button" class="btn btn-light add-point-btn" onclick="addAirportPoint('arrival')">＋</button>
+          <div class="inline-action">
+            <div>
+              <label>接待地址 *</label>
+              <input id="pickupAirportReceptionAddress" type="text" placeholder="例：台北市信義區某飯店">
+            </div>
+            <button class="icon-btn" type="button" onclick="addAirportPoint()" title="增加接待點">+</button>
           </div>
 
-          <div id="arrivalPoint2Block" class="hidden">
-            <label>增加接待點 2</label>
-            <input id="arrivalPoint2" type="text" placeholder="例：第二位貴賓接待地址" oninput="syncAirportFields()">
-          </div>
-
-          <div id="arrivalPoint3Block" class="hidden">
-            <label>增加接待點 3</label>
-            <input id="arrivalPoint3" type="text" placeholder="例：第三位貴賓接待地址" oninput="syncAirportFields()">
-          </div>
-
-          <div id="arrivalPoint4Block" class="hidden">
-            <label>增加接待點 4</label>
-            <input id="arrivalPoint4" type="text" placeholder="例：第四位貴賓接待地址" oninput="syncAirportFields()">
-          </div>
-
-          <div id="arrivalPoint5Block" class="hidden">
-            <label>增加接待點 5</label>
-            <input id="arrivalPoint5" type="text" placeholder="例：第五位貴賓接待地址" oninput="syncAirportFields()">
-          </div>
-
-          <div class="airport-point-note">
-            可點選「＋」新增接待點，最多可增加 4 個接待點。
-          </div>
-        </div>
-
-        <div class="notice">
-          送機服務：接待地址 → 預約機場。<br>
-          接機服務：預約機場 → 接待地址。<br>
-          如有多個接待點，可點選「＋」新增，最多可增加 4 個接待點。
+          <div id="pickupAirportPointHost"></div>
         </div>
       </div>
 
       <div id="portBlock" class="hidden">
-        <label>上車港口</label>
-        <select id="pickupPort" onchange="syncPortFields()">
-          <option value="">非港口 / 手動輸入</option>
+        <label>港口接送類型</label>
+        <select id="portServiceType" onchange="syncPortFields()">
+          <option value="送港服務">送港服務</option>
+          <option value="接港服務">接港服務</option>
+        </select>
 
+        <label>預約港口 *</label>
+        <select id="reservedPort" onchange="syncPortFields()">
+          <option value="">請選擇預約港口</option>
           <optgroup label="豪華郵輪 / 國際港口">
             <option value="基隆港｜Keelung Port">基隆港｜Keelung Port</option>
             <option value="台北港｜Taipei Port">台北港｜Taipei Port</option>
@@ -614,103 +569,81 @@
             <option value="高雄港｜Kaohsiung Port">高雄港｜Kaohsiung Port</option>
             <option value="花蓮港｜Hualien Port">花蓮港｜Hualien Port</option>
           </optgroup>
-
           <optgroup label="離島快速船 / 客運港口">
-            <option value="嘉義布袋港｜Budai Harbor">嘉義布袋港｜Budai Harbor</option>
-            <option value="屏東東港碼頭｜Donggang Ferry Terminal">屏東東港碼頭｜Donggang Ferry Terminal</option>
-            <option value="台東富岡漁港｜Fugang Harbor">台東富岡漁港｜Fugang Harbor</option>
-            <option value="宜蘭南方澳港｜Nanfang’ao Harbor">宜蘭南方澳港｜Nanfang’ao Harbor</option>
-            <option value="澎湖馬公港｜Magong Harbor">澎湖馬公港｜Magong Harbor</option>
-            <option value="金門水頭碼頭｜Shuitou Pier">金門水頭碼頭｜Shuitou Pier</option>
-            <option value="小琉球白沙尾漁港｜Baishawei Harbor">小琉球白沙尾漁港｜Baishawei Harbor</option>
+            <option value="布袋港｜嘉義布袋商港">布袋港｜嘉義布袋商港</option>
+            <option value="東港｜屏東東港碼頭">東港｜屏東東港碼頭</option>
+            <option value="富岡漁港｜台東富岡漁港">富岡漁港｜台東富岡漁港</option>
+            <option value="南方澳港｜宜蘭南方澳漁港">南方澳港｜宜蘭南方澳漁港</option>
+            <option value="馬公港｜澎湖馬公港">馬公港｜澎湖馬公港</option>
+            <option value="金門水頭碼頭｜金門水頭港">金門水頭碼頭｜金門水頭港</option>
+            <option value="小琉球白沙尾漁港｜小琉球碼頭">小琉球白沙尾漁港｜小琉球碼頭</option>
           </optgroup>
         </select>
+      </div>
 
-        <label>下車港口</label>
-        <select id="dropoffPort" onchange="syncPortFields()">
-          <option value="">非港口 / 手動輸入</option>
+      <div id="generalRouteBlock">
+        <label>上車地點 *</label>
+        <input id="pickup" type="text" placeholder="例：台北市信義區某飯店 / 桃園機場第二航廈">
 
-          <optgroup label="豪華郵輪 / 國際港口">
-            <option value="基隆港｜Keelung Port">基隆港｜Keelung Port</option>
-            <option value="台北港｜Taipei Port">台北港｜Taipei Port</option>
-            <option value="蘇澳港｜Suao Port">蘇澳港｜Suao Port</option>
-            <option value="台中港｜Taichung Port">台中港｜Taichung Port</option>
-            <option value="高雄港｜Kaohsiung Port">高雄港｜Kaohsiung Port</option>
-            <option value="花蓮港｜Hualien Port">花蓮港｜Hualien Port</option>
-          </optgroup>
-
-          <optgroup label="離島快速船 / 客運港口">
-            <option value="嘉義布袋港｜Budai Harbor">嘉義布袋港｜Budai Harbor</option>
-            <option value="屏東東港碼頭｜Donggang Ferry Terminal">屏東東港碼頭｜Donggang Ferry Terminal</option>
-            <option value="台東富岡漁港｜Fugang Harbor">台東富岡漁港｜Fugang Harbor</option>
-            <option value="宜蘭南方澳港｜Nanfang’ao Harbor">宜蘭南方澳港｜Nanfang’ao Harbor</option>
-            <option value="澎湖馬公港｜Magong Harbor">澎湖馬公港｜Magong Harbor</option>
-            <option value="金門水頭碼頭｜Shuitou Pier">金門水頭碼頭｜Shuitou Pier</option>
-            <option value="小琉球白沙尾漁港｜Baishawei Harbor">小琉球白沙尾漁港｜Baishawei Harbor</option>
-          </optgroup>
-        </select>
-
-        <div class="notice">
-          港口接送適用豪華郵輪、離島快速船與商務港口接待。實際上車點依港區管制、碼頭公告與司機現場回報為準。
-        </div>
+        <label>下車地點 *</label>
+        <input id="dropoff" type="text" placeholder="例：台北市信義區市府路45號">
       </div>
 
       <div id="receptionBlock" class="hidden">
-        <label>主要接待地址 *</label>
-        <div class="airport-extra-row">
-          <input id="receptionAddress" type="text" placeholder="例：飯店 / 公司 / 會場 / 婚宴會館 / 大使館" oninput="syncReceptionFields()">
-          <button type="button" class="btn btn-light add-point-btn" onclick="addReceptionPoint()">＋</button>
+        <div class="inline-action">
+          <div>
+            <label>接待地址 *</label>
+            <input id="receptionAddress" type="text" placeholder="例：台北市信義區某飯店" oninput="syncReceptionFields()">
+          </div>
+          <button class="icon-btn" type="button" onclick="addReceptionPoint()" title="增加接待點">+</button>
         </div>
 
-        <div id="receptionPoint2Block" class="hidden">
+        <div id="receptionPoint2Row" class="hidden">
           <label>增加接待點 2</label>
-          <input id="receptionPoint2" type="text" placeholder="例：第二接待地址" oninput="syncReceptionFields()">
+          <input id="receptionPoint2" type="text" placeholder="例：第二接待地址">
         </div>
 
-        <div id="receptionPoint3Block" class="hidden">
+        <div id="receptionPoint3Row" class="hidden">
           <label>增加接待點 3</label>
-          <input id="receptionPoint3" type="text" placeholder="例：第三接待地址" oninput="syncReceptionFields()">
+          <input id="receptionPoint3" type="text" placeholder="例：第三接待地址">
         </div>
 
-        <div id="receptionPoint4Block" class="hidden">
+        <div id="receptionPoint4Row" class="hidden">
           <label>增加接待點 4</label>
-          <input id="receptionPoint4" type="text" placeholder="例：第四接待地址" oninput="syncReceptionFields()">
+          <input id="receptionPoint4" type="text" placeholder="選填">
         </div>
 
-        <div id="receptionPoint5Block" class="hidden">
+        <div id="receptionPoint5Row" class="hidden">
           <label>增加接待點 5</label>
-          <input id="receptionPoint5" type="text" placeholder="例：第五接待地址" oninput="syncReceptionFields()">
-        </div>
-
-        <div class="airport-point-note">
-          適用商務接送、商務包車、港口接送、展演活動、結婚禮車、外交禮賓。可點選「＋」新增接待點，最多可增加 4 個接待點。
+          <input id="receptionPoint5" type="text" placeholder="選填">
         </div>
       </div>
 
-      <label>上車地點 *</label>
-      <input id="pickup" type="text" placeholder="系統會依機場 / 港口 / 地址自動帶入，也可手動修正">
+      <label>航班資訊</label>
+      <input id="flight" type="text" placeholder="例：BR198 / CI100 / 無">
 
-      <label>下車地點 *</label>
-      <input id="dropoff" type="text" placeholder="系統會依機場 / 港口 / 地址自動帶入，也可手動修正">
+      <div id="flightTimeBlock" class="hidden">
+        <label id="flightTimeLabel">航班時間</label>
+        <input id="flightTime" type="time">
+      </div>
 
-      <label>航班 / 船班 / 備註資訊</label>
-      <input id="flight" type="text" placeholder="港口接送可填郵輪名稱、船班時間；其他服務可填補充資訊">
-
-      <label>停靠點數</label>
-      <select id="stopCount">
-        <option value="1">1 點上車 / 1 點下車</option>
-        <option value="2">2 個停靠點</option>
-        <option value="3">3 個停靠點</option>
-        <option value="4">4 個停靠點</option>
-        <option value="5">5 個停靠點以上</option>
-      </select>
+      <div id="stopCountBlock">
+        <label>停靠點數</label>
+        <select id="stopCount" onchange="handleStopCountChange()">
+          <option value="1">1 點上車 / 1 點下車</option>
+          <option value="2">2 個停靠點</option>
+          <option value="3">3 個停靠點</option>
+          <option value="4">4 個停靠點</option>
+          <option value="5">5 個停靠點（最多增加 4 點）</option>
+        </select>
+      </div>
 
       <label>多點 / 行程說明</label>
-      <textarea id="multiStopNote" placeholder="例：先到飯店接A客，再到公司接B客，最後前往機場或港口。"></textarea>
+      <textarea id="multiStopNote" placeholder="例：先到飯店接A客，再到公司接B客，最後前往機場。"></textarea>
 
       <div class="action-row">
-        <button class="btn btn-gold" onclick="getRouteEstimate()">AI智能報價</button>
-        <button class="btn btn-light" onclick="previewQuote()">快速預約</button>
+        <button class="btn btn-gold" onclick="getRouteEstimate()">取得 Google Routes 估價</button>
+        <button class="btn btn-light" onclick="previewQuote()">預覽目前報價</button>
       </div>
 
       <div id="routeStatus"></div>
@@ -787,6 +720,8 @@
     let lineDisplayName = "";
     let routeSessionId = "RS_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
     let routeEstimateCount = 0;
+    let airportPointCount = 1;
+    let receptionPointCount = 1;
 
     let lastDistanceKm = "";
     let lastDurationMin = "";
@@ -832,7 +767,6 @@
     document.addEventListener("DOMContentLoaded", function() {
       initLiff();
       refreshPackageRoutes();
-      handleServiceChange();
       updateStep();
     });
 
@@ -840,12 +774,24 @@
       const statusEl = document.getElementById("lineStatus");
 
       statusEl.className = "status info";
-      statusEl.innerText = "LINE 身分讀取中...";
+      statusEl.innerText = "LINE 身分讀取中... LIFF_ID：" + LIFF_ID;
+
+      let finished = false;
+      const timeoutTimer = setTimeout(function() {
+        if (!finished && lineUserId === "LINE_NOT_READY") {
+          statusEl.className = "status error";
+          statusEl.innerText =
+            "LIFF 初始化逾時。請用 LINE App 開啟 https://liff.line.me/" + LIFF_ID +
+            "，並確認 LINE Developers 的 LIFF Endpoint 是目前 Cloudflare Pages 網址。";
+        }
+      }, 8000);
 
       if (typeof liff === "undefined") {
+        finished = true;
+        clearTimeout(timeoutTimer);
         lineUserId = "LIFF_SDK_NOT_LOADED";
         statusEl.className = "status error";
-        statusEl.innerText = "LIFF SDK 未載入，請確認網路或 LINE LIFF 設定。";
+        statusEl.innerText = "LIFF SDK 未載入，請確認網路、LINE App 內建瀏覽器與 LIFF Endpoint。";
         return;
       }
 
@@ -854,6 +800,8 @@
           liffId: LIFF_ID,
           withLoginOnExternalBrowser: true
         });
+
+        statusEl.innerText = "LIFF 已初始化。isInClient=" + liff.isInClient() + "，isLoggedIn=" + liff.isLoggedIn();
 
         if (!liff.isLoggedIn()) {
           liff.login({
@@ -864,18 +812,25 @@
 
         const profile = await liff.getProfile();
 
+        finished = true;
+        clearTimeout(timeoutTimer);
+
         lineUserId = profile.userId || "LINE_USER_ID_EMPTY";
         lineDisplayName = profile.displayName || "";
 
         document.getElementById("lineDisplayName").value = lineDisplayName;
 
         statusEl.className = "status success";
-        statusEl.innerText = "已取得 LINE 身分：" + lineDisplayName;
+        statusEl.innerText = "已取得 LINE 身分：" + lineDisplayName + " / UserID：" + lineUserId.substring(0, 8) + "...";
 
       } catch (error) {
+        finished = true;
+        clearTimeout(timeoutTimer);
         lineUserId = "LINE_PROFILE_ERROR";
+        lineDisplayName = "";
         statusEl.className = "status error";
         statusEl.innerText = "LINE 身分讀取失敗：" + (error && error.message ? error.message : String(error));
+        console.log("LIFF ERROR", error);
       }
     }
 
@@ -888,50 +843,58 @@
         body: JSON.stringify(payload)
       });
 
-      return await response.json();
+      const text = await response.text();
+      let result;
+
+      try {
+        result = text ? JSON.parse(text) : {};
+      } catch (error) {
+        throw new Error("API 回傳不是 JSON：" + text.substring(0, 160));
+      }
+
+      if (!response.ok) {
+        throw new Error(result && result.message ? result.message : "API HTTP " + response.status);
+      }
+
+      return result;
     }
 
     function handleServiceChange() {
       const service = valueOf("service");
       const tourBlock = document.getElementById("tourBlock");
+      const businessBlock = document.getElementById("businessBlock");
       const airportBlock = document.getElementById("airportBlock");
       const portBlock = document.getElementById("portBlock");
-      const receptionBlock = document.getElementById("receptionBlock");
 
+      businessBlock.classList.toggle("hidden", !isBusinessService(service));
       tourBlock.classList.toggle("hidden", service !== "旅遊包車");
       airportBlock.classList.toggle("hidden", service !== "機場接送");
       portBlock.classList.toggle("hidden", service !== "港口接送");
 
-      if (receptionBlock) {
-        receptionBlock.classList.toggle("hidden", !isReceptionService(service));
-      }
-
-      handleAirportServiceTypeChange();
+      handleBusinessTripTypeChange();
       handleTourModeChange();
-      syncPortFields();
+      handleAirportServiceTypeChange();
       syncReceptionFields();
+      syncPortFields();
+      handleStopCountChange();
     }
 
-    function handleAirportServiceTypeChange() {
-      const service = valueOf("service");
-      const type = valueOf("airportServiceType");
-      const departureFlow = document.getElementById("departureAirportFlow");
-      const arrivalFlow = document.getElementById("arrivalAirportFlow");
+    function isBusinessService(service) {
+      return service === "商務接送" || service === "商務包車";
+    }
 
-      if (!departureFlow || !arrivalFlow) {
+    function handleBusinessTripTypeChange() {
+      if (!isBusinessService(valueOf("service"))) {
         return;
       }
 
-      if (service !== "機場接送") {
-        departureFlow.classList.add("hidden");
-        arrivalFlow.classList.add("hidden");
-        return;
+      const type = valueOf("businessTripType");
+      if (type === "3 小時市區商務") {
+        document.getElementById("businessHours").value = "3";
       }
-
-      departureFlow.classList.toggle("hidden", type !== "送機服務");
-      arrivalFlow.classList.toggle("hidden", type !== "接機服務");
-
-      syncAirportFields();
+      if (type === "8 小時市區商務") {
+        document.getElementById("businessHours").value = "8";
+      }
     }
 
     function handleTourModeChange() {
@@ -968,193 +931,168 @@
       };
     }
 
-    function getAirportAddressList(prefix) {
-      return [
-        valueOf(prefix + "Address"),
-        valueOf(prefix + "Point2"),
-        valueOf(prefix + "Point3"),
-        valueOf(prefix + "Point4"),
-        valueOf(prefix + "Point5")
-      ].filter(Boolean);
-    }
-
-    function getAirportFullName(prefix) {
-      const airportName = valueOf(prefix + "AirportName");
-      const airportTerminal = valueOf(prefix + "AirportTerminal");
-
-      return [airportName, airportTerminal].filter(Boolean).join("－");
-    }
-
     function syncAirportFields() {
       const service = valueOf("service");
+      const airportServiceType = valueOf("airportServiceType") || "送機服務";
+      const airportAddress = getAirportAddress();
+      const receptionAddress = getAirportReceptionAddress();
 
-      if (service !== "機場接送") {
-        return;
-      }
-
-      const type = valueOf("airportServiceType");
-
-      if (type === "送機服務") {
-        const addressList = getAirportAddressList("departure");
-        const airportFullName = getAirportFullName("departure");
-
-        if (addressList.length > 0) {
-          document.getElementById("pickup").value = addressList.join(" → ");
-        }
-
-        if (airportFullName) {
-          document.getElementById("dropoff").value = airportFullName;
+      if (service === "機場接送") {
+        if (airportServiceType === "接機服務") {
+          document.getElementById("pickup").value = airportAddress;
+          document.getElementById("dropoff").value = receptionAddress;
+        } else {
+          document.getElementById("pickup").value = receptionAddress;
+          document.getElementById("dropoff").value = airportAddress;
         }
       }
-
-      if (type === "接機服務") {
-        const airportFullName = getAirportFullName("arrival");
-        const addressList = getAirportAddressList("arrival");
-
-        if (airportFullName) {
-          document.getElementById("pickup").value = airportFullName;
-        }
-
-        if (addressList.length > 0) {
-          document.getElementById("dropoff").value = addressList.join(" → ");
-        }
-      }
-    }
-
-    function addAirportPoint(prefix) {
-      const point2Block = document.getElementById(prefix + "Point2Block");
-      const point3Block = document.getElementById(prefix + "Point3Block");
-      const point4Block = document.getElementById(prefix + "Point4Block");
-      const point5Block = document.getElementById(prefix + "Point5Block");
-
-      if (point2Block.classList.contains("hidden")) {
-        point2Block.classList.remove("hidden");
-        document.getElementById(prefix + "Point2").focus();
-        return;
-      }
-
-      if (point3Block.classList.contains("hidden")) {
-        point3Block.classList.remove("hidden");
-        document.getElementById(prefix + "Point3").focus();
-        return;
-      }
-
-      if (point4Block.classList.contains("hidden")) {
-        point4Block.classList.remove("hidden");
-        document.getElementById(prefix + "Point4").focus();
-        return;
-      }
-
-      if (point5Block.classList.contains("hidden")) {
-        point5Block.classList.remove("hidden");
-        document.getElementById(prefix + "Point5").focus();
-        return;
-      }
-
-      alert("目前最多可增加 4 個接待點。");
     }
 
     function syncPortFields() {
-      const pickupPort = valueOf("pickupPort");
-      const dropoffPort = valueOf("dropoffPort");
-
-      if (pickupPort) {
-        document.getElementById("pickup").value = pickupPort;
-      }
-
-      if (dropoffPort) {
-        document.getElementById("dropoff").value = dropoffPort;
-      }
-
-      syncReceptionFields();
-    }
-
-    function isReceptionService(service) {
-      return [
-        "商務接送",
-        "商務包車",
-        "港口接送",
-        "展演活動",
-        "結婚禮車",
-        "外交禮賓"
-      ].includes(service);
-    }
-
-    function getReceptionAddressList() {
-      return [
-        valueOf("receptionAddress"),
-        valueOf("receptionPoint2"),
-        valueOf("receptionPoint3"),
-        valueOf("receptionPoint4"),
-        valueOf("receptionPoint5")
-      ].filter(Boolean);
-    }
-
-    function addReceptionPoint() {
-      const point2Block = document.getElementById("receptionPoint2Block");
-      const point3Block = document.getElementById("receptionPoint3Block");
-      const point4Block = document.getElementById("receptionPoint4Block");
-      const point5Block = document.getElementById("receptionPoint5Block");
-
-      if (point2Block.classList.contains("hidden")) {
-        point2Block.classList.remove("hidden");
-        document.getElementById("receptionPoint2").focus();
+      if (valueOf("service") !== "港口接送") {
         return;
       }
 
-      if (point3Block.classList.contains("hidden")) {
-        point3Block.classList.remove("hidden");
-        document.getElementById("receptionPoint3").focus();
+      const reservedPort = valueOf("reservedPort");
+      const receptionAddress = valueOf("receptionAddress");
+      if (!reservedPort) {
         return;
       }
 
-      if (point4Block.classList.contains("hidden")) {
-        point4Block.classList.remove("hidden");
-        document.getElementById("receptionPoint4").focus();
-        return;
+      if (valueOf("portServiceType") === "接港服務") {
+        document.getElementById("pickup").value = reservedPort;
+        if (receptionAddress) {
+          document.getElementById("dropoff").value = receptionAddress;
+        }
+      } else {
+        if (receptionAddress) {
+          document.getElementById("pickup").value = receptionAddress;
+        }
+        document.getElementById("dropoff").value = reservedPort;
       }
-
-      if (point5Block.classList.contains("hidden")) {
-        point5Block.classList.remove("hidden");
-        document.getElementById("receptionPoint5").focus();
-        return;
-      }
-
-      alert("目前最多可增加 4 個接待點。");
     }
 
     function syncReceptionFields() {
       const service = valueOf("service");
-
-      if (!isReceptionService(service)) {
-        return;
-      }
-
-      const addressList = getReceptionAddressList();
-      const addressText = addressList.join(" → ");
-
-      if (!addressText) {
+      const receptionAddress = valueOf("receptionAddress");
+      if (!supportsReceptionAddress(service) || !receptionAddress) {
         return;
       }
 
       if (service === "港口接送") {
-        const pickupPort = valueOf("pickupPort");
-        const dropoffPort = valueOf("dropoffPort");
-
-        if (pickupPort && !dropoffPort) {
-          document.getElementById("pickup").value = pickupPort;
-          document.getElementById("dropoff").value = addressText;
-          return;
-        }
-
-        if (dropoffPort && !pickupPort) {
-          document.getElementById("pickup").value = addressText;
-          document.getElementById("dropoff").value = dropoffPort;
-          return;
-        }
+        syncPortFields();
+        return;
       }
 
-      document.getElementById("pickup").value = addressText;
+      document.getElementById("pickup").value = receptionAddress;
+    }
+
+    function handleAirportServiceTypeChange() {
+      const service = valueOf("service");
+      const airportServiceType = valueOf("airportServiceType") || "送機服務";
+      const flightTimeBlock = document.getElementById("flightTimeBlock");
+      const flightTimeLabel = document.getElementById("flightTimeLabel");
+      const sendAirportFlow = document.getElementById("sendAirportFlow");
+      const pickupAirportFlow = document.getElementById("pickupAirportFlow");
+      const generalRouteBlock = document.getElementById("generalRouteBlock");
+      const airportPointRows = document.getElementById("airportPointRows");
+      const pointHost = airportServiceType === "接機服務"
+        ? document.getElementById("pickupAirportPointHost")
+        : document.getElementById("sendAirportPointHost");
+
+      flightTimeBlock.classList.toggle("hidden", service !== "機場接送");
+      flightTimeLabel.innerText = airportServiceType === "接機服務" ? "抵達時間" : "起飛時間";
+
+      generalRouteBlock.classList.toggle("hidden", service === "機場接送");
+      sendAirportFlow.classList.toggle("hidden", service !== "機場接送" || airportServiceType !== "送機服務");
+      pickupAirportFlow.classList.toggle("hidden", service !== "機場接送" || airportServiceType !== "接機服務");
+
+      if (pointHost && airportPointRows && airportPointRows.parentNode !== pointHost) {
+        pointHost.appendChild(airportPointRows);
+      }
+
+      syncAirportFields();
+      handleStopCountChange();
+    }
+
+    function handleStopCountChange() {
+      const service = valueOf("service");
+      const stopCount = Number(valueOf("stopCount") || 1);
+      const stopCountBlock = document.getElementById("stopCountBlock");
+      const receptionBlock = document.getElementById("receptionBlock");
+      const showReception = supportsReceptionAddress(service);
+
+      airportPointCount = Math.max(airportPointCount, service === "機場接送" ? Math.min(5, stopCount) : 1);
+      renderAirportPointRows();
+      receptionPointCount = Math.max(receptionPointCount, showReception ? Math.min(5, stopCount) : 1);
+      renderReceptionPointRows();
+      stopCountBlock.classList.toggle("hidden", service === "機場接送" || showReception);
+      receptionBlock.classList.toggle("hidden", !showReception);
+    }
+
+    function supportsReceptionAddress(service) {
+      return [
+        "港口接送",
+        "商務接送",
+        "商務包車",
+        "結婚禮車",
+        "展演活動",
+        "外交禮賓"
+      ].indexOf(service) >= 0;
+    }
+
+    function addAirportPoint() {
+      if (airportPointCount < 5) {
+        airportPointCount++;
+      }
+      document.getElementById("stopCount").value = String(airportPointCount);
+      renderAirportPointRows();
+    }
+
+    function renderAirportPointRows() {
+      for (let i = 2; i <= 5; i++) {
+        const row = document.getElementById("airportPoint" + i + "Row");
+        if (row) {
+          row.classList.toggle("hidden", valueOf("service") !== "機場接送" || i > airportPointCount);
+        }
+      }
+    }
+
+    function addReceptionPoint() {
+      if (receptionPointCount < 5) {
+        receptionPointCount++;
+      }
+      document.getElementById("stopCount").value = String(receptionPointCount);
+      renderReceptionPointRows();
+    }
+
+    function renderReceptionPointRows() {
+      for (let i = 2; i <= 5; i++) {
+        const row = document.getElementById("receptionPoint" + i + "Row");
+        if (row) {
+          row.classList.toggle("hidden", !supportsReceptionAddress(valueOf("service")) || i > receptionPointCount);
+        }
+      }
+    }
+
+    function getAirportAddress() {
+      const airportServiceType = valueOf("airportServiceType") || "送機服務";
+      const airport = airportServiceType === "接機服務" ? valueOf("pickupReservedAirport") : valueOf("reservedAirport");
+      const terminal = airportServiceType === "接機服務" ? valueOf("pickupAirportTerminal") : valueOf("airportTerminal");
+      return [airport, terminal].filter(Boolean).join(" ");
+    }
+
+    function isAirportSelectionComplete() {
+      const airportServiceType = valueOf("airportServiceType") || "送機服務";
+      const airport = airportServiceType === "接機服務" ? valueOf("pickupReservedAirport") : valueOf("reservedAirport");
+      const terminal = airportServiceType === "接機服務" ? valueOf("pickupAirportTerminal") : valueOf("airportTerminal");
+      return Boolean(airport && terminal);
+    }
+
+    function getAirportReceptionAddress() {
+      return valueOf("airportServiceType") === "接機服務"
+        ? valueOf("pickupAirportReceptionAddress")
+        : valueOf("airportReceptionAddress");
     }
 
     function nextStep() {
@@ -1233,54 +1171,38 @@
 
       if (step === 3) {
         syncAirportFields();
-        syncPortFields();
         syncReceptionFields();
+        syncPortFields();
 
         if (valueOf("service") === "機場接送") {
-          const type = valueOf("airportServiceType");
-
-          if (!type) {
-            alert("請選擇機場接送服務分類");
+          if (!getAirportReceptionAddress()) {
+            alert("請填寫接待地址");
             return false;
           }
 
-          if (type === "送機服務") {
-            if (!valueOf("departureAddress")) {
-              alert("請填寫接待地址");
-              return false;
-            }
-
-            if (!valueOf("departureAirportName")) {
-              alert("請選擇預約機場");
-              return false;
-            }
-
-            if (!valueOf("departureAirportTerminal")) {
-              alert("請選擇接送航廈");
-              return false;
-            }
+          if (!isAirportSelectionComplete()) {
+            alert("請選擇預約機場與接送航廈");
+            return false;
           }
 
-          if (type === "接機服務") {
-            if (!valueOf("arrivalAirportName")) {
-              alert("請選擇預約機場");
-              return false;
-            }
+          if (!valueOf("flight")) {
+            alert("機場接送請填寫航班資訊");
+            return false;
+          }
 
-            if (!valueOf("arrivalAirportTerminal")) {
-              alert("請選擇接送航廈");
-              return false;
-            }
-
-            if (!valueOf("arrivalAddress")) {
-              alert("請填寫接待地址");
-              return false;
-            }
+          if (!valueOf("flightTime")) {
+            alert(valueOf("airportServiceType") === "接機服務" ? "請填寫抵達時間" : "請填寫起飛時間");
+            return false;
           }
         }
 
-        if (isReceptionService(valueOf("service")) && !valueOf("receptionAddress")) {
-          alert("請填寫主要接待地址");
+        if (valueOf("service") === "港口接送" && !valueOf("reservedPort")) {
+          alert("請選擇預約港口");
+          return false;
+        }
+
+        if (supportsReceptionAddress(valueOf("service")) && !valueOf("receptionAddress")) {
+          alert("請填寫接待地址");
           return false;
         }
 
@@ -1300,8 +1222,6 @@
 
     async function getRouteEstimate() {
       syncAirportFields();
-      syncPortFields();
-      syncReceptionFields();
 
       if (!valueOf("pickup") || !valueOf("dropoff")) {
         setStatus("routeStatus", "error", "請先填寫上車與下車地點。");
@@ -1359,10 +1279,6 @@
     }
 
     async function submitBooking() {
-      syncAirportFields();
-      syncPortFields();
-      syncReceptionFields();
-
       if (!validateStep(1) || !validateStep(2) || !validateStep(3)) {
         return;
       }
@@ -1384,11 +1300,7 @@
           return;
         }
 
-        setStatus(
-          "submitStatus",
-          "success",
-          "預約成功！訂單編號：" + result.orderId + "，初步報價 NT$ " + result.finalPrice + "。"
-        );
+        renderSubmitSuccess(result);
 
       } catch (error) {
         btn.disabled = false;
@@ -1397,130 +1309,55 @@
       }
     }
 
-    function getUnifiedAirportData() {
-      const type = valueOf("airportServiceType");
-
-      if (type === "送機服務") {
-        return {
-          airportName: valueOf("departureAirportName"),
-          airportTerminal: valueOf("departureAirportTerminal"),
-          airportFullName: getAirportFullName("departure"),
-          airportMainAddress: valueOf("departureAddress"),
-          airportPoint2: valueOf("departurePoint2"),
-          airportPoint3: valueOf("departurePoint3"),
-          airportPoint4: valueOf("departurePoint4"),
-          airportPoint5: valueOf("departurePoint5"),
-          airportAddressList: getAirportAddressList("departure").join(" → "),
-          airportFlight: valueOf("departureFlight"),
-          airportFlightTime: valueOf("departureFlightTime"),
-          flightTimeLabel: "起飛時間",
-          pickupAirport: "",
-          dropoffAirport: getAirportFullName("departure")
-        };
-      }
-
-      if (type === "接機服務") {
-        return {
-          airportName: valueOf("arrivalAirportName"),
-          airportTerminal: valueOf("arrivalAirportTerminal"),
-          airportFullName: getAirportFullName("arrival"),
-          airportMainAddress: valueOf("arrivalAddress"),
-          airportPoint2: valueOf("arrivalPoint2"),
-          airportPoint3: valueOf("arrivalPoint3"),
-          airportPoint4: valueOf("arrivalPoint4"),
-          airportPoint5: valueOf("arrivalPoint5"),
-          airportAddressList: getAirportAddressList("arrival").join(" → "),
-          airportFlight: valueOf("arrivalFlight"),
-          airportFlightTime: valueOf("arrivalFlightTime"),
-          flightTimeLabel: "抵達時間",
-          pickupAirport: getAirportFullName("arrival"),
-          dropoffAirport: ""
-        };
-      }
-
-      return {
-        airportName: "",
-        airportTerminal: "",
-        airportFullName: "",
-        airportMainAddress: "",
-        airportPoint2: "",
-        airportPoint3: "",
-        airportPoint4: "",
-        airportPoint5: "",
-        airportAddressList: "",
-        airportFlight: "",
-        airportFlightTime: "",
-        flightTimeLabel: "",
-        pickupAirport: "",
-        dropoffAirport: ""
-      };
-    }
-
     function collectData() {
       syncAirportFields();
-      syncPortFields();
       syncReceptionFields();
-
-      const airportData = getUnifiedAirportData();
+      syncPortFields();
+      const service = valueOf("service");
+      const airportAddress = getAirportAddress();
+      const airportServiceType = service === "機場接送" ? valueOf("airportServiceType") : "";
+      const reservedAirport = airportServiceType === "接機服務" ? valueOf("pickupReservedAirport") : valueOf("reservedAirport");
+      const airportTerminal = airportServiceType === "接機服務" ? valueOf("pickupAirportTerminal") : valueOf("airportTerminal");
 
       return {
         routeSessionId: routeSessionId,
 
         lineUserId: lineUserId,
         lineDisplayName: valueOf("lineDisplayName") || lineDisplayName,
-
         line_user_id: lineUserId,
         line_display_name: valueOf("lineDisplayName") || lineDisplayName,
 
         name: valueOf("name"),
         phone: valueOf("phone"),
 
-        service: valueOf("service"),
-        airportServiceType: valueOf("airportServiceType"),
-
-        airportName: airportData.airportName,
-        airportTerminal: airportData.airportTerminal,
-        airportFullName: airportData.airportFullName,
-        airportFlight: airportData.airportFlight,
-        airportFlightTime: airportData.airportFlightTime,
-        flightTimeLabel: airportData.flightTimeLabel,
-        airportMainAddress: airportData.airportMainAddress,
-        airportPoint2: airportData.airportPoint2,
-        airportPoint3: airportData.airportPoint3,
-        airportPoint4: airportData.airportPoint4,
-        airportPoint5: airportData.airportPoint5,
-        airportAddressList: airportData.airportAddressList,
-
+        service: service,
         date: valueOf("date"),
         time: valueOf("time"),
+        businessTripType: isBusinessService(service) ? valueOf("businessTripType") : "",
+        businessHours: isBusinessService(service) ? valueOf("businessHours") : "",
+        businessCrossRegion: isBusinessService(service) ? valueOf("businessCrossRegion") : "",
 
         pickup: valueOf("pickup"),
         dropoff: valueOf("dropoff"),
 
-        pickupAirport: airportData.pickupAirport,
-        dropoffAirport: airportData.dropoffAirport,
-
-        pickupPort: valueOf("pickupPort"),
-        dropoffPort: valueOf("dropoffPort"),
-
-        receptionAddress: valueOf("receptionAddress"),
-        receptionPoint2: valueOf("receptionPoint2"),
-        receptionPoint3: valueOf("receptionPoint3"),
-        receptionPoint4: valueOf("receptionPoint4"),
-        receptionPoint5: valueOf("receptionPoint5"),
-        receptionAddressList: getReceptionAddressList().join(" → "),
+        pickupAirport: airportServiceType === "接機服務" ? airportAddress : "",
+        dropoffAirport: airportServiceType === "送機服務" ? airportAddress : "",
+        airportServiceType: airportServiceType,
+        reservedAirport: reservedAirport,
+        airportTerminal: airportTerminal,
+        airportReceptionAddress: service === "機場接送" ? getAirportReceptionAddress() : "",
+        terminal: airportTerminal,
+        portServiceType: service === "港口接送" ? valueOf("portServiceType") : "",
+        reservedPort: service === "港口接送" ? valueOf("reservedPort") : "",
 
         carType: valueOf("carType"),
 
         passengers: valueOf("passengers"),
         luggage: valueOf("luggage"),
-
-        flight: airportData.airportFlight || valueOf("flight"),
-        flightTime: airportData.airportFlightTime,
-        departureFlight: valueOf("departureFlight"),
-        departureFlightTime: valueOf("departureFlightTime"),
-        arrivalFlight: valueOf("arrivalFlight"),
-        arrivalFlightTime: valueOf("arrivalFlightTime"),
+        flight: valueOf("flight"),
+        flightTime: service === "機場接送" ? valueOf("flightTime") : "",
+        departureTime: airportServiceType === "送機服務" ? valueOf("flightTime") : "",
+        arrivalTime: airportServiceType === "接機服務" ? valueOf("flightTime") : "",
 
         signService: valueOf("signService"),
         englishDriver: valueOf("englishDriver"),
@@ -1530,6 +1367,15 @@
         stopCount: valueOf("stopCount"),
         multiStop: Number(valueOf("stopCount") || 1) > 1 ? "有" : "無",
         multiStopNote: valueOf("multiStopNote"),
+        receptionAddress: supportsReceptionAddress(service) ? valueOf("receptionAddress") : "",
+        receptionPoint2: valueOf("receptionPoint2"),
+        receptionPoint3: valueOf("receptionPoint3"),
+        receptionPoint4: valueOf("receptionPoint4"),
+        receptionPoint5: valueOf("receptionPoint5"),
+        airportPoint2: valueOf("airportPoint2"),
+        airportPoint3: valueOf("airportPoint3"),
+        airportPoint4: valueOf("airportPoint4"),
+        airportPoint5: valueOf("airportPoint5"),
 
         tourMode: valueOf("tourMode"),
         tourArea: valueOf("tourArea"),
@@ -1551,18 +1397,50 @@
         "<strong>請確認以下資料：</strong><br><br>" +
         "姓名：" + escapeHtml(data.name) + "<br>" +
         "電話：" + escapeHtml(data.phone) + "<br>" +
-        "服務：" + escapeHtml(data.service + (data.airportServiceType ? "｜" + data.airportServiceType : "")) + "<br>" +
+        "服務：" + escapeHtml(data.service) + "<br>" +
+        (data.businessTripType ? "商務行程：" + escapeHtml(data.businessTripType) + " / " + escapeHtml(data.businessHours) + " 小時<br>" : "") +
+        (data.businessCrossRegion ? "商務跨區：" + escapeHtml(data.businessCrossRegion) + "<br>" : "") +
         "車型：" + escapeHtml(data.carType) + "<br>" +
         "日期時間：" + escapeHtml(data.date + " " + data.time) + "<br>" +
+        (data.airportServiceType ? "機場接送類型：" + escapeHtml(data.airportServiceType) + "<br>" : "") +
+        (data.portServiceType ? "港口接送類型：" + escapeHtml(data.portServiceType) + "<br>" : "") +
+        (data.reservedPort ? "預約港口：" + escapeHtml(data.reservedPort) + "<br>" : "") +
+        (data.receptionAddress ? "接待地址：" + escapeHtml(data.receptionAddress) + "<br>" : "") +
+        (data.flight ? "航班資訊：" + escapeHtml(data.flight) + "<br>" : "") +
+        (data.flightTime ? escapeHtml(data.airportServiceType === "接機服務" ? "抵達時間：" : "起飛時間：") + escapeHtml(data.flightTime) + "<br>" : "") +
         "上車：" + escapeHtml(data.pickup) + "<br>" +
         "下車：" + escapeHtml(data.dropoff) + "<br>" +
-        "航班資訊：" + escapeHtml(data.flight || "無") + "<br>" +
-        (data.flightTime ? escapeHtml(data.flightTimeLabel || "航班時間") + "：" + escapeHtml(data.flightTime) + "<br>" : "") +
+        renderPointSummary(data) +
         "乘客 / 行李：" + escapeHtml((data.passengers || "-") + " 人 / " + (data.luggage || "-") + " 件") + "<br>" +
         "備註：" + escapeHtml(data.note || "無") + "<br><br>" +
         "送出後將由禮賓專員確認最終車輛、司機與費用。";
 
       document.getElementById("finalSummary").innerHTML = html;
+    }
+
+    function renderPointSummary(data) {
+      const airportPoints = [
+        data.airportPoint2,
+        data.airportPoint3,
+        data.airportPoint4,
+        data.airportPoint5
+      ].filter(Boolean);
+
+      const receptionPoints = [
+        data.receptionPoint2,
+        data.receptionPoint3,
+        data.receptionPoint4,
+        data.receptionPoint5
+      ].filter(Boolean);
+
+      let html = "";
+      if (airportPoints.length) {
+        html += "機場接送接待點：" + escapeHtml(airportPoints.join(" / ")) + "<br>";
+      }
+      if (receptionPoints.length) {
+        html += "多點接待：" + escapeHtml(receptionPoints.join(" / ")) + "<br>";
+      }
+      return html;
     }
 
     function renderQuote(elementId, quote) {
@@ -1578,6 +1456,19 @@
         '</div>';
 
       document.getElementById(elementId).innerHTML = html;
+    }
+
+    function renderSubmitSuccess(result) {
+      const paymentHtml = result.paymentUrl
+        ? '<br><br><a href="' + escapeHtml(result.paymentUrl) + '" target="_blank" rel="noopener">前往支付訂金 NT$ ' + escapeHtml(String(result.depositAmount || 0)) + '</a>'
+        : '<br><br>客服確認車輛後會提供訂金付款連結。';
+
+      document.getElementById("submitStatus").innerHTML =
+        '<div class="status success">' +
+          '預約成功！訂單編號：' + escapeHtml(result.orderId) +
+          '，初步報價 NT$ ' + escapeHtml(String(result.finalPrice || 0)) + '。' +
+          paymentHtml +
+        '</div>';
     }
 
     function setStatus(elementId, type, message) {
