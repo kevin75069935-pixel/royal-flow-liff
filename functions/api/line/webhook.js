@@ -5,10 +5,10 @@ export async function onRequestPost(context) {
     const channelSecret = context.env.LINE_CHANNEL_SECRET;
     const channelAccessToken = context.env.LINE_CHANNEL_ACCESS_TOKEN;
 
-    if (!channelSecret || !channelAccessToken) {
+    if (!channelSecret) {
       return jsonResponse({
         status: "error",
-        message: "Cloudflare Pages 尚未設定 LINE_CHANNEL_SECRET 或 LINE_CHANNEL_ACCESS_TOKEN。"
+        message: "Cloudflare Pages 尚未設定 LINE_CHANNEL_SECRET。"
       }, 500);
     }
 
@@ -25,6 +25,20 @@ export async function onRequestPost(context) {
 
     const body = JSON.parse(bodyText || "{}");
     const events = Array.isArray(body.events) ? body.events : [];
+
+    if (!events.length) {
+      return jsonResponse({
+        status: "success",
+        message: "LINE webhook verify ok"
+      }, 200);
+    }
+
+    if (!channelAccessToken) {
+      return jsonResponse({
+        status: "error",
+        message: "Cloudflare Pages 尚未設定 LINE_CHANNEL_ACCESS_TOKEN。"
+      }, 500);
+    }
 
     await Promise.all(events.map((event) => handleEvent(context, event, channelAccessToken)));
 
