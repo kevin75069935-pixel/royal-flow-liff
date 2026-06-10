@@ -866,7 +866,7 @@
       const airportBlock = document.getElementById("airportBlock");
       const portBlock = document.getElementById("portBlock");
 
-      businessBlock.classList.toggle("hidden", !isBusinessService(service));
+      businessBlock.classList.toggle("hidden", !isBusinessServiceName(service));
       tourBlock.classList.toggle("hidden", service !== "旅遊包車");
       airportBlock.classList.toggle("hidden", service !== "機場接送");
       portBlock.classList.toggle("hidden", service !== "港口接送");
@@ -879,12 +879,12 @@
       handleStopCountChange();
     }
 
-    function isBusinessService(service) {
+    function isBusinessServiceName(service) {
       return service === "商務接送" || service === "商務包車";
     }
 
     function handleBusinessTripTypeChange() {
-      if (!isBusinessService(valueOf("service"))) {
+      if (!isBusinessServiceName(valueOf("service"))) {
         return;
       }
 
@@ -1333,9 +1333,9 @@
         service: service,
         date: valueOf("date"),
         time: valueOf("time"),
-        businessTripType: isBusinessService(service) ? valueOf("businessTripType") : "",
-        businessHours: isBusinessService(service) ? valueOf("businessHours") : "",
-        businessCrossRegion: isBusinessService(service) ? valueOf("businessCrossRegion") : "",
+        businessTripType: isBusinessServiceName(service) ? valueOf("businessTripType") : "",
+        businessHours: isBusinessServiceName(service) ? valueOf("businessHours") : "",
+        businessCrossRegion: isBusinessServiceName(service) ? valueOf("businessCrossRegion") : "",
 
         pickup: valueOf("pickup"),
         dropoff: valueOf("dropoff"),
