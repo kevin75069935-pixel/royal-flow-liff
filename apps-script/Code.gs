@@ -1,10 +1,109 @@
-const SHEET_NAME = "orders";
-const PRICING_CAR_TYPES_SHEET = "pricing_car_types";
-const PRICING_SERVICES_SHEET = "pricing_services";
-const PRICING_ADDONS_SHEET = "pricing_addons";
-const PRICING_CROSS_REGIONS_SHEET = "pricing_cross_regions";
-const BUSINESS_HOURLY_PRICING_SHEET = "07_商務包時報價";
-const BUSINESS_CROSS_REGION_SHEET = "08_跨區費用設定";
+const SHEET_NAME = "訂單資料_orders";
+const PRICING_CAR_TYPES_SHEET = "車型單價_pricing_car_types";
+const PRICING_SERVICES_SHEET = "服務規則_pricing_services";
+const PRICING_ADDONS_SHEET = "加值服務_pricing_addons";
+const PRICING_CROSS_REGIONS_SHEET = "路線跨區費_pricing_cross_regions";
+const BUSINESS_HOURLY_PRICING_SHEET = "商務包時報價_business_hourly";
+const BUSINESS_CROSS_REGION_SHEET = "商務跨區費用_business_cross_regions";
+
+const HEADER_LABELS = {
+  order_id: "訂單編號_order_id",
+  created_at: "建立時間_created_at",
+  name: "姓名_name",
+  phone: "電話_phone",
+  line_user_id: "LINE使用者ID_line_user_id",
+  line_display_name: "LINE暱稱_line_display_name",
+  service: "服務項目_service",
+  date: "用車日期_date",
+  time: "用車時間_time",
+  business_trip_type: "商務行程型態_business_trip_type",
+  business_hours: "商務用車小時_business_hours",
+  business_cross_region: "商務跨區_business_cross_region",
+  pickup: "上車地點_pickup",
+  dropoff: "下車地點_dropoff",
+  pickup_airport: "上車機場_pickup_airport",
+  dropoff_airport: "下車機場_dropoff_airport",
+  terminal: "航廈_terminal",
+  flight: "航班資訊_flight",
+  car_type: "車型_car_type",
+  passengers: "乘客人數_passengers",
+  luggage: "行李件數_luggage",
+  child_seat: "兒童座椅_child_seat",
+  sign_service: "舉牌服務_sign_service",
+  english_driver: "英文司機_english_driver",
+  stop_count: "停靠點數_stop_count",
+  multi_stop_note: "多點說明_multi_stop_note",
+  tour_mode: "旅遊型態_tour_mode",
+  tour_area: "旅遊區域_tour_area",
+  package_route: "套裝路線_package_route",
+  trip_days: "旅遊天數_trip_days",
+  driver_hotel_type: "司機住宿_driver_hotel_type",
+  distance_km: "預估公里_distance_km",
+  duration_min: "預估分鐘_duration_min",
+  final_price: "總報價_final_price",
+  deposit_amount: "訂金_deposit_amount",
+  balance_amount: "尾款_balance_amount",
+  note: "備註_note",
+  payment_status: "付款狀態_payment_status",
+  payment_url: "付款連結_payment_url",
+  order_status: "訂單狀態_order_status",
+  driver_note: "司機客服備註_driver_note",
+  quote_breakdown: "報價明細_quote_breakdown",
+  airport_service_type: "機場服務類型_airport_service_type",
+  reserved_airport: "預約機場_reserved_airport",
+  airport_terminal: "接送航廈_airport_terminal",
+  airport_reception_address: "機場接待地址_airport_reception_address",
+  flight_time: "航班時間_flight_time",
+  departure_time: "起飛時間_departure_time",
+  arrival_time: "抵達時間_arrival_time",
+  reception_address: "接待地址_reception_address",
+  reception_point_2: "接待點2_reception_point_2",
+  reception_point_3: "接待點3_reception_point_3",
+  reception_point_4: "接待點4_reception_point_4",
+  reception_point_5: "接待點5_reception_point_5",
+  airport_point_2: "機場接待點2_airport_point_2",
+  airport_point_3: "機場接待點3_airport_point_3",
+  airport_point_4: "機場接待點4_airport_point_4",
+  airport_point_5: "機場接待點5_airport_point_5",
+  port_service_type: "港口服務類型_port_service_type",
+  reserved_port: "預約港口_reserved_port",
+  service_key: "服務代碼_service_key",
+  service_name: "服務名稱_service_name",
+  min_price: "最低費用_min_price",
+  day_min_price: "每日最低費_day_min_price",
+  enabled: "啟用_enabled",
+  car_type: "車型_car_type",
+  base_fare: "基本車資_base_fare",
+  per_km: "每公里費_per_km",
+  per_min: "每分鐘費_per_min",
+  overtime_per_hour: "每小時超時費_overtime_per_hour",
+  addon_key: "加值代碼_addon_key",
+  addon_name: "加值名稱_addon_name",
+  match_field: "對應欄位_match_field",
+  match_value: "觸發值_match_value",
+  pricing_type: "計費方式_pricing_type",
+  unit_price: "單價_unit_price",
+  included_qty: "內含數量_included_qty",
+  pickup_keyword: "上車關鍵字_pickup_keyword",
+  dropoff_keyword: "下車關鍵字_dropoff_keyword",
+  surcharge: "加價_surcharge",
+  base_area: "基準區域_base_area",
+  destination_area: "目的區域_destination_area",
+  three_hour_fare: "3小時基礎車資_three_hour_fare",
+  eight_hour_fare: "8小時基礎車資_eight_hour_fare",
+  includes_taipei: "雙北市區內含_includes_taipei",
+  note: "備註_note"
+};
+
+const LEGACY_SHEET_NAMES = {
+  "訂單資料_orders": "orders",
+  "車型單價_pricing_car_types": "pricing_car_types",
+  "服務規則_pricing_services": "pricing_services",
+  "加值服務_pricing_addons": "pricing_addons",
+  "路線跨區費_pricing_cross_regions": "pricing_cross_regions",
+  "商務包時報價_business_hourly": "07_商務包時報價",
+  "商務跨區費用_business_cross_regions": "08_跨區費用設定"
+};
 
 function doGet() {
   return jsonOutput({
@@ -364,7 +463,7 @@ function calculateBusinessQuote(data, pricing, carType) {
 
 function getOrdersSheet() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = spreadsheet.getSheetByName(SHEET_NAME) || spreadsheet.insertSheet(SHEET_NAME);
+  const sheet = getOrCreateSheet(spreadsheet, SHEET_NAME);
 
   const headers = [
       "order_id",
@@ -430,7 +529,7 @@ function getOrdersSheet() {
     ];
 
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(headers);
+    sheet.appendRow(displayHeaders(headers));
   } else {
     ensureHeaders(sheet, headers);
   }
@@ -443,15 +542,38 @@ function ensureHeaders(sheet, headers) {
   const current = sheet.getRange(1, 1, 1, width).getValues()[0].map(function(header) {
     return String(header || "");
   });
+  const currentKeys = current.map(function(header) {
+    return canonicalHeaderKey(header);
+  });
+  normalizeHeaderRow(sheet, current, currentKeys);
   const missing = headers.filter(function(header) {
-    return current.indexOf(header) < 0;
+    return currentKeys.indexOf(header) < 0;
   });
 
   if (!missing.length) {
     return;
   }
 
-  sheet.getRange(1, current.length + 1, 1, missing.length).setValues([missing]);
+  sheet.getRange(1, current.length + 1, 1, missing.length).setValues([displayHeaders(missing)]);
+}
+
+function normalizeHeaderRow(sheet, current, currentKeys) {
+  if (!current.length) {
+    return;
+  }
+
+  const normalized = current.map(function(header, index) {
+    const key = currentKeys[index];
+    return HEADER_LABELS[key] || header;
+  });
+
+  const changed = normalized.some(function(header, index) {
+    return header !== current[index];
+  });
+
+  if (changed) {
+    sheet.getRange(1, 1, 1, normalized.length).setValues([normalized]);
+  }
 }
 
 function sheetToObjects(sheet) {
@@ -467,7 +589,9 @@ function sheetToObjects(sheet) {
   return values.slice(1).map(function(row) {
     const item = {};
     headers.forEach(function(header, index) {
-      item[header] = normalizeCell(row[index]);
+      const normalized = normalizeCell(row[index]);
+      item[header] = normalized;
+      item[canonicalHeaderKey(header)] = normalized;
     });
     return item;
   });
@@ -478,6 +602,23 @@ function normalizeCell(cell) {
     return Utilities.formatDate(cell, "Asia/Taipei", "yyyy-MM-dd HH:mm:ss");
   }
   return cell === null || cell === undefined ? "" : String(cell);
+}
+
+function displayHeaders(headers) {
+  return headers.map(function(header) {
+    return HEADER_LABELS[header] || header;
+  });
+}
+
+function canonicalHeaderKey(header) {
+  const text = String(header || "");
+  const keys = Object.keys(HEADER_LABELS);
+  for (let i = 0; i < keys.length; i++) {
+    if (HEADER_LABELS[keys[i]] === text) {
+      return keys[i];
+    }
+  }
+  return text;
 }
 
 function buildPaymentUrl(orderId, amount) {
@@ -494,10 +635,12 @@ function buildPaymentUrl(orderId, amount) {
 
 function setupPricingSheets() {
   const pricing = getPricingConfig();
+  getOrdersSheet();
   return {
     status: "success",
-    message: "報價設定分頁已建立或已確認存在。",
+    message: "訂單分頁與報價設定分頁已建立或已確認存在。",
     sheets: [
+      SHEET_NAME,
       PRICING_CAR_TYPES_SHEET,
       PRICING_SERVICES_SHEET,
       PRICING_ADDONS_SHEET,
@@ -546,20 +689,38 @@ function readConfigSheet(sheetName, defaultRows) {
 
 function ensureConfigSheet(sheetName, defaultRows) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = spreadsheet.getSheetByName(sheetName) || spreadsheet.insertSheet(sheetName);
+  const sheet = getOrCreateSheet(spreadsheet, sheetName);
 
   if (sheet.getLastRow() === 0 && defaultRows.length) {
     const headers = Object.keys(defaultRows[0]);
-    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    sheet.getRange(1, 1, 1, headers.length).setValues([displayHeaders(headers)]);
     sheet.getRange(2, 1, defaultRows.length, headers.length).setValues(defaultRows.map(function(row) {
       return headers.map(function(header) {
         return row[header];
       });
     }));
     sheet.setFrozenRows(1);
+  } else if (defaultRows.length) {
+    ensureHeaders(sheet, Object.keys(defaultRows[0]));
   }
 
   return sheet;
+}
+
+function getOrCreateSheet(spreadsheet, sheetName) {
+  const existing = spreadsheet.getSheetByName(sheetName);
+  if (existing) {
+    return existing;
+  }
+
+  const legacyName = LEGACY_SHEET_NAMES[sheetName];
+  const legacy = legacyName ? spreadsheet.getSheetByName(legacyName) : null;
+  if (legacy) {
+    legacy.setName(sheetName);
+    return legacy;
+  }
+
+  return spreadsheet.insertSheet(sheetName);
 }
 
 function defaultCarTypeRows() {
@@ -866,6 +1027,10 @@ function value(input) {
 
 function isYes(input) {
   return ["是", "需要", "yes", "true", "1"].indexOf(String(input || "").toLowerCase()) >= 0;
+}
+
+function isBusinessService(service) {
+  return service === "商務接送" || service === "商務包車";
 }
 
 function isEnabled(input) {

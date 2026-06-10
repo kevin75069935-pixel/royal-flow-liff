@@ -103,7 +103,7 @@ AI 報價：觸發報價說明
 3. 用戶填寫服務、車型、日期時間、上下車地點、航班、人數與加購服務。
 4. 點「取得 Google Routes 估價」後，Apps Script 呼叫 Google Routes API 計算距離與車程。
 5. 點「預覽目前報價」或送出預約時，系統依車型、距離、車程與加購服務計算初步報價。
-6. 訂單寫入 `orders` 試算表，欄位含 `line_user_id`、`payment_url`、`payment_status`、`order_status`、`driver_note`。
+6. 訂單寫入 `訂單資料_orders` 試算表，欄位含 `LINE使用者ID_line_user_id`、`付款連結_payment_url`、`付款狀態_payment_status`、`訂單狀態_order_status`、`司機客服備註_driver_note`。
 7. 用戶在 LINE 輸入「查詢行程」可查最近一筆訂單；輸入「查詢 RF20260610120000123」可查指定訂單。
 8. 用戶輸入「付款」可取得最近一筆訂單的訂金付款連結。
 
@@ -118,22 +118,23 @@ line_user_id
 line_display_name
 ```
 
-Apps Script 會把 `line_user_id` 與 `line_display_name` 寫入 `orders` 試算表。
+Apps Script 會把 `LINE使用者ID_line_user_id` 與 `LINE暱稱_line_display_name` 寫入 `訂單資料_orders` 試算表。
 
 ## Google Sheet 報價設定
 
 自動報價不再寫死在程式裡。第一次執行「預覽報價 / 送出預約」時，Apps Script 會自動建立以下分頁；也可以用 Apps Script 手動執行 `setupPricingSheets()` 先建立。
 
 ```text
-pricing_car_types
-pricing_services
-pricing_addons
-pricing_cross_regions
-07_商務包時報價
-08_跨區費用設定
+訂單資料_orders
+車型單價_pricing_car_types
+服務規則_pricing_services
+加值服務_pricing_addons
+路線跨區費_pricing_cross_regions
+商務包時報價_business_hourly
+商務跨區費用_business_cross_regions
 ```
 
-### pricing_car_types 車型單價
+### 車型單價_pricing_car_types
 
 每一列是一個車型。前端車型名稱要能對應 `car_type`。
 
@@ -153,7 +154,7 @@ note                備註
 Lexus LM 40 / 35 | 2800 | 55 | 10 | 1200 | Y | 高端商務 MPV
 ```
 
-### pricing_services 服務與全域規則
+### 服務規則_pricing_services
 
 一般服務列用來設定服務最低費；`service_key` 為 `_rule` 的列是全域規則。
 
@@ -178,7 +179,7 @@ tour_day_min_price     旅遊包車每日最低費預設值
 overtime_unit_min      超時計費最小單位，單位為分鐘，例如 30
 ```
 
-### pricing_addons 加值服務
+### 加值服務_pricing_addons
 
 用來設定舉牌服務、嬰幼兒安全座椅、英文司機、增加接送點等費用。
 
@@ -202,7 +203,7 @@ child_seat   | 嬰幼兒安全座椅 | childSeat | 是 | flat | 300 | 0 | Y
 extra_stop   | 增加接送點 | stopCount |   | per_extra_stop | 300 | 1 | Y
 ```
 
-### pricing_cross_regions 跨區費用
+### 路線跨區費_pricing_cross_regions
 
 系統會用上車/下車地址關鍵字比對，正向或反向都會套用。
 
@@ -227,15 +228,15 @@ note             備註
 車型基本費
 + 路程費：distanceKm x per_km
 + 車程費：durationMin x per_min
-+ 加值服務：pricing_addons
++ 加值服務：加值服務_pricing_addons
 + 超時費用：overtimeMin / overtimeHours x 車型 overtime_per_hour
-+ 跨區費用：pricing_cross_regions
++ 跨區費用：路線跨區費_pricing_cross_regions
 套用服務最低費 / 旅遊包車每日最低費
 依 round_to 四捨五入
 依 deposit_rate / min_deposit 計算訂金
 ```
 
-每筆訂單會把報價明細寫入 `orders.quote_breakdown`，方便客服回查報價來源。
+每筆訂單會把報價明細寫入 `訂單資料_orders` 的 `報價明細_quote_breakdown`，方便客服回查報價來源。
 
 ## 市區商務行程報價
 
@@ -259,7 +260,7 @@ note             備註
 是否跨縣市：否，雙北市區內 / 桃園市 / 基隆市 / 新竹市縣 / 苗栗 / 台中 / 宜蘭 / 花蓮 / 台南 / 高雄 / 其他
 ```
 
-### 07_商務包時報價
+### 商務包時報價_business_hourly
 
 欄位：
 
@@ -280,7 +281,7 @@ note                 備註
 Toyota Alphard 40 / 35 | 是 | 雙北市區 | 3800 | 6800 | 800 | 是 | 商務接待常用
 ```
 
-### 08_跨區費用設定
+### 商務跨區費用_business_cross_regions
 
 欄位：
 
@@ -381,7 +382,7 @@ airportPoint4
 airportPoint5
 ```
 
-Apps Script 會把上述資料寫入 `orders` 最後方的新欄位，避免破壞既有訂單欄位順序。
+Apps Script 會把上述資料寫入 `訂單資料_orders` 最後方的新欄位，避免破壞既有訂單欄位順序。
 
 ## 港口接送選項
 
@@ -422,4 +423,4 @@ portServiceType
 reservedPort
 ```
 
-Apps Script 會寫入 `orders.port_service_type` 與 `orders.reserved_port`。
+Apps Script 會寫入 `訂單資料_orders` 的 `港口服務類型_port_service_type` 與 `預約港口_reserved_port`。
