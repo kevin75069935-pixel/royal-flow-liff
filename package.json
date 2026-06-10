@@ -1,6 +1,6 @@
 {
   "type": "module",
   "scripts": {
-    "check:functions": "node --check functions/api/estimate.js && node --check functions/api/quote.js && node --check functions/api/submit.js"
+    "check:functions": "node --check functions/api/estimate.js && node --check functions/api/quote.js && node --check functions/api/submit.js && node --check functions/api/line/webhook.js"
   }
 }
