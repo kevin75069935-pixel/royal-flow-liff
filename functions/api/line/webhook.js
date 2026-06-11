@@ -108,8 +108,24 @@ async function handleEvent(context, event, channelAccessToken) {
     }]);
   }
 
-  if (matchesAny(lowerText, ["預約", "book", "booking", "機場", "商務"])) {
-    return reply(channelAccessToken, event.replyToken, [bookingEntryMessage(context)]);
+  if (matchesAny(lowerText, ["hi", "hello", "您好", "你好", "我要預約", "選單", "開始"])) {
+    return reply(channelAccessToken, event.replyToken, [serviceMenuMessage(context)]);
+  }
+
+  if (matchesAny(lowerText, ["機場接送", "送機", "接機"])) {
+    return reply(channelAccessToken, event.replyToken, [airportIntakeMessage(context)]);
+  }
+
+  if (matchesAny(lowerText, ["商務接送", "商務用車", "商務包車"])) {
+    return reply(channelAccessToken, event.replyToken, [businessIntakeMessage(context)]);
+  }
+
+  if (matchesAny(lowerText, ["包車旅遊", "旅遊包車", "半日包車", "一日包車"])) {
+    return reply(channelAccessToken, event.replyToken, [charterPackageMessage(context)]);
+  }
+
+  if (matchesAny(lowerText, ["預約", "book", "booking"])) {
+    return reply(channelAccessToken, event.replyToken, [serviceMenuMessage(context)]);
   }
 
   if (matchesAny(lowerText, ["報價", "估價", "quote", "price", "費用"])) {
@@ -256,9 +272,73 @@ async function paymentLookupMessage(context, userId, text) {
 }
 
 function menuMessage(context) {
+  return serviceMenuMessage(context);
+}
+
+function serviceMenuMessage(context) {
   return {
-    type: "text",
-    text: "您好，這裡是御澤禮賓商務。很榮幸為您服務，請選擇需要協助的項目：",
+    type: "flex",
+    altText: "御澤禮賓服務選單",
+    contents: {
+      type: "bubble",
+      size: "mega",
+      header: {
+        type: "box",
+        layout: "vertical",
+        backgroundColor: "#111026",
+        paddingAll: "18px",
+        contents: [
+          {
+            type: "text",
+            text: "ROYAL FLOW",
+            color: "#D7AE54",
+            weight: "bold",
+            size: "lg"
+          },
+          {
+            type: "text",
+            text: "Concierge",
+            color: "#F4E4BC",
+            size: "sm",
+            margin: "xs"
+          }
+        ]
+      },
+      body: {
+        type: "box",
+        layout: "vertical",
+        backgroundColor: "#FFFFFF",
+        spacing: "md",
+        contents: [
+          {
+            type: "text",
+            text: "您好，歡迎使用御澤禮賓商務",
+            weight: "bold",
+            size: "lg",
+            color: "#222222"
+          },
+          {
+            type: "text",
+            text: "請選擇需要協助的服務，禮賓專員將依您的行程需求細緻安排。",
+            wrap: true,
+            color: "#666666",
+            size: "sm"
+          }
+        ]
+      },
+      footer: {
+        type: "box",
+        layout: "vertical",
+        spacing: "sm",
+        backgroundColor: "#FFFFFF",
+        contents: [
+          flexMessageButton("商務接送", "商務接送", "#111026"),
+          flexMessageButton("機場接送", "機場接送", "#111026"),
+          flexMessageButton("包車旅遊", "包車旅遊", "#D7AE54"),
+          flexUriButton("開啟專屬預約表單", bookingUrl(context), "#6B7280")
+        ]
+      }
+    },
     quickReply: quickReply(context)
   };
 }
@@ -287,6 +367,110 @@ function bookingEntryMessage(context) {
   };
 }
 
+function airportIntakeMessage(context) {
+  return {
+    type: "flex",
+    altText: "機場接送資料填寫",
+    contents: {
+      type: "bubble",
+      size: "mega",
+      header: flexHeader("機場接送", "送機 / 接機專屬安排"),
+      body: {
+        type: "box",
+        layout: "vertical",
+        backgroundColor: "#FFFFFF",
+        spacing: "sm",
+        contents: [
+          flexText("請提供以下資訊，我們將立即為您確認路線與費用：", true),
+          flexSeparator(),
+          flexText("接送地址", false),
+          flexText("機場：桃園 / 松山 / 台中 / 小港", false),
+          flexText("航廈：T1 / T2 / 國際線 / 國內線", false),
+          flexText("航班號碼：例 BR001，無則填無", false),
+          flexText("用車日期與時間", false),
+          flexText("乘客人數與行李件數", false),
+          flexText("安全座椅需求與聯絡電話", false),
+          flexNotice("建議直接開啟表單填寫，可避免資訊遺漏，並取得初步估價。")
+        ]
+      },
+      footer: flexFooter([
+        flexUriButton("開啟機場接送預約", bookingUrl(context), "#D7AE54"),
+        flexMessageButton("需要調整或詢問", "客服", "#6B7280")
+      ])
+    },
+    quickReply: quickReply(context)
+  };
+}
+
+function businessIntakeMessage(context) {
+  return {
+    type: "flex",
+    altText: "商務接送資料填寫",
+    contents: {
+      type: "bubble",
+      size: "mega",
+      header: flexHeader("商務接送", "企業接待 / 主管用車 / 多點行程"),
+      body: {
+        type: "box",
+        layout: "vertical",
+        backgroundColor: "#FFFFFF",
+        spacing: "sm",
+        contents: [
+          flexText("請提供以下資訊，我們將為您安排合適車型與專屬報價：", true),
+          flexSeparator(),
+          flexText("上車地點", false),
+          flexText("目的地或多點行程", false),
+          flexText("日期與時間", false),
+          flexText("預計用車小時：3 小時 / 8 小時 / 客製", false),
+          flexText("乘客人數與行李件數", false),
+          flexText("是否跨縣市或需等待", false),
+          flexText("聯絡電話", false),
+          flexNotice("商務行程可先收集需求，最終車輛與司機將由禮賓專員確認。")
+        ]
+      },
+      footer: flexFooter([
+        flexUriButton("開啟商務接送預約", bookingUrl(context), "#D7AE54"),
+        flexMessageButton("需要禮賓專員協助", "客服", "#6B7280")
+      ])
+    },
+    quickReply: quickReply(context)
+  };
+}
+
+function charterPackageMessage(context) {
+  return {
+    type: "flex",
+    altText: "包車旅遊方案",
+    contents: {
+      type: "bubble",
+      size: "mega",
+      header: flexHeader("包車旅遊方案", "半日 / 一日 / 客製行程"),
+      body: {
+        type: "box",
+        layout: "vertical",
+        backgroundColor: "#FFFFFF",
+        spacing: "md",
+        contents: [
+          flexText("半日包車（4 小時）", true),
+          flexText("適合市區短程、飯店接送、會議與景點安排。", false),
+          flexSeparator(),
+          flexText("一日包車（8 小時）", true),
+          flexText("適合北部景點、客戶接待、家庭旅遊與彈性停留。", false),
+          flexSeparator(),
+          flexText("客製行程", true),
+          flexText("可依出發地、景點、天數、車型與司機住宿需求另行規劃。", false),
+          flexNotice("請於表單填寫出發地、想去景點、日期、人數與聯絡電話。")
+        ]
+      },
+      footer: flexFooter([
+        flexUriButton("半日 / 一日包車預約", bookingUrl(context), "#D7AE54"),
+        flexMessageButton("客製行程洽詢", "客服", "#6B7280")
+      ])
+    },
+    quickReply: quickReply(context)
+  };
+}
+
 function quoteGuideMessage(context) {
   return {
       type: "text",
@@ -305,6 +489,109 @@ function humanSupportMessage(context) {
     type: "text",
     text: "已為您轉接禮賓專員。若方便，請先留下用車日期、航班或行程、上車地點與乘客人數，我們將為您細緻確認。也可先填寫預約表單：" + supportUrl,
     quickReply: quickReply(context)
+  };
+}
+
+function flexHeader(title, subtitle) {
+  return {
+    type: "box",
+    layout: "vertical",
+    backgroundColor: "#111026",
+    paddingAll: "18px",
+    contents: [
+      {
+        type: "text",
+        text: title,
+        color: "#D7AE54",
+        weight: "bold",
+        size: "lg"
+      },
+      {
+        type: "text",
+        text: subtitle,
+        color: "#F4E4BC",
+        size: "sm",
+        margin: "xs",
+        wrap: true
+      }
+    ]
+  };
+}
+
+function flexFooter(contents) {
+  return {
+    type: "box",
+    layout: "vertical",
+    spacing: "sm",
+    backgroundColor: "#FFFFFF",
+    contents
+  };
+}
+
+function flexText(text, bold) {
+  return {
+    type: "text",
+    text,
+    wrap: true,
+    size: "sm",
+    color: bold ? "#222222" : "#555555",
+    weight: bold ? "bold" : "regular"
+  };
+}
+
+function flexNotice(text) {
+  return {
+    type: "box",
+    layout: "vertical",
+    backgroundColor: "#FFF7E6",
+    cornerRadius: "md",
+    paddingAll: "10px",
+    margin: "md",
+    contents: [
+      {
+        type: "text",
+        text,
+        wrap: true,
+        size: "xs",
+        color: "#8A6728"
+      }
+    ]
+  };
+}
+
+function flexSeparator() {
+  return {
+    type: "separator",
+    margin: "sm",
+    color: "#E8E1D4"
+  };
+}
+
+function flexMessageButton(label, text, color) {
+  return {
+    type: "button",
+    style: "primary",
+    height: "sm",
+    color,
+    action: {
+      type: "message",
+      label,
+      text
+    }
+  };
+}
+
+function flexUriButton(label, uri, color) {
+  return {
+    type: "button",
+    style: "primary",
+    height: "sm",
+    color,
+    action: {
+      type: "uri",
+      label,
+      uri
+    }
   };
 }
 
