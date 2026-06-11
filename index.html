@@ -62,8 +62,9 @@
       display: block;
       width: 100%;
       aspect-ratio: 2048 / 713;
-      object-fit: cover;
+      object-fit: contain;
       object-position: center;
+      background: #050505;
     }
 
     .brand-sub {
@@ -158,6 +159,51 @@
       padding: 12px;
       margin-top: 14px;
       font-size: 15px;
+    }
+
+    .service-tier-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .service-tier {
+      border: 1px solid rgba(215,174,84,0.28);
+      border-radius: 8px;
+      padding: 12px;
+      background: rgba(215,174,84,0.07);
+    }
+
+    .service-tier strong {
+      display: block;
+      color: var(--gold-light);
+      margin-bottom: 4px;
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .check-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      border: 1px solid rgba(215,174,84,0.28);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(255,255,255,0.03);
+      font-size: 15px;
+      color: #f2e6c8;
+    }
+
+    .check-option input {
+      width: auto;
+      min-height: auto;
+      margin-top: 4px;
+      accent-color: var(--gold);
     }
 
     .quote-box {
@@ -319,8 +365,12 @@
         grid-template-columns: 1fr;
       }
 
+      .checkbox-grid {
+        grid-template-columns: 1fr;
+      }
+
       .brand-header img {
-        aspect-ratio: 16 / 6.4;
+        aspect-ratio: 2048 / 713;
         object-position: center;
       }
 
@@ -721,6 +771,47 @@
         <option value="否">否</option>
         <option value="是">是</option>
       </select>
+
+      <label>禮賓服務等級</label>
+      <select id="serviceTier">
+        <option value="尊榮標準服務">尊榮標準服務</option>
+        <option value="VIP 商務服務">VIP 商務服務</option>
+        <option value="皇家禮賓服務">皇家禮賓服務</option>
+      </select>
+
+      <div class="service-tier-list">
+        <div class="service-tier">
+          <strong>尊榮標準服務</strong>
+          礦泉水、濕紙巾、充電線、薄荷糖、車內清潔、航班追蹤。
+        </div>
+        <div class="service-tier">
+          <strong>VIP 商務服務</strong>
+          尊榮標準服務 + 氣泡水 / 咖啡預選、一次性拖鞋、薄毯、靜音乘車、司機服儀規範。
+        </div>
+        <div class="service-tier">
+          <strong>皇家禮賓服務</strong>
+          VIP 商務服務 + 舉牌接機、英文司機、花束禮品代購、企業接待協助、24 小時專人聯繫。
+        </div>
+      </div>
+
+      <label>尊榮加值服務</label>
+      <div class="checkbox-grid">
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="怡雲礦泉水">怡雲礦泉水</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="氣泡水">氣泡水</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="咖啡 / 茶飲預備">咖啡 / 茶飲預備</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="一次性拖鞋">一次性拖鞋</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="車內薄毯">車內薄毯</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="兒童安全座椅">兒童安全座椅</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="舉牌接機">舉牌接機</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="英文司機">英文司機</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="靜音乘車">靜音乘車</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="花束 / 禮品代購">花束 / 禮品代購</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="企業 Logo 舉牌">企業 Logo 舉牌</label>
+      </div>
+
+      <div class="notice">
+        標準配備包含礦泉水、濕紙巾、充電線、薄荷糖、車內清潔與航班追蹤。飲品、小點心、舒適配備與禮賓級服務可依現場準備狀況與預約內容確認。
+      </div>
 
       <label>停車費規則</label>
       <select id="parkingNotice">
@@ -1405,6 +1496,8 @@
         signService: valueOf("signService"),
         englishDriver: valueOf("englishDriver"),
         childSeat: valueOf("childSeat"),
+        serviceTier: valueOf("serviceTier"),
+        premiumAddons: checkedValues("premiumAddons"),
         parkingNotice: valueOf("parkingNotice"),
 
         stopCount: valueOf("stopCount"),
@@ -1455,6 +1548,8 @@
         "下車：" + escapeHtml(data.dropoff) + "<br>" +
         renderPointSummary(data) +
         "乘客 / 行李：" + escapeHtml((data.passengers || "-") + " 人 / " + (data.luggage || "-") + " 件") + "<br>" +
+        "禮賓服務：" + escapeHtml(data.serviceTier || "尊榮標準服務") + "<br>" +
+        (data.premiumAddons ? "加值服務：" + escapeHtml(data.premiumAddons) + "<br>" : "") +
         "備註：" + escapeHtml(data.note || "無") + "<br><br>" +
         "送出後將由禮賓專員確認最終車輛、司機與費用。";
 
@@ -1522,6 +1617,15 @@
     function valueOf(id) {
       const el = document.getElementById(id);
       return el ? String(el.value || "").trim() : "";
+    }
+
+    function checkedValues(name) {
+      return Array.from(document.querySelectorAll('input[name="' + name + '"]:checked'))
+        .map(function(input) {
+          return String(input.value || "").trim();
+        })
+        .filter(Boolean)
+        .join("、");
     }
 
     function escapeHtml(text) {
