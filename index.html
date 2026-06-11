@@ -46,38 +46,32 @@
     }
 
     .brand {
-      text-align: center;
-      padding: 22px 8px 18px;
+      padding: 0 0 18px;
     }
 
-    .brand-crest {
-      width: 68px;
-      height: 68px;
-      margin: 0 auto 10px;
-      border: 1px solid rgba(244,217,139,0.72);
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      color: var(--gold-light);
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 28px;
-      font-weight: 700;
-      box-shadow: 0 0 26px rgba(215,174,84,0.20), inset 0 0 18px rgba(215,174,84,0.12);
+    .brand-header {
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid rgba(215,174,84,0.34);
+      border-radius: 8px;
+      background: #050505;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.36), 0 0 24px rgba(215,174,84,0.12);
     }
 
-    .brand-title {
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      color: var(--gold-light);
-      text-shadow: 0 0 18px rgba(215,174,84,0.20);
+    .brand-header img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 2048 / 713;
+      object-fit: cover;
+      object-position: center;
     }
 
     .brand-sub {
-      margin-top: 4px;
+      margin-top: 10px;
       color: var(--muted);
       font-size: 15px;
       letter-spacing: 1px;
+      text-align: center;
     }
 
     .card {
@@ -325,8 +319,9 @@
         grid-template-columns: 1fr;
       }
 
-      .brand-title {
-        font-size: 23px;
+      .brand-header img {
+        aspect-ratio: 16 / 6.4;
+        object-position: center;
       }
 
       .page {
@@ -340,8 +335,9 @@
 <body>
   <div class="page">
     <div class="brand">
-      <div class="brand-crest">SR</div>
-      <div class="brand-title">御澤禮賓商務</div>
+      <div class="brand-header">
+        <img src="assets/royal-flow-header.jpg" alt="御澤禮賓商務 Royal Flow Concierge">
+      </div>
       <div class="brand-sub">Royal Flow Concierge｜高端商務車預約</div>
     </div>
 
