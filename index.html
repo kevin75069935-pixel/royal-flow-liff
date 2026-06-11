@@ -206,6 +206,53 @@
       accent-color: var(--gold);
     }
 
+    .vehicle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .vehicle-card {
+      overflow: hidden;
+      border: 1px solid rgba(215,174,84,0.28);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .vehicle-card img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      display: block;
+      background: #050505;
+    }
+
+    .vehicle-card-body {
+      padding: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .vehicle-card-body strong {
+      display: block;
+      color: var(--gold-light);
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .vehicle-card-body button {
+      width: 100%;
+      margin-top: 8px;
+      min-height: 38px;
+      border: 1px solid rgba(244,217,139,0.48);
+      border-radius: 8px;
+      background: linear-gradient(180deg, #d7ae54, #8f6424);
+      color: #110c05;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
     .quote-box {
       background: linear-gradient(180deg, #070707, #15110c);
       color: #fff;
@@ -369,6 +416,10 @@
         grid-template-columns: 1fr;
       }
 
+      .vehicle-grid {
+        grid-template-columns: 1fr;
+      }
+
       .brand-header img {
         aspect-ratio: 2048 / 713;
         object-position: center;
@@ -448,6 +499,61 @@
         <option value="一般9人座">一般9人座</option>
         <option value="待客服確認">待客服確認</option>
       </select>
+
+      <div class="notice">
+        服務車型照片為實車或同級示意，實際派車將依檔期、乘客人數、行李與禮賓需求由專員確認。
+      </div>
+
+      <div class="vehicle-grid">
+        <div class="vehicle-card">
+          <img src="assets/vehicles/lexus-lm.jpg" alt="Lexus LM">
+          <div class="vehicle-card-body">
+            <strong>Lexus LM 40 / 35</strong>
+            旗艦級豪華保姆車，適合高端貴賓、外賓接待、主管用車。最佳 2-4 位乘客。
+            <button type="button" onclick="selectCarType('Lexus LM 40 / 35')">選擇此車型</button>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <img src="assets/vehicles/toyota-alphard.jpg" alt="Toyota Alphard">
+          <div class="vehicle-card-body">
+            <strong>Toyota Alphard 40 / 35</strong>
+            高端商務接送主力，乘坐舒適、行李彈性佳。最佳 2-5 位乘客。
+            <button type="button" onclick="selectCarType('Toyota Alphard 40 / 35')">選擇此車型</button>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <img src="assets/vehicles/toyota-granvia.png" alt="Toyota Granvia">
+          <div class="vehicle-card-body">
+            <strong>Toyota Granvia 6/7人座</strong>
+            適合多人商務、家庭旅遊與中長程移動。最佳 4-6 位乘客。
+            <button type="button" onclick="selectCarType('Toyota Granvia 6/7人座')">選擇此車型</button>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <img src="assets/vehicles/benz-vclass.jpg" alt="Benz V-Class">
+          <div class="vehicle-card-body">
+            <strong>Benz V-Class V300d / V250d</strong>
+            歐系商務保姆車，適合外賓、會議接待、長程商務。最佳 3-6 位乘客。
+            <button type="button" onclick="selectCarType('Benz V-Class V300d / V250d')">選擇此車型</button>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <img src="assets/vehicles/benz-vito.jpg" alt="Benz Vito">
+          <div class="vehicle-card-body">
+            <strong>Benz Vito 9人座</strong>
+            團體接送與活動車隊常用，空間實用、行李容納佳。最佳 5-8 位乘客。
+            <button type="button" onclick="selectCarType('Benz Vito 9人座')">選擇此車型</button>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <img src="assets/vehicles/vw-crafter.jpg" alt="VW Crafter">
+          <div class="vehicle-card-body">
+            <strong>VW Crafter / Sprinter 旗艦9人座</strong>
+            大型高端保姆車，適合 VIP 團體、展演活動、企業接待。最佳 6-9 位乘客。
+            <button type="button" onclick="selectCarType('VW Crafter 旗艦9人座')">選擇此車型</button>
+          </div>
+        </div>
+      </div>
 
       <div class="row">
         <div>
@@ -1663,6 +1769,13 @@
         })
         .filter(Boolean)
         .join("、");
+    }
+
+    function selectCarType(carType) {
+      const select = document.getElementById("carType");
+      if (select) {
+        select.value = carType;
+      }
     }
 
     function escapeHtml(text) {

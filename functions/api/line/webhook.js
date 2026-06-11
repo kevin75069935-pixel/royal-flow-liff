@@ -108,6 +108,10 @@ async function handleEvent(context, event, channelAccessToken) {
     }]);
   }
 
+  if (matchesAny(lowerText, ["服務車型", "車型", "車款", "車種", "car type", "vehicle"])) {
+    return reply(channelAccessToken, event.replyToken, [vehicleCarouselMessage(context)]);
+  }
+
   if (matchesAny(lowerText, ["hi", "hello", "您好", "你好", "我要預約", "選單", "開始"])) {
     return reply(channelAccessToken, event.replyToken, [serviceMenuMessage(context)]);
   }
@@ -512,6 +516,108 @@ function universalLoungeMessage(context) {
   };
 }
 
+function vehicleCarouselMessage(context) {
+  const vehicles = vehicleProfiles(context);
+  return {
+    type: "flex",
+    altText: "御澤禮賓服務車型",
+    contents: {
+      type: "carousel",
+      contents: vehicles.map(function(vehicle) {
+        return {
+          type: "bubble",
+          size: "mega",
+          hero: {
+            type: "image",
+            url: vehicle.imageUrl,
+            size: "full",
+            aspectRatio: "16:10",
+            aspectMode: "cover"
+          },
+          body: {
+            type: "box",
+            layout: "vertical",
+            backgroundColor: "#FFFFFF",
+            spacing: "sm",
+            contents: [
+              {
+                type: "text",
+                text: vehicle.name,
+                weight: "bold",
+                color: "#111026",
+                size: "lg",
+                wrap: true
+              },
+              {
+                type: "text",
+                text: vehicle.summary,
+                color: "#555555",
+                size: "sm",
+                wrap: true
+              },
+              flexSeparator(),
+              flexText("服務：" + vehicle.service, false),
+              flexText("最佳乘客：" + vehicle.bestPassengers, true)
+            ]
+          },
+          footer: flexFooter([
+            flexUriButton("選擇此車型預約", bookingUrl(context), "#D7AE54"),
+            flexMessageButton("諮詢此車型", "客服 " + vehicle.name, "#6B7280")
+          ])
+        };
+      })
+    },
+    quickReply: quickReply(context)
+  };
+}
+
+function vehicleProfiles(context) {
+  return [
+    {
+      name: "Lexus LM 40 / 35",
+      imageUrl: assetUrl(context, "/assets/vehicles/lexus-lm.jpg"),
+      summary: "旗艦級豪華保姆車，座艙安靜、質感細膩，適合高端貴賓與企業主管。",
+      service: "機場接送、商務接送、外交禮賓、VIP 接待",
+      bestPassengers: "2-4 位"
+    },
+    {
+      name: "Toyota Alphard 40 / 35",
+      imageUrl: assetUrl(context, "/assets/vehicles/toyota-alphard.jpg"),
+      summary: "高端商務接送主力車型，乘坐舒適、行李彈性佳，適合多數 VIP 行程。",
+      service: "機場接送、商務接送、包車旅遊、婚禮禮車",
+      bestPassengers: "2-5 位"
+    },
+    {
+      name: "Toyota Granvia 6/7人座",
+      imageUrl: assetUrl(context, "/assets/vehicles/toyota-granvia.png"),
+      summary: "多人商務與家庭旅遊適用，空間寬敞，適合中長程與多點移動。",
+      service: "包車旅遊、商務接待、港口接送、多點行程",
+      bestPassengers: "4-6 位"
+    },
+    {
+      name: "Benz V-Class V300d / V250d",
+      imageUrl: assetUrl(context, "/assets/vehicles/benz-vclass.jpg"),
+      summary: "歐系商務保姆車，兼具舒適與形象，適合外賓接待與會議行程。",
+      service: "外賓接待、商務接送、會議接送、長程包車",
+      bestPassengers: "3-6 位"
+    },
+    {
+      name: "Benz Vito 9人座",
+      imageUrl: assetUrl(context, "/assets/vehicles/benz-vito.jpg"),
+      summary: "團體接送實用車型，座位與行李容量平衡，適合活動與企業團體。",
+      service: "團體接送、展演活動、港口接送、企業車隊",
+      bestPassengers: "5-8 位"
+    },
+    {
+      name: "VW Crafter / Sprinter 旗艦9人座",
+      imageUrl: assetUrl(context, "/assets/vehicles/vw-crafter.jpg"),
+      summary: "大型高端保姆車，同級可安排 Sprinter 或 Crafter，適合 VIP 團體與高規格活動。",
+      service: "VIP 團體、展演活動、外交禮賓、企業接待",
+      bestPassengers: "6-9 位"
+    }
+  ];
+}
+
 function quoteGuideMessage(context) {
   return {
       type: "text",
@@ -642,6 +748,7 @@ function quickReply(context) {
   return {
     items: [
       quickMessage("專屬預約", "預約"),
+      quickMessage("服務車型", "服務車型"),
       quickMessage("禮賓估價", "報價"),
       quickMessage("查詢行程", "查詢行程"),
       quickMessage("付款資訊", "付款"),
@@ -784,6 +891,11 @@ function timingSafeEqual(left, right) {
 
 function bookingUrl(context) {
   return context.env.LIFF_URL || "https://liff.line.me/2010083928-gA1wvCJ0";
+}
+
+function assetUrl(context, path) {
+  const base = context.env.PUBLIC_BASE_URL || "https://royal-flow-liff.pages.dev";
+  return base.replace(/\/$/, "") + path;
 }
 
 function matchesAny(text, keywords) {
