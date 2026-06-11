@@ -431,6 +431,7 @@
         <option value="展演活動">展演活動</option>
         <option value="結婚禮車">結婚禮車</option>
         <option value="外交禮賓">外交禮賓</option>
+        <option value="寰宇商務中心禮賓套餐">寰宇商務中心禮賓套餐</option>
       </select>
 
       <label>車型需求 *</label>
@@ -542,6 +543,28 @@
 
         <div class="notice">
           旅遊包車以套裝行程報價為主；客製化旅遊可使用 Google Routes 估算距離後再由客服確認最終報價。
+        </div>
+      </div>
+
+      <div id="universalLoungeBlock" class="hidden">
+        <label>寰宇商務中心服務需求</label>
+        <select id="universalLoungeType">
+          <option value="代訂寰宇商務中心禮賓服務">代訂寰宇商務中心禮賓服務</option>
+          <option value="商務車 + 寰宇商務中心套餐">商務車 + 寰宇商務中心套餐</option>
+          <option value="保姆車 + 寰宇商務中心套餐">保姆車 + 寰宇商務中心套餐</option>
+          <option value="接機禮賓 + 車輛接送">接機禮賓 + 車輛接送</option>
+          <option value="送機禮賓 + 車輛接送">送機禮賓 + 車輛接送</option>
+          <option value="客服協助客製">客服協助客製</option>
+        </select>
+
+        <label>寰宇商務中心使用人數</label>
+        <input id="universalLoungePassengers" type="number" min="1" placeholder="例：2">
+
+        <label>寰宇商務中心需求備註</label>
+        <textarea id="universalLoungeNote" placeholder="例：代訂桃園機場寰宇商務中心、需要接機禮賓、外賓接待、航班時間等。"></textarea>
+
+        <div class="notice">
+          寰宇商務中心費用、可訂席次與禮賓服務內容，需依當日方案與人數確認；車輛費用依所選車型與路線另行計算。
         </div>
       </div>
     </section>
@@ -992,12 +1015,14 @@
     function handleServiceChange() {
       const service = valueOf("service");
       const tourBlock = document.getElementById("tourBlock");
+      const universalLoungeBlock = document.getElementById("universalLoungeBlock");
       const businessBlock = document.getElementById("businessBlock");
       const airportBlock = document.getElementById("airportBlock");
       const portBlock = document.getElementById("portBlock");
 
       businessBlock.classList.toggle("hidden", !isBusinessServiceName(service));
       tourBlock.classList.toggle("hidden", service !== "旅遊包車");
+      universalLoungeBlock.classList.toggle("hidden", service !== "寰宇商務中心禮賓套餐");
       airportBlock.classList.toggle("hidden", service !== "機場接送");
       portBlock.classList.toggle("hidden", service !== "港口接送");
 
@@ -1171,7 +1196,8 @@
         "商務包車",
         "結婚禮車",
         "展演活動",
-        "外交禮賓"
+        "外交禮賓",
+        "寰宇商務中心禮賓套餐"
       ].indexOf(service) >= 0;
     }
 
@@ -1299,6 +1325,11 @@
 
         if (!valueOf("time")) {
           alert("請選擇用車時間");
+          return false;
+        }
+
+        if (valueOf("service") === "寰宇商務中心禮賓套餐" && !valueOf("universalLoungePassengers")) {
+          alert("請填寫寰宇商務中心使用人數");
           return false;
         }
       }
@@ -1470,6 +1501,9 @@
         businessTripType: isBusinessServiceName(service) ? valueOf("businessTripType") : "",
         businessHours: isBusinessServiceName(service) ? valueOf("businessHours") : "",
         businessCrossRegion: isBusinessServiceName(service) ? valueOf("businessCrossRegion") : "",
+        universalLoungeType: service === "寰宇商務中心禮賓套餐" ? valueOf("universalLoungeType") : "",
+        universalLoungePassengers: service === "寰宇商務中心禮賓套餐" ? valueOf("universalLoungePassengers") : "",
+        universalLoungeNote: service === "寰宇商務中心禮賓套餐" ? valueOf("universalLoungeNote") : "",
 
         pickup: valueOf("pickup"),
         dropoff: valueOf("dropoff"),
@@ -1536,6 +1570,8 @@
         "服務：" + escapeHtml(data.service) + "<br>" +
         (data.businessTripType ? "商務行程：" + escapeHtml(data.businessTripType) + " / " + escapeHtml(data.businessHours) + " 小時<br>" : "") +
         (data.businessCrossRegion ? "商務跨區：" + escapeHtml(data.businessCrossRegion) + "<br>" : "") +
+        (data.universalLoungeType ? "寰宇商務中心：" + escapeHtml(data.universalLoungeType) + "<br>" : "") +
+        (data.universalLoungePassengers ? "商務中心人數：" + escapeHtml(data.universalLoungePassengers) + "<br>" : "") +
         "車型：" + escapeHtml(data.carType) + "<br>" +
         "日期時間：" + escapeHtml(data.date + " " + data.time) + "<br>" +
         (data.airportServiceType ? "機場接送類型：" + escapeHtml(data.airportServiceType) + "<br>" : "") +
@@ -1550,6 +1586,7 @@
         "乘客 / 行李：" + escapeHtml((data.passengers || "-") + " 人 / " + (data.luggage || "-") + " 件") + "<br>" +
         "禮賓服務：" + escapeHtml(data.serviceTier || "尊榮標準服務") + "<br>" +
         (data.premiumAddons ? "加值服務：" + escapeHtml(data.premiumAddons) + "<br>" : "") +
+        (data.universalLoungeNote ? "寰宇備註：" + escapeHtml(data.universalLoungeNote) + "<br>" : "") +
         "備註：" + escapeHtml(data.note || "無") + "<br><br>" +
         "送出後將由禮賓專員確認最終車輛、司機與費用。";
 

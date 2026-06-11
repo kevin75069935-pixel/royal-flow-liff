@@ -124,6 +124,10 @@ async function handleEvent(context, event, channelAccessToken) {
     return reply(channelAccessToken, event.replyToken, [charterPackageMessage(context)]);
   }
 
+  if (matchesAny(lowerText, ["寰宇", "商務中心", "環宇", "貴賓室", "vip lounge", "lounge"])) {
+    return reply(channelAccessToken, event.replyToken, [universalLoungeMessage(context)]);
+  }
+
   if (matchesAny(lowerText, ["預約", "book", "booking"])) {
     return reply(channelAccessToken, event.replyToken, [serviceMenuMessage(context)]);
   }
@@ -335,6 +339,7 @@ function serviceMenuMessage(context) {
           flexMessageButton("商務接送", "商務接送", "#111026"),
           flexMessageButton("機場接送", "機場接送", "#111026"),
           flexMessageButton("包車旅遊", "包車旅遊", "#D7AE54"),
+          flexMessageButton("寰宇商務中心", "寰宇商務中心禮賓套餐", "#D7AE54"),
           flexUriButton("開啟專屬預約表單", bookingUrl(context), "#6B7280")
         ]
       }
@@ -471,12 +476,49 @@ function charterPackageMessage(context) {
   };
 }
 
+function universalLoungeMessage(context) {
+  return {
+    type: "flex",
+    altText: "寰宇商務中心禮賓套餐",
+    contents: {
+      type: "bubble",
+      size: "mega",
+      header: flexHeader("寰宇商務中心禮賓套餐", "代訂禮賓服務 + 商務車 / 保姆車接送"),
+      body: {
+        type: "box",
+        layout: "vertical",
+        backgroundColor: "#FFFFFF",
+        spacing: "md",
+        contents: [
+          flexText("可協助代訂寰宇商務中心禮賓服務，並依行程搭配商務車、豪華保姆車或多人保姆車。", true),
+          flexSeparator(),
+          flexText("可選方案", true),
+          flexText("代訂寰宇商務中心禮賓服務", false),
+          flexText("商務車 + 寰宇商務中心套餐", false),
+          flexText("保姆車 + 寰宇商務中心套餐", false),
+          flexText("接機 / 送機禮賓 + 車輛接送", false),
+          flexSeparator(),
+          flexText("報價方式", true),
+          flexText("車輛費用依所選車型、路線與用車時間計算；商務中心費用、可訂席次與禮賓服務內容需依當日方案確認。", false),
+          flexNotice("請於表單選擇「寰宇商務中心禮賓套餐」，並填寫機場、航班、使用人數與需求備註。")
+        ]
+      },
+      footer: flexFooter([
+        flexUriButton("開啟套餐預約表單", bookingUrl(context), "#D7AE54"),
+        flexMessageButton("需要禮賓專員協助", "客服", "#6B7280")
+      ])
+    },
+    quickReply: quickReply(context)
+  };
+}
+
 function quoteGuideMessage(context) {
   return {
       type: "text",
       text: [
         "御澤禮賓將依您的車型需求、行程路線、用車時間與加值服務，先行提供初步費用估算。",
       "禮賓等級可選：尊榮標準服務、VIP 商務服務、皇家禮賓服務。亦可加選怡雲礦泉水、氣泡水、咖啡/茶飲、一次性拖鞋、車內薄毯、靜音乘車、花束禮品代購與企業 Logo 舉牌等服務。",
+      "寰宇商務中心禮賓套餐可依商務車、保姆車等不同車型估算車資；商務中心席次與禮賓服務實際費用將由專員另行確認。",
       "請開啟預約表單並填寫上車與下車地點，再點選「取得路線估價」。最終車輛、司機與費用將由禮賓專員為您確認。",
       bookingUrl(context)
     ].join("\n\n"),

@@ -19,6 +19,9 @@ const HEADER_LABELS = {
   business_trip_type: "商務行程型態_business_trip_type",
   business_hours: "商務用車小時_business_hours",
   business_cross_region: "商務跨區_business_cross_region",
+  universal_lounge_type: "寰宇商務中心服務_universal_lounge_type",
+  universal_lounge_passengers: "寰宇商務中心人數_universal_lounge_passengers",
+  universal_lounge_note: "寰宇商務中心備註_universal_lounge_note",
   pickup: "上車地點_pickup",
   dropoff: "下車地點_dropoff",
   pickup_airport: "上車機場_pickup_airport",
@@ -31,6 +34,8 @@ const HEADER_LABELS = {
   child_seat: "兒童座椅_child_seat",
   sign_service: "舉牌服務_sign_service",
   english_driver: "英文司機_english_driver",
+  service_tier: "禮賓服務等級_service_tier",
+  premium_addons: "尊榮加值服務_premium_addons",
   stop_count: "停靠點數_stop_count",
   multi_stop_note: "多點說明_multi_stop_note",
   tour_mode: "旅遊型態_tour_mode",
@@ -227,68 +232,73 @@ function submitBooking(data) {
   const sheet = getOrdersSheet();
   const now = new Date();
 
-  sheet.appendRow([
-    orderId,
-    now,
-    value(data.name),
-    value(data.phone),
-    value(data.line_user_id || data.lineUserId),
-    value(data.line_display_name || data.lineDisplayName),
-    value(data.service),
-    value(data.date),
-    value(data.time),
-    value(data.businessTripType),
-    value(data.businessHours),
-    value(data.businessCrossRegion),
-    value(data.pickup),
-    value(data.dropoff),
-    value(data.pickupAirport),
-    value(data.dropoffAirport),
-    value(data.terminal),
-    value(data.flight),
-    value(data.carType),
-    value(data.passengers),
-    value(data.luggage),
-    value(data.childSeat),
-    value(data.signService),
-    value(data.englishDriver),
-    value(data.stopCount),
-    value(data.multiStopNote),
-    value(data.tourMode),
-    value(data.tourArea),
-    value(data.packageRoute),
-    value(data.tripDays),
-    value(data.driverHotelType),
-    quote.distanceKm,
-    quote.durationMin,
-    quote.finalPrice,
-    quote.depositAmount,
-    quote.balanceAmount,
-    value(data.note),
-    "pending",
-    paymentUrl,
-    "pending",
-    "",
-    JSON.stringify(quote.breakdown || []),
-    value(data.airportServiceType),
-    value(data.reservedAirport),
-    value(data.airportTerminal),
-    value(data.airportReceptionAddress),
-    value(data.flightTime),
-    value(data.departureTime),
-    value(data.arrivalTime),
-    value(data.receptionAddress),
-    value(data.receptionPoint2),
-    value(data.receptionPoint3),
-    value(data.receptionPoint4),
-    value(data.receptionPoint5),
-    value(data.airportPoint2),
-    value(data.airportPoint3),
-    value(data.airportPoint4),
-    value(data.airportPoint5),
-    value(data.portServiceType),
-    value(data.reservedPort)
-  ]);
+  appendObjectRow(sheet, {
+    order_id: orderId,
+    created_at: now,
+    name: value(data.name),
+    phone: value(data.phone),
+    line_user_id: value(data.line_user_id || data.lineUserId),
+    line_display_name: value(data.line_display_name || data.lineDisplayName),
+    service: value(data.service),
+    date: value(data.date),
+    time: value(data.time),
+    business_trip_type: value(data.businessTripType),
+    business_hours: value(data.businessHours),
+    business_cross_region: value(data.businessCrossRegion),
+    universal_lounge_type: value(data.universalLoungeType),
+    universal_lounge_passengers: value(data.universalLoungePassengers),
+    universal_lounge_note: value(data.universalLoungeNote),
+    pickup: value(data.pickup),
+    dropoff: value(data.dropoff),
+    pickup_airport: value(data.pickupAirport),
+    dropoff_airport: value(data.dropoffAirport),
+    terminal: value(data.terminal),
+    flight: value(data.flight),
+    car_type: value(data.carType),
+    passengers: value(data.passengers),
+    luggage: value(data.luggage),
+    child_seat: value(data.childSeat),
+    sign_service: value(data.signService),
+    english_driver: value(data.englishDriver),
+    service_tier: value(data.serviceTier),
+    premium_addons: value(data.premiumAddons),
+    stop_count: value(data.stopCount),
+    multi_stop_note: value(data.multiStopNote),
+    tour_mode: value(data.tourMode),
+    tour_area: value(data.tourArea),
+    package_route: value(data.packageRoute),
+    trip_days: value(data.tripDays),
+    driver_hotel_type: value(data.driverHotelType),
+    distance_km: quote.distanceKm,
+    duration_min: quote.durationMin,
+    final_price: quote.finalPrice,
+    deposit_amount: quote.depositAmount,
+    balance_amount: quote.balanceAmount,
+    note: value(data.note),
+    payment_status: "pending",
+    payment_url: paymentUrl,
+    order_status: "pending",
+    driver_note: "",
+    quote_breakdown: JSON.stringify(quote.breakdown || []),
+    airport_service_type: value(data.airportServiceType),
+    reserved_airport: value(data.reservedAirport),
+    airport_terminal: value(data.airportTerminal),
+    airport_reception_address: value(data.airportReceptionAddress),
+    flight_time: value(data.flightTime),
+    departure_time: value(data.departureTime),
+    arrival_time: value(data.arrivalTime),
+    reception_address: value(data.receptionAddress),
+    reception_point_2: value(data.receptionPoint2),
+    reception_point_3: value(data.receptionPoint3),
+    reception_point_4: value(data.receptionPoint4),
+    reception_point_5: value(data.receptionPoint5),
+    airport_point_2: value(data.airportPoint2),
+    airport_point_3: value(data.airportPoint3),
+    airport_point_4: value(data.airportPoint4),
+    airport_point_5: value(data.airportPoint5),
+    port_service_type: value(data.portServiceType),
+    reserved_port: value(data.reservedPort)
+  });
 
   return {
     status: "success",
@@ -525,7 +535,12 @@ function getOrdersSheet() {
       "airport_point_4",
       "airport_point_5",
       "port_service_type",
-      "reserved_port"
+      "reserved_port",
+      "universal_lounge_type",
+      "universal_lounge_passengers",
+      "universal_lounge_note",
+      "service_tier",
+      "premium_addons"
     ];
 
   if (sheet.getLastRow() === 0) {
@@ -574,6 +589,17 @@ function normalizeHeaderRow(sheet, current, currentKeys) {
   if (changed) {
     sheet.getRange(1, 1, 1, normalized.length).setValues([normalized]);
   }
+}
+
+function appendObjectRow(sheet, rowObject) {
+  const width = sheet.getLastColumn();
+  const headers = sheet.getRange(1, 1, 1, width).getValues()[0].map(function(header) {
+    return canonicalHeaderKey(header);
+  });
+  const row = headers.map(function(header) {
+    return Object.prototype.hasOwnProperty.call(rowObject, header) ? rowObject[header] : "";
+  });
+  sheet.appendRow(row);
 }
 
 function sheetToObjects(sheet) {
@@ -723,10 +749,32 @@ function ensureConfigSheet(sheetName, defaultRows) {
     }));
     sheet.setFrozenRows(1);
   } else if (defaultRows.length) {
-    ensureHeaders(sheet, Object.keys(defaultRows[0]));
+    const headers = Object.keys(defaultRows[0]);
+    ensureHeaders(sheet, headers);
+    appendMissingDefaultRows(sheet, headers, defaultRows);
   }
 
   return sheet;
+}
+
+function appendMissingDefaultRows(sheet, headers, defaultRows) {
+  const key = headers[0];
+  const existing = sheetToObjects(sheet).map(function(row) {
+    return String(row[key] || "");
+  });
+  const missing = defaultRows.filter(function(row) {
+    return existing.indexOf(String(row[key] || "")) < 0;
+  });
+
+  if (!missing.length) {
+    return;
+  }
+
+  sheet.getRange(sheet.getLastRow() + 1, 1, missing.length, headers.length).setValues(missing.map(function(row) {
+    return headers.map(function(header) {
+      return row[header];
+    });
+  }));
 }
 
 function getOrCreateSheet(spreadsheet, sheetName) {
@@ -778,7 +826,8 @@ function defaultServiceRows() {
     serviceRow("港口接送", "港口接送", 2200, 0, "Y", "服務最低費"),
     serviceRow("展演活動", "展演活動", 2500, 0, "Y", "服務最低費"),
     serviceRow("結婚禮車", "結婚禮車", 3800, 0, "Y", "服務最低費"),
-    serviceRow("外交禮賓", "外交禮賓", 3800, 0, "Y", "服務最低費")
+    serviceRow("外交禮賓", "外交禮賓", 3800, 0, "Y", "服務最低費"),
+    serviceRow("寰宇商務中心禮賓套餐", "寰宇商務中心禮賓套餐", 2800, 0, "Y", "車輛依所選車型報價，商務中心實際費用另計")
   ];
 }
 
@@ -787,6 +836,21 @@ function defaultAddonRows() {
     addonRow("sign_service", "舉牌服務", "signService", "是", "flat", 200, 0, "Y", "每趟固定加價"),
     addonRow("english_driver", "英文司機", "englishDriver", "是", "flat", 800, 0, "Y", "每趟固定加價"),
     addonRow("child_seat", "嬰幼兒安全座椅", "childSeat", "是", "flat", 300, 0, "Y", "每張/每趟固定加價"),
+    addonRow("tier_vip_business", "VIP 商務服務", "serviceTier", "VIP 商務服務", "flat", 500, 0, "Y", "含氣泡水/咖啡預選、一次性拖鞋、薄毯、靜音乘車、司機服儀規範"),
+    addonRow("tier_royal_concierge", "皇家禮賓服務", "serviceTier", "皇家禮賓服務", "flat", 1500, 0, "Y", "含舉牌接機、英文司機、花束禮品代購、企業接待協助、24小時專人聯繫"),
+    addonRow("evian_water", "怡雲礦泉水", "premiumAddons", "怡雲礦泉水", "flat", 100, 0, "Y", "每趟預備"),
+    addonRow("sparkling_water", "氣泡水", "premiumAddons", "氣泡水", "flat", 120, 0, "Y", "每趟預備"),
+    addonRow("coffee_tea", "咖啡 / 茶飲預備", "premiumAddons", "咖啡 / 茶飲預備", "flat", 180, 0, "Y", "依乘客需求預備"),
+    addonRow("disposable_slippers", "一次性拖鞋", "premiumAddons", "一次性拖鞋", "flat", 150, 0, "Y", "釋放雙腳，長程乘車適用"),
+    addonRow("in_car_blanket", "車內薄毯", "premiumAddons", "車內薄毯", "flat", 150, 0, "Y", "長程與夜間乘車適用"),
+    addonRow("premium_child_seat", "兒童安全座椅", "premiumAddons", "兒童安全座椅", "flat", 300, 0, "Y", "每張/每趟固定加價"),
+    addonRow("meet_sign", "舉牌接機", "premiumAddons", "舉牌接機", "flat", 300, 0, "Y", "機場/港口/活動接待"),
+    addonRow("premium_english_driver", "英文司機", "premiumAddons", "英文司機", "flat", 800, 0, "Y", "外賓接待適用"),
+    addonRow("quiet_ride", "靜音乘車", "premiumAddons", "靜音乘車", "flat", 0, 0, "Y", "司機不主動攀談，除必要行程確認"),
+    addonRow("gift_flowers", "花束 / 禮品代購", "premiumAddons", "花束 / 禮品代購", "flat", 0, 0, "Y", "代購實支實付，服務費另議"),
+    addonRow("corporate_logo_sign", "企業 Logo 舉牌", "premiumAddons", "企業 Logo 舉牌", "flat", 500, 0, "Y", "企業接待與活動迎賓"),
+    addonRow("universal_lounge_booking", "寰宇商務中心代訂禮賓服務", "service", "寰宇商務中心禮賓套餐", "flat", 500, 0, "Y", "代訂服務費；商務中心實際費用另計"),
+    addonRow("universal_lounge_per_guest", "寰宇商務中心人數服務費", "universalLoungePassengers", "", "per_unit", 0, 0, "Y", "如需依人頭加價，可在此設定單價"),
     addonRow("extra_stop", "增加接送點", "stopCount", "", "per_extra_stop", 300, 1, "Y", "超過 included_qty 的點數逐點加價")
   ];
 }
@@ -951,7 +1015,9 @@ function calculateAddonAmount(addon, data) {
   }
 
   if (addon.match_value) {
-    return String(fieldValue || "") === String(addon.match_value) ? unitPrice : 0;
+    const valueText = String(fieldValue || "");
+    const matchText = String(addon.match_value);
+    return valueText === matchText || valueText.indexOf(matchText) >= 0 ? unitPrice : 0;
   }
 
   return isYes(fieldValue) ? unitPrice : 0;
