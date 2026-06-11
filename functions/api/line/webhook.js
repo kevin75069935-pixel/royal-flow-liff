@@ -2,6 +2,7 @@ const LINE_REPLY_ENDPOINT = "https://api.line.me/v2/bot/message/reply";
 
 export async function onRequestPost(context) {
   try {
+    console.log("LINE webhook POST received");
     const channelSecret = context.env.LINE_CHANNEL_SECRET;
     const channelAccessToken = context.env.LINE_CHANNEL_ACCESS_TOKEN;
 
@@ -17,6 +18,7 @@ export async function onRequestPost(context) {
     const valid = await verifyLineSignature(bodyText, signature, channelSecret);
 
     if (!valid) {
+      console.log("LINE signature verification failed");
       return jsonResponse({
         status: "error",
         message: "LINE signature 驗證失敗。"
@@ -25,6 +27,7 @@ export async function onRequestPost(context) {
 
     const body = JSON.parse(bodyText || "{}");
     const events = Array.isArray(body.events) ? body.events : [];
+    console.log("LINE webhook event count", events.length);
 
     if (!events.length) {
       return jsonResponse({
@@ -79,11 +82,18 @@ async function safeHandleEvent(context, event, channelAccessToken) {
 
 async function handleEvent(context, event, channelAccessToken) {
   if (!event || !event.replyToken) {
+    console.log("LINE event skipped: no replyToken");
     return;
   }
 
   const userId = event.source && event.source.userId ? event.source.userId : "";
   const text = eventText(event);
+  console.log("LINE event received", {
+    eventType: event.type || "",
+    messageType: event.message && event.message.type ? event.message.type : "",
+    hasUserId: Boolean(userId),
+    text
+  });
 
   if (!text) {
     return reply(channelAccessToken, event.replyToken, [menuMessage(context)]);
@@ -322,6 +332,11 @@ function quickMessage(label, text) {
 }
 
 async function reply(channelAccessToken, replyToken, messages) {
+  console.log("LINE reply start", {
+    messageCount: Array.isArray(messages) ? messages.length : 0,
+    firstType: messages && messages[0] ? messages[0].type : ""
+  });
+
   const response = await fetch(LINE_REPLY_ENDPOINT, {
     method: "POST",
     headers: {
@@ -336,8 +351,11 @@ async function reply(channelAccessToken, replyToken, messages) {
 
   if (!response.ok) {
     const text = await response.text();
+    console.log("LINE reply API failed", response.status, text.substring(0, 240));
     throw new Error("LINE reply API 失敗：" + text.substring(0, 240));
   }
+
+  console.log("LINE reply API success");
 }
 
 async function gasAction(context, action, payload) {
