@@ -589,12 +589,34 @@ function sheetToObjects(sheet) {
   return values.slice(1).map(function(row) {
     const item = {};
     headers.forEach(function(header, index) {
-      const normalized = normalizeCell(row[index]);
+      const key = canonicalHeaderKey(header);
+      const normalized = normalizeCellByKey(key, row[index]);
       item[header] = normalized;
-      item[canonicalHeaderKey(header)] = normalized;
+      item[key] = normalized;
     });
     return item;
   });
+}
+
+function normalizeCellByKey(key, cell) {
+  if (cell instanceof Date) {
+    if (key === "date") {
+      return Utilities.formatDate(cell, "Asia/Taipei", "yyyy-MM-dd");
+    }
+
+    if ([
+      "time",
+      "flight_time",
+      "departure_time",
+      "arrival_time"
+    ].indexOf(key) >= 0) {
+      return Utilities.formatDate(cell, "Asia/Taipei", "HH:mm");
+    }
+
+    return Utilities.formatDate(cell, "Asia/Taipei", "yyyy-MM-dd HH:mm:ss");
+  }
+
+  return cell === null || cell === undefined ? "" : String(cell);
 }
 
 function normalizeCell(cell) {

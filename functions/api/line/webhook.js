@@ -164,7 +164,7 @@ async function orderLookupMessage(context, userId, text) {
       "訂單：" + display(order.order_id),
       "狀態：" + display(order.order_status || "pending"),
       "服務：" + display(order.service),
-      "日期：" + display(order.date) + " " + display(order.time),
+      "日期：" + displayDate(order.date) + " " + displayTime(order.time),
       "上車：" + display(order.pickup),
       "下車：" + display(order.dropoff),
       "報價：NT$ " + display(order.final_price),
@@ -425,6 +425,17 @@ function extractOrderId(text) {
 
 function display(input) {
   return input === null || input === undefined || input === "" ? "-" : String(input);
+}
+
+function displayDate(input) {
+  const text = display(input);
+  return text.replace(/\s+00:00:00$/, "");
+}
+
+function displayTime(input) {
+  const text = display(input);
+  const match = text.match(/(?:1899-12-30\s+)?(\d{1,2}:\d{2})(?::\d{2})?/);
+  return match ? match[1] : text;
 }
 
 function jsonResponse(body, status) {
