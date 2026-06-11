@@ -40,7 +40,7 @@ export async function onRequestPost(context) {
       }, 500);
     }
 
-    await Promise.all(events.map((event) => handleEvent(context, event, channelAccessToken)));
+    await Promise.all(events.map((event) => safeHandleEvent(context, event, channelAccessToken)));
 
     return jsonResponse({
       status: "success"
@@ -58,6 +58,23 @@ export async function onRequestGet() {
     status: "ok",
     service: "royal-flow-line-webhook"
   }, 200);
+}
+
+async function safeHandleEvent(context, event, channelAccessToken) {
+  try {
+    await handleEvent(context, event, channelAccessToken);
+  } catch (error) {
+    if (event && event.replyToken) {
+      try {
+        await reply(channelAccessToken, event.replyToken, [{
+          type: "text",
+          text: "系統暫時無法回覆，請稍後再試。錯誤：" + (error && error.message ? error.message : String(error)).substring(0, 160)
+        }]);
+      } catch (replyError) {
+        console.log("LINE fallback reply failed", replyError);
+      }
+    }
+  }
 }
 
 async function handleEvent(context, event, channelAccessToken) {
@@ -99,6 +116,14 @@ async function handleEvent(context, event, channelAccessToken) {
 
 async function orderLookupMessage(context, userId, text) {
   const orderId = extractOrderId(text);
+  if (!userId && !orderId) {
+    return {
+      type: "text",
+      text: "目前無法取得您的 LINE 身分，請先從官方帳號聊天室傳送「預約」或用 LIFF 完成一次預約。",
+      quickReply: quickReply(context)
+    };
+  }
+
   const result = orderId
     ? await gasAction(context, "getOrder", { orderId })
     : await gasAction(context, "getLatestOrder", { lineUserId: userId });
@@ -132,6 +157,14 @@ async function orderLookupMessage(context, userId, text) {
 
 async function paymentLookupMessage(context, userId, text) {
   const orderId = extractOrderId(text);
+  if (!userId && !orderId) {
+    return {
+      type: "text",
+      text: "目前無法取得您的 LINE 身分，請先從官方帳號聊天室傳送「預約」或用 LIFF 完成一次預約。",
+      quickReply: quickReply(context)
+    };
+  }
+
   const result = orderId
     ? await gasAction(context, "getOrder", { orderId })
     : await gasAction(context, "getLatestOrder", { lineUserId: userId });
@@ -271,7 +304,7 @@ async function gasAction(context, action, payload) {
     };
   }
 
-  const response = await fetch(gasUrl, {
+  const response = await fetchWithTimeout(gasUrl, {
     method: "POST",
     headers: {
       "Content-Type": "text/plain;charset=utf-8"
@@ -280,9 +313,16 @@ async function gasAction(context, action, payload) {
       action,
       payload
     })
-  });
+  }, 9000);
 
   const text = await response.text();
+  if (!response.ok) {
+    return {
+      status: "error",
+      message: "Apps Script HTTP " + response.status + "：" + text.substring(0, 160)
+    };
+  }
+
   try {
     return text ? JSON.parse(text) : {};
   } catch (error) {
@@ -291,6 +331,27 @@ async function gasAction(context, action, payload) {
       message: "Apps Script 回傳不是 JSON：" + text.substring(0, 160)
     };
   }
+}
+
+async function fetchWithTimeout(url, options, timeoutMs) {
+  const timeout = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(new Response(JSON.stringify({
+        status: "error",
+        message: "Apps Script 查詢逾時，請確認 Apps Script Web App 已重新部署。"
+      }), {
+        status: 504,
+        headers: {
+          "Content-Type": "application/json;charset=utf-8"
+        }
+      }));
+    }, timeoutMs);
+  });
+
+  return Promise.race([
+    fetch(url, options),
+    timeout
+  ]);
 }
 
 async function verifyLineSignature(bodyText, signature, channelSecret) {
