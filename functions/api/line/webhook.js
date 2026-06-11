@@ -78,18 +78,25 @@ async function safeHandleEvent(context, event, channelAccessToken) {
 }
 
 async function handleEvent(context, event, channelAccessToken) {
-  if (!event || event.type !== "message" || !event.replyToken) {
+  if (!event || !event.replyToken) {
     return;
   }
 
   const userId = event.source && event.source.userId ? event.source.userId : "";
-  const text = event.message && event.message.type === "text" ? String(event.message.text || "").trim() : "";
+  const text = eventText(event);
 
   if (!text) {
     return reply(channelAccessToken, event.replyToken, [menuMessage(context)]);
   }
 
   const lowerText = text.toLowerCase();
+
+  if (matchesAny(lowerText, ["測試", "test", "ping"])) {
+    return reply(channelAccessToken, event.replyToken, [{
+      type: "text",
+      text: "Webhook 測試成功，LINE 回覆功能正常。"
+    }]);
+  }
 
   if (matchesAny(lowerText, ["預約", "book", "booking", "機場", "商務"])) {
     return reply(channelAccessToken, event.replyToken, [bookingEntryMessage(context)]);
@@ -114,6 +121,18 @@ async function handleEvent(context, event, channelAccessToken) {
   return reply(channelAccessToken, event.replyToken, [menuMessage(context)]);
 }
 
+function eventText(event) {
+  if (event.type === "message" && event.message && event.message.type === "text") {
+    return String(event.message.text || "").trim();
+  }
+
+  if (event.type === "postback" && event.postback) {
+    return String(event.postback.data || event.postback.params || "").trim();
+  }
+
+  return "";
+}
+
 async function orderLookupMessage(context, userId, text) {
   const orderId = extractOrderId(text);
   if (!userId && !orderId) {
@@ -131,7 +150,7 @@ async function orderLookupMessage(context, userId, text) {
   if (!result || result.status !== "success" || !result.order) {
     return {
       type: "text",
-      text: result && result.message ? result.message : "目前查不到預約紀錄。您也可以點選下方重新預約。",
+      text: "已收到查詢行程請求。\n" + (result && result.message ? result.message : "目前查不到預約紀錄。您也可以點選下方重新預約。"),
       quickReply: quickReply(context)
     };
   }
@@ -140,6 +159,7 @@ async function orderLookupMessage(context, userId, text) {
   return {
     type: "text",
     text: [
+      "已收到查詢行程請求。",
       "您的行程資訊",
       "訂單：" + display(order.order_id),
       "狀態：" + display(order.order_status || "pending"),
@@ -172,7 +192,7 @@ async function paymentLookupMessage(context, userId, text) {
   if (!result || result.status !== "success" || !result.order) {
     return {
       type: "text",
-      text: "目前查不到可付款的預約。請先完成預約，客服確認後會提供訂金付款連結。",
+      text: "已收到付款查詢請求。\n目前查不到可付款的預約。請先完成預約，客服確認後會提供訂金付款連結。",
       quickReply: quickReply(context)
     };
   }
@@ -182,7 +202,7 @@ async function paymentLookupMessage(context, userId, text) {
   if (!paymentUrl) {
     return {
       type: "text",
-      text: "訂單 " + display(order.order_id) + " 尚未產生付款連結，客服確認車輛後會補上。",
+      text: "已收到付款查詢請求。\n訂單 " + display(order.order_id) + " 尚未產生付款連結，客服確認車輛後會補上。",
       quickReply: quickReply(context)
     };
   }
@@ -190,6 +210,7 @@ async function paymentLookupMessage(context, userId, text) {
   return {
     type: "text",
     text: [
+      "已收到付款查詢請求。",
       "訂金付款資訊",
       "訂單：" + display(order.order_id),
       "建議訂金：NT$ " + display(order.deposit_amount),
