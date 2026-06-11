@@ -164,14 +164,13 @@ async function orderLookupMessage(context, userId, text) {
       "訂單：" + display(order.order_id),
       "狀態：" + display(order.order_status || "pending"),
       "服務：" + display(order.service),
-      "日期：" + displayDate(order.date) + " " + displayTime(order.time),
+      "日期：" + displayDate(order.date),
+      "時間：" + displayTime(order.time),
       "上車：" + display(order.pickup),
       "下車：" + display(order.dropoff),
       "報價：NT$ " + display(order.final_price),
-      "付款：" + display(order.payment_status || "pending"),
-      order.driver_note ? "司機/客服備註：" + order.driver_note : ""
-    ].filter(Boolean).join("\n"),
-    quickReply: quickReply(context)
+      "付款：" + display(order.payment_status || "pending")
+    ].map(safeLineText).filter(Boolean).join("\n")
   };
 }
 
@@ -425,6 +424,12 @@ function extractOrderId(text) {
 
 function display(input) {
   return input === null || input === undefined || input === "" ? "-" : String(input);
+}
+
+function safeLineText(input) {
+  return String(input || "")
+    .replace(/[\u0000-\u001F\u007F]/g, " ")
+    .substring(0, 450);
 }
 
 function displayDate(input) {
