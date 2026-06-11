@@ -68,7 +68,7 @@ async function safeHandleEvent(context, event, channelAccessToken) {
       try {
         await reply(channelAccessToken, event.replyToken, [{
           type: "text",
-          text: "系統暫時無法回覆，請稍後再試。錯誤：" + (error && error.message ? error.message : String(error)).substring(0, 160)
+          text: "很抱歉，系統暫時無法完成回覆。禮賓團隊會盡快協助確認。錯誤：" + (error && error.message ? error.message : String(error)).substring(0, 160)
         }]);
       } catch (replyError) {
         console.log("LINE fallback reply failed", replyError);
@@ -94,7 +94,7 @@ async function handleEvent(context, event, channelAccessToken) {
   if (matchesAny(lowerText, ["測試", "test", "ping"])) {
     return reply(channelAccessToken, event.replyToken, [{
       type: "text",
-      text: "Webhook 測試成功，LINE 回覆功能正常。"
+      text: "御澤禮賓系統測試完成，LINE 回覆服務目前正常。"
     }]);
   }
 
@@ -107,11 +107,11 @@ async function handleEvent(context, event, channelAccessToken) {
   }
 
   if (matchesAny(lowerText, ["查詢", "訂單", "行程", "狀態", "我的預約"])) {
-    return reply(channelAccessToken, event.replyToken, [await orderLookupMessage(context, userId, text)]);
+    return reply(channelAccessToken, event.replyToken, [simpleOrderLookupMessage(context, text)]);
   }
 
   if (matchesAny(lowerText, ["付款", "支付", "訂金", "pay", "payment"])) {
-    return reply(channelAccessToken, event.replyToken, [await paymentLookupMessage(context, userId, text)]);
+    return reply(channelAccessToken, event.replyToken, [simplePaymentLookupMessage(context, text)]);
   }
 
   if (matchesAny(lowerText, ["客服", "人工", "help", "聯絡"])) {
@@ -133,12 +133,37 @@ function eventText(event) {
   return "";
 }
 
+function simpleOrderLookupMessage(context, text) {
+  const orderId = extractOrderId(text);
+  return {
+    type: "text",
+    text: [
+      "已為您收到行程查詢需求。",
+      orderId ? "訂單編號：" + orderId : "為精準核對行程，請提供訂單編號，例如：查詢 RF20260611184411244",
+      "若需重新填寫或補充資料，可由下方開啟預約表單：",
+      bookingUrl(context)
+    ].join("\n")
+  };
+}
+
+function simplePaymentLookupMessage(context, text) {
+  const orderId = extractOrderId(text);
+  return {
+    type: "text",
+    text: [
+      "已為您收到付款查詢需求。",
+      orderId ? "訂單編號：" + orderId : "為精準核對款項，請提供訂單編號，例如：付款 RF20260611184411244",
+      "禮賓專員確認車輛與行程後，將提供專屬訂金付款連結。"
+    ].join("\n")
+  };
+}
+
 async function orderLookupMessage(context, userId, text) {
   const orderId = extractOrderId(text);
   if (!userId && !orderId) {
     return {
       type: "text",
-      text: "目前無法取得您的 LINE 身分，請先從官方帳號聊天室傳送「預約」或用 LIFF 完成一次預約。",
+      text: "很抱歉，目前無法確認您的 LINE 身分。請先由官方帳號聊天室傳送「預約」，或透過表單完成一次預約，以利禮賓團隊為您核對行程。",
       quickReply: quickReply(context)
     };
   }
@@ -150,7 +175,7 @@ async function orderLookupMessage(context, userId, text) {
   if (!result || result.status !== "success" || !result.order) {
     return {
       type: "text",
-      text: "已收到查詢行程請求。\n" + (result && result.message ? result.message : "目前查不到預約紀錄。您也可以點選下方重新預約。"),
+      text: "已為您收到行程查詢需求。\n" + (result && result.message ? result.message : "目前尚未查到您的預約紀錄。您也可以點選下方重新預約，禮賓專員將協助確認。"),
       quickReply: quickReply(context)
     };
   }
@@ -159,9 +184,9 @@ async function orderLookupMessage(context, userId, text) {
   return {
     type: "text",
     text: [
-      "已收到查詢行程請求。",
-      "您的行程資訊",
-      "訂單：" + display(order.order_id),
+      "已為您完成行程查詢。",
+      "以下為目前預約資訊：",
+      "訂單編號：" + display(order.order_id),
       "狀態：" + display(order.order_status || "pending"),
       "服務：" + display(order.service),
       "日期：" + displayDate(order.date),
@@ -179,7 +204,7 @@ async function paymentLookupMessage(context, userId, text) {
   if (!userId && !orderId) {
     return {
       type: "text",
-      text: "目前無法取得您的 LINE 身分，請先從官方帳號聊天室傳送「預約」或用 LIFF 完成一次預約。",
+      text: "很抱歉，目前無法確認您的 LINE 身分。請先由官方帳號聊天室傳送「預約」，或透過表單完成一次預約，以利禮賓團隊為您核對款項。",
       quickReply: quickReply(context)
     };
   }
@@ -191,7 +216,7 @@ async function paymentLookupMessage(context, userId, text) {
   if (!result || result.status !== "success" || !result.order) {
     return {
       type: "text",
-      text: "已收到付款查詢請求。\n目前查不到可付款的預約。請先完成預約，客服確認後會提供訂金付款連結。",
+      text: "已為您收到付款查詢需求。\n目前尚未查到可付款的預約。請先完成預約，禮賓專員確認車輛與行程後，將提供訂金付款連結。",
       quickReply: quickReply(context)
     };
   }
@@ -201,7 +226,7 @@ async function paymentLookupMessage(context, userId, text) {
   if (!paymentUrl) {
     return {
       type: "text",
-      text: "已收到付款查詢請求。\n訂單 " + display(order.order_id) + " 尚未產生付款連結，客服確認車輛後會補上。",
+      text: "已為您收到付款查詢需求。\n訂單 " + display(order.order_id) + " 尚未產生付款連結。禮賓專員確認車輛與行程後，將為您補上專屬付款連結。",
       quickReply: quickReply(context)
     };
   }
@@ -209,9 +234,9 @@ async function paymentLookupMessage(context, userId, text) {
   return {
     type: "text",
     text: [
-      "已收到付款查詢請求。",
-      "訂金付款資訊",
-      "訂單：" + display(order.order_id),
+      "已為您完成付款查詢。",
+      "以下為訂金付款資訊：",
+      "訂單編號：" + display(order.order_id),
       "建議訂金：NT$ " + display(order.deposit_amount),
       "付款狀態：" + display(order.payment_status || "pending"),
       paymentUrl
@@ -223,7 +248,7 @@ async function paymentLookupMessage(context, userId, text) {
 function menuMessage(context) {
   return {
     type: "text",
-    text: "您好，這裡是御澤禮賓商務。請選擇服務：",
+    text: "您好，這裡是御澤禮賓商務。很榮幸為您服務，請選擇需要協助的項目：",
     quickReply: quickReply(context)
   };
 }
@@ -231,20 +256,20 @@ function menuMessage(context) {
 function bookingEntryMessage(context) {
   return {
     type: "template",
-    altText: "開啟御澤禮賓預約表單",
+    altText: "御澤禮賓預約服務",
     template: {
       type: "buttons",
-      title: "立即預約",
-      text: "機場接送、商務接送、旅遊包車皆可在 LINE 內完成填寫。",
+      title: "御澤禮賓預約服務",
+      text: "為節省您的寶貴時間，您可於 LINE 內完成機場接送、商務接送與包車需求填寫。",
       actions: [
         {
           type: "uri",
-          label: "開啟預約表單",
+          label: "開啟專屬預約表單",
           uri: bookingUrl(context)
         },
         {
           type: "message",
-          label: "先取得報價",
+          label: "先行估算費用",
           text: "報價"
         }
       ]
@@ -254,10 +279,10 @@ function bookingEntryMessage(context) {
 
 function quoteGuideMessage(context) {
   return {
-    type: "text",
-    text: [
-      "AI 自動報價會依車型、路程、時間與加購服務估算。",
-      "請點選預約表單，填寫上車/下車地點後按「取得 Google Routes 估價」，系統會即時計算距離、車程與初步報價。",
+      type: "text",
+      text: [
+        "御澤禮賓將依您的車型需求、行程路線、用車時間與加值服務，先行提供初步費用估算。",
+      "請開啟預約表單並填寫上車與下車地點，再點選「取得路線估價」。最終車輛、司機與費用將由禮賓專員為您確認。",
       bookingUrl(context)
     ].join("\n\n"),
     quickReply: quickReply(context)
@@ -268,7 +293,7 @@ function humanSupportMessage(context) {
   const supportUrl = context.env.SUPPORT_URL || bookingUrl(context);
   return {
     type: "text",
-    text: "已收到人工客服需求。請留下航班、日期、上車地點與人數，禮賓專員會接手確認。也可先填寫表單：" + supportUrl,
+    text: "已為您轉接禮賓專員。若方便，請先留下用車日期、航班或行程、上車地點與乘客人數，我們將為您細緻確認。也可先填寫預約表單：" + supportUrl,
     quickReply: quickReply(context)
   };
 }
@@ -276,11 +301,11 @@ function humanSupportMessage(context) {
 function quickReply(context) {
   return {
     items: [
-      quickMessage("立即預約", "預約"),
-      quickMessage("AI 報價", "報價"),
+      quickMessage("專屬預約", "預約"),
+      quickMessage("禮賓估價", "報價"),
       quickMessage("查詢行程", "查詢行程"),
-      quickMessage("付款", "付款"),
-      quickMessage("人工客服", "客服")
+      quickMessage("付款資訊", "付款"),
+      quickMessage("禮賓專員", "客服")
     ]
   };
 }
