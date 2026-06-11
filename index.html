@@ -9,15 +9,18 @@
 
   <style>
     :root {
-      --bg: #f6f2ea;
-      --card: #ffffff;
-      --black: #111111;
-      --gold: #b58a3a;
-      --gold-dark: #8a6728;
-      --line: #ded6c8;
-      --muted: #777777;
-      --danger: #b00020;
-      --success: #0a7f45;
+      --bg: #050505;
+      --card: #101010;
+      --card-soft: #171411;
+      --black: #070707;
+      --text: #f8f2df;
+      --gold: #d7ae54;
+      --gold-light: #f4d98b;
+      --gold-dark: #8f6424;
+      --line: rgba(215,174,84,0.32);
+      --muted: #c7baa1;
+      --danger: #ff8a9a;
+      --success: #7de0a4;
     }
 
     * {
@@ -27,8 +30,10 @@
     body {
       margin: 0;
       padding: 0;
-      background: var(--bg);
-      color: var(--black);
+      background:
+        radial-gradient(circle at 50% -10%, rgba(215,174,84,0.16), transparent 34%),
+        linear-gradient(180deg, #050505 0%, #0d0a07 46%, #050505 100%);
+      color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       font-size: 18px;
       line-height: 1.55;
@@ -42,35 +47,54 @@
 
     .brand {
       text-align: center;
-      padding: 18px 8px 14px;
+      padding: 22px 8px 18px;
+    }
+
+    .brand-crest {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 10px;
+      border: 1px solid rgba(244,217,139,0.72);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--gold-light);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 28px;
+      font-weight: 700;
+      box-shadow: 0 0 26px rgba(215,174,84,0.20), inset 0 0 18px rgba(215,174,84,0.12);
     }
 
     .brand-title {
       font-size: 26px;
       font-weight: 800;
       letter-spacing: 2px;
+      color: var(--gold-light);
+      text-shadow: 0 0 18px rgba(215,174,84,0.20);
     }
 
     .brand-sub {
       margin-top: 4px;
-      color: var(--gold-dark);
+      color: var(--muted);
       font-size: 15px;
       letter-spacing: 1px;
     }
 
     .card {
-      background: var(--card);
+      background: linear-gradient(180deg, rgba(23,20,17,0.98), rgba(10,10,10,0.98));
       border: 1px solid var(--line);
-      border-radius: 18px;
+      border-radius: 8px;
       padding: 18px;
       margin-bottom: 18px;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.05);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.04);
     }
 
     .step-title {
       font-size: 22px;
       font-weight: 800;
       margin-bottom: 12px;
+      color: var(--gold-light);
+      letter-spacing: 0;
     }
 
     .step-sub {
@@ -83,6 +107,7 @@
       display: block;
       font-weight: 700;
       margin: 16px 0 7px;
+      color: #f2e6c8;
     }
 
     input,
@@ -91,11 +116,22 @@
       width: 100%;
       min-height: 50px;
       border: 1px solid var(--line);
-      border-radius: 12px;
+      border-radius: 8px;
       padding: 12px 13px;
       font-size: 18px;
-      background: #fff;
+      background: #0b0b0b;
+      color: var(--text);
       outline: none;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(199,186,161,0.58);
+    }
+
+    select option {
+      background: #111;
+      color: var(--text);
     }
 
     textarea {
@@ -107,7 +143,7 @@
     select:focus,
     textarea:focus {
       border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(181,138,58,0.16);
+      box-shadow: 0 0 0 3px rgba(215,174,84,0.16);
     }
 
     .row {
@@ -121,25 +157,26 @@
     }
 
     .notice {
-      background: #fff9ec;
-      border: 1px solid #ead7ac;
-      color: #5d4311;
-      border-radius: 14px;
+      background: rgba(215,174,84,0.10);
+      border: 1px solid rgba(215,174,84,0.34);
+      color: #f2e6c8;
+      border-radius: 8px;
       padding: 12px;
       margin-top: 14px;
       font-size: 15px;
     }
 
     .quote-box {
-      background: #111;
+      background: linear-gradient(180deg, #070707, #15110c);
       color: #fff;
-      border-radius: 16px;
+      border: 1px solid rgba(215,174,84,0.34);
+      border-radius: 8px;
       padding: 16px;
       margin-top: 16px;
     }
 
     .quote-box strong {
-      color: #f5d083;
+      color: var(--gold-light);
     }
 
     .quote-line {
@@ -156,27 +193,31 @@
 
     .btn {
       border: none;
-      border-radius: 14px;
+      border-radius: 8px;
       min-height: 52px;
       padding: 13px 16px;
       font-size: 18px;
       font-weight: 800;
       cursor: pointer;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.22);
     }
 
     .btn-primary {
-      background: var(--black);
-      color: #fff;
+      background: linear-gradient(180deg, #e7c56d, #ad7628);
+      color: #110c05;
+      border: 1px solid rgba(244,217,139,0.62);
     }
 
     .btn-gold {
-      background: var(--gold);
-      color: #fff;
+      background: linear-gradient(180deg, #d7ae54, #8f6424);
+      color: #110c05;
+      border: 1px solid rgba(244,217,139,0.52);
     }
 
     .btn-light {
-      background: #eee7da;
-      color: #222;
+      background: #181818;
+      color: #f2e6c8;
+      border: 1px solid rgba(215,174,84,0.28);
     }
 
     .btn:disabled {
@@ -201,9 +242,9 @@
     .icon-btn {
       min-height: 50px;
       border: 1px solid var(--line);
-      border-radius: 12px;
-      background: #111;
-      color: #fff;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #d7ae54, #8f6424);
+      color: #110c05;
       font-size: 28px;
       font-weight: 800;
       cursor: pointer;
@@ -215,7 +256,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(255,255,255,0.96);
+      background: rgba(5,5,5,0.96);
       border-top: 1px solid var(--line);
       padding: 10px 14px;
       display: grid;
@@ -226,27 +267,27 @@
 
     .status {
       padding: 12px;
-      border-radius: 14px;
+      border-radius: 8px;
       margin-top: 12px;
       font-size: 15px;
     }
 
     .status.success {
-      background: #e9f7ef;
+      background: rgba(10,127,69,0.14);
       color: var(--success);
-      border: 1px solid #bde6cd;
+      border: 1px solid rgba(125,224,164,0.36);
     }
 
     .status.error {
-      background: #fdecef;
+      background: rgba(176,0,32,0.16);
       color: var(--danger);
-      border: 1px solid #f4b9c2;
+      border: 1px solid rgba(255,138,154,0.38);
     }
 
     .status.info {
-      background: #edf4ff;
-      color: #234c82;
-      border: 1px solid #c5d9f5;
+      background: rgba(215,174,84,0.10);
+      color: #f2e6c8;
+      border: 1px solid rgba(215,174,84,0.30);
     }
 
     .step {
@@ -266,12 +307,13 @@
 
     .progress span {
       height: 7px;
-      background: #dfd7ca;
+      background: rgba(215,174,84,0.18);
       border-radius: 99px;
     }
 
     .progress span.active {
-      background: var(--gold);
+      background: linear-gradient(90deg, #8f6424, #f4d98b);
+      box-shadow: 0 0 12px rgba(215,174,84,0.32);
     }
 
     @media (max-width: 560px) {
@@ -298,6 +340,7 @@
 <body>
   <div class="page">
     <div class="brand">
+      <div class="brand-crest">SR</div>
       <div class="brand-title">御澤禮賓商務</div>
       <div class="brand-sub">Royal Flow Concierge｜高端商務車預約</div>
     </div>
