@@ -149,11 +149,13 @@ async function handleEvent(context, event, channelAccessToken) {
   }
 
   if (matchesAny(lowerText, ["查詢", "訂單", "行程", "狀態", "我的預約"])) {
-    return reply(channelAccessToken, event.replyToken, [simpleOrderLookupMessage(context, text)]);
+    const profileName = userId ? await lineProfileName(channelAccessToken, userId) : "";
+    return reply(channelAccessToken, event.replyToken, [await orderLookupMessage(context, userId, text, profileName)]);
   }
 
   if (matchesAny(lowerText, ["付款", "支付", "訂金", "pay", "payment"])) {
-    return reply(channelAccessToken, event.replyToken, [simplePaymentLookupMessage(context, text)]);
+    const profileName = userId ? await lineProfileName(channelAccessToken, userId) : "";
+    return reply(channelAccessToken, event.replyToken, [await paymentLookupMessage(context, userId, text, profileName)]);
   }
 
   if (matchesAny(lowerText, ["客服", "人工", "help", "聯絡"])) {
@@ -202,7 +204,7 @@ function simplePaymentLookupMessage(context, text) {
   };
 }
 
-async function orderLookupMessage(context, userId, text) {
+async function orderLookupMessage(context, userId, text, lineDisplayName) {
   const orderId = extractOrderId(text);
   if (!userId && !orderId) {
     return {
@@ -214,7 +216,7 @@ async function orderLookupMessage(context, userId, text) {
 
   const result = orderId
     ? await gasAction(context, "getOrder", { orderId })
-    : await gasAction(context, "getLatestOrder", { lineUserId: userId });
+    : await gasAction(context, "getLatestOrder", { lineUserId: userId, lineDisplayName });
 
   if (!result || result.status !== "success" || !result.order) {
     return {
@@ -225,25 +227,10 @@ async function orderLookupMessage(context, userId, text) {
   }
 
   const order = result.order;
-  return {
-    type: "text",
-    text: [
-      "已為您完成行程查詢。",
-      "以下為目前預約資訊：",
-      "訂單編號：" + display(order.order_id),
-      "狀態：" + display(order.order_status || "pending"),
-      "服務：" + display(order.service),
-      "日期：" + displayDate(order.date),
-      "時間：" + displayTime(order.time),
-      "上車：" + display(order.pickup),
-      "下車：" + display(order.dropoff),
-      "報價：NT$ " + display(order.final_price),
-      "付款：" + display(order.payment_status || "pending")
-    ].map(safeLineText).filter(Boolean).join("\n")
-  };
+  return orderSummaryFlexMessage(context, order);
 }
 
-async function paymentLookupMessage(context, userId, text) {
+async function paymentLookupMessage(context, userId, text, lineDisplayName) {
   const orderId = extractOrderId(text);
   if (!userId && !orderId) {
     return {
@@ -255,7 +242,7 @@ async function paymentLookupMessage(context, userId, text) {
 
   const result = orderId
     ? await gasAction(context, "getOrder", { orderId })
-    : await gasAction(context, "getLatestOrder", { lineUserId: userId });
+    : await gasAction(context, "getLatestOrder", { lineUserId: userId, lineDisplayName });
 
   if (!result || result.status !== "success" || !result.order) {
     return {
@@ -265,26 +252,120 @@ async function paymentLookupMessage(context, userId, text) {
     };
   }
 
-  const order = result.order;
-  const paymentUrl = order.payment_url || "";
-  if (!paymentUrl) {
-    return {
-      type: "text",
-      text: "已為您收到付款查詢需求。\n訂單 " + display(order.order_id) + " 尚未產生付款連結。禮賓專員確認車輛與行程後，將為您補上專屬付款連結。",
-      quickReply: quickReply(context)
-    };
-  }
+  return bankTransferFlexMessage(context, result.order);
+}
+
+function orderSummaryFlexMessage(context, order) {
+  const orderId = display(order.order_id);
+  const price = money(order.final_price);
+  const deposit = money(order.deposit_amount);
+  const statusText = orderStatusText(order.order_status || "pending");
+  const paymentText = paymentStatusText(order.payment_status || "pending");
 
   return {
-    type: "text",
-    text: [
-      "已為您完成付款查詢。",
-      "以下為訂金付款資訊：",
-      "訂單編號：" + display(order.order_id),
-      "建議訂金：NT$ " + display(order.deposit_amount),
-      "付款狀態：" + display(order.payment_status || "pending"),
-      paymentUrl
-    ].join("\n"),
+    type: "flex",
+    altText: "御澤禮賓行程查詢 " + orderId,
+    contents: {
+      type: "bubble",
+      size: "mega",
+      header: flexHeader("行程資訊", "Royal Flow Concierge"),
+      body: {
+        type: "box",
+        layout: "vertical",
+        backgroundColor: "#FFFFFF",
+        spacing: "md",
+        contents: [
+          flexText("已為您查詢到最新預約紀錄。", true),
+          flexInfoRow("訂單編號", orderId),
+          flexInfoRow("目前狀態", statusText),
+          flexInfoRow("付款狀態", paymentText),
+          flexSeparator(),
+          flexInfoRow("服務項目", display(order.service)),
+          flexInfoRow("車型需求", display(order.car_type || "禮賓專員確認中")),
+          flexInfoRow("用車日期", displayDate(order.date)),
+          flexInfoRow("用車時間", displayTime(order.time)),
+          flexInfoRow("上車地點", display(order.pickup || order.airport_reception_address || order.reception_address)),
+          flexInfoRow("下車地點", display(order.dropoff || order.dropoff_airport || order.reserved_airport || order.reserved_port)),
+          flexInfoRow("乘客 / 行李", display(order.passengers || "-") + " 人 / " + display(order.luggage || "-") + " 件"),
+          flexInfoRow("禮賓等級", display(order.service_tier || "尊榮標準服務")),
+          flexSeparator(),
+          flexInfoRow("初步估價", price),
+          flexInfoRow("建議訂金", deposit),
+          flexNotice("此為系統訂單摘要。實際派車、司機、停車等候、跨區與加值服務，將由禮賓專員最終確認。")
+        ].filter(Boolean)
+      },
+      footer: flexFooter([
+        flexMessageButton("付款資訊", "付款 " + orderId, "#D7AE54"),
+        flexUriButton("補充或修改預約", bookingUrl(context), "#6B7280"),
+        flexMessageButton("聯繫禮賓專員", "客服 " + orderId, "#111026")
+      ])
+    },
+    quickReply: quickReply(context)
+  };
+}
+
+function bankTransferFlexMessage(context, order) {
+  const bank = bankTransferInfo(context);
+  const orderId = order ? display(order.order_id) : "";
+  const amount = order ? money(order.balance_amount || order.final_price || order.deposit_amount) : "請依禮賓專員確認金額";
+  const deposit = order ? money(order.deposit_amount) : "請依禮賓專員確認金額";
+
+  const contents = [
+    {
+      type: "image",
+      url: bankQrImageUrl(context),
+      size: "full",
+      aspectRatio: "20:31",
+      aspectMode: "fit",
+      backgroundColor: "#F8F8F8"
+    },
+    flexText("以下為銀行匯款資訊。匯款前請確認訂單編號與金額，匯款後請回傳末五碼，禮賓專員將協助核對。", true)
+  ];
+
+  if (order) {
+    contents.push(
+      flexInfoRow("訂單編號", orderId),
+      flexInfoRow("服務項目", display(order.service)),
+      flexInfoRow("用車日期", displayDate(order.date) + " " + displayTime(order.time)),
+      flexInfoRow("初步估價", money(order.final_price)),
+      flexInfoRow("建議訂金", deposit),
+      flexInfoRow("待付金額", amount),
+      flexSeparator()
+    );
+  } else {
+    contents.push(
+      flexNotice("目前尚未查到您的最新訂單。若已完成預約，請輸入「付款 RF訂單編號」查詢專屬付款資訊。"),
+      flexSeparator()
+    );
+  }
+
+  contents.push(
+    flexInfoRow("銀行", bank.bankName),
+    flexInfoRow("銀行代碼", bank.bankCode),
+    flexInfoRow("戶名", bank.accountName),
+    flexInfoRow("帳號", bank.accountNumber),
+    flexNotice(bank.note)
+  );
+
+  return {
+    type: "flex",
+    altText: "御澤禮賓付款資訊" + (orderId ? " " + orderId : ""),
+    contents: {
+      type: "bubble",
+      size: "mega",
+      header: flexHeader("付款資訊", "銀行匯款 / 車資訂金"),
+      body: {
+        type: "box",
+        layout: "vertical",
+        backgroundColor: "#FFFFFF",
+        spacing: "md",
+        contents
+      },
+      footer: flexFooter([
+        orderId ? flexMessageButton("我已匯款，回傳末五碼", "已匯款 " + orderId + " 末五碼：", "#D7AE54") : flexUriButton("先完成預約", bookingUrl(context), "#D7AE54"),
+        flexMessageButton("聯繫禮賓專員", orderId ? "客服 " + orderId : "客服", "#111026")
+      ])
+    },
     quickReply: quickReply(context)
   };
 }
@@ -739,6 +820,33 @@ function flexText(text, bold) {
   };
 }
 
+function flexInfoRow(label, value) {
+  return {
+    type: "box",
+    layout: "horizontal",
+    spacing: "sm",
+    contents: [
+      {
+        type: "text",
+        text: label,
+        size: "xs",
+        color: "#8A6728",
+        flex: 3,
+        wrap: true
+      },
+      {
+        type: "text",
+        text: display(value),
+        size: "sm",
+        color: "#222222",
+        weight: "bold",
+        flex: 5,
+        wrap: true
+      }
+    ]
+  };
+}
+
 function flexNotice(text) {
   return {
     type: "box",
@@ -845,6 +953,27 @@ async function reply(channelAccessToken, replyToken, messages) {
   }
 
   console.log("LINE reply API success");
+}
+
+async function lineProfileName(channelAccessToken, userId) {
+  try {
+    const response = await fetch("https://api.line.me/v2/bot/profile/" + encodeURIComponent(userId), {
+      headers: {
+        Authorization: "Bearer " + channelAccessToken
+      }
+    });
+
+    if (!response.ok) {
+      console.log("LINE profile lookup failed", response.status);
+      return "";
+    }
+
+    const profile = await response.json();
+    return String(profile.displayName || "").trim();
+  } catch (error) {
+    console.log("LINE profile lookup error", error && error.message ? error.message : String(error));
+    return "";
+  }
 }
 
 async function gasAction(context, action, payload) {
@@ -961,6 +1090,53 @@ function extractOrderId(text) {
 
 function display(input) {
   return input === null || input === undefined || input === "" ? "-" : String(input);
+}
+
+function money(input) {
+  const amount = Number(input || 0);
+  if (!amount) {
+    return "待確認";
+  }
+  return "NT$ " + amount.toLocaleString("zh-TW");
+}
+
+function orderStatusText(input) {
+  const status = String(input || "").toLowerCase();
+  if (status === "confirmed") return "已確認";
+  if (status === "cancelled" || status === "canceled") return "已取消";
+  if (status === "completed") return "已完成";
+  if (status === "pending") return "禮賓專員確認中";
+  return display(input);
+}
+
+function paymentStatusText(input) {
+  const status = String(input || "").toLowerCase();
+  if (status === "paid") return "已付款";
+  if (status === "failed") return "付款失敗";
+  if (status === "refunded") return "已退款";
+  if (status === "pending") return "待付款 / 待核對";
+  return display(input);
+}
+
+function bankTransferInfo(context) {
+  const bankName = context.env.BANK_NAME || "銀行帳號尚未設定";
+  const bankCode = context.env.BANK_CODE || "請洽禮賓專員";
+  const accountName = context.env.BANK_ACCOUNT_NAME || context.env.BANK_HOLDER || "請洽禮賓專員";
+  const accountNumber = context.env.BANK_ACCOUNT_NUMBER || context.env.BANK_ACCOUNT || "請洽禮賓專員";
+  const note = context.env.BANK_TRANSFER_NOTE ||
+    "匯款後請於 LINE 回傳訂單編號、匯款末五碼與匯款金額。若銀行資料尚未設定，請先聯繫禮賓專員確認。";
+
+  return {
+    bankName,
+    bankCode,
+    accountName,
+    accountNumber,
+    note
+  };
+}
+
+function bankQrImageUrl(context) {
+  return context.env.BANK_QR_IMAGE_URL || assetUrl(context, "/assets/payment/ctbc-bank-qr.jpg");
 }
 
 function safeLineText(input) {

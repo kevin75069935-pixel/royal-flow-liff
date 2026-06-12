@@ -330,17 +330,27 @@ function submitBooking(data) {
 
 function getLatestOrder(data) {
   const lineUserId = value(data.lineUserId || data.line_user_id);
-  if (!lineUserId) {
+  const lineDisplayName = value(data.lineDisplayName || data.line_display_name);
+  if (!lineUserId && !lineDisplayName) {
     return {
       status: "error",
-      message: "缺少 LINE User ID。"
+      message: "缺少 LINE User ID 或 LINE 暱稱。"
     };
   }
 
   const sheet = getOrdersSheet();
   const orders = sheetToObjects(sheet);
   for (let i = orders.length - 1; i >= 0; i--) {
-    if (orders[i].line_user_id === lineUserId) {
+    if (lineUserId && orders[i].line_user_id === lineUserId) {
+      return {
+        status: "success",
+        order: orders[i]
+      };
+    }
+  }
+
+  for (let i = orders.length - 1; i >= 0; i--) {
+    if (lineDisplayName && String(orders[i].line_display_name || "").trim() === lineDisplayName) {
       return {
         status: "success",
         order: orders[i]
