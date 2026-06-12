@@ -887,32 +887,37 @@
       </div>
 
       <div id="receptionBlock" class="hidden">
-        <div class="inline-action">
-          <div>
-            <label>接待地址 *</label>
-            <input id="receptionAddress" type="text" placeholder="例：台北市信義區某飯店" oninput="syncReceptionFields()">
+        <label>是否需要多點接待</label>
+        <select id="receptionMultiPoint" onchange="handleReceptionMultiPointChange()">
+          <option value="否">否，只有單一上車地點</option>
+          <option value="是">是，需要增加接待點</option>
+        </select>
+
+        <div id="receptionExtraBlock" class="hidden">
+          <div class="notice">
+            上車地點將作為第一接待點。如需多點接待，請點選「+」新增第 2 至第 5 個接待點。
+            <button class="icon-btn" type="button" onclick="addReceptionPoint()" title="增加接待點">+</button>
           </div>
-          <button class="icon-btn" type="button" onclick="addReceptionPoint()" title="增加接待點">+</button>
-        </div>
 
-        <div id="receptionPoint2Row" class="hidden">
-          <label>增加接待點 2</label>
-          <input id="receptionPoint2" type="text" placeholder="例：第二接待地址">
-        </div>
+          <div id="receptionPoint2Row" class="hidden">
+            <label>增加接待點 2</label>
+            <input id="receptionPoint2" type="text" placeholder="例：第二接待地址">
+          </div>
 
-        <div id="receptionPoint3Row" class="hidden">
-          <label>增加接待點 3</label>
-          <input id="receptionPoint3" type="text" placeholder="例：第三接待地址">
-        </div>
+          <div id="receptionPoint3Row" class="hidden">
+            <label>增加接待點 3</label>
+            <input id="receptionPoint3" type="text" placeholder="例：第三接待地址">
+          </div>
 
-        <div id="receptionPoint4Row" class="hidden">
-          <label>增加接待點 4</label>
-          <input id="receptionPoint4" type="text" placeholder="選填">
-        </div>
+          <div id="receptionPoint4Row" class="hidden">
+            <label>增加接待點 4</label>
+            <input id="receptionPoint4" type="text" placeholder="選填">
+          </div>
 
-        <div id="receptionPoint5Row" class="hidden">
-          <label>增加接待點 5</label>
-          <input id="receptionPoint5" type="text" placeholder="選填">
+          <div id="receptionPoint5Row" class="hidden">
+            <label>增加接待點 5</label>
+            <input id="receptionPoint5" type="text" placeholder="選填">
+          </div>
         </div>
       </div>
 
@@ -1339,7 +1344,7 @@
       }
 
       const reservedPort = valueOf("reservedPort");
-      const receptionAddress = valueOf("receptionAddress");
+      const receptionAddress = valueOf("pickup");
       if (!reservedPort) {
         return;
       }
@@ -1359,7 +1364,7 @@
 
     function syncReceptionFields() {
       const service = valueOf("service");
-      const receptionAddress = valueOf("receptionAddress");
+      const receptionAddress = valueOf("pickup");
       if (!supportsReceptionAddress(service) || !receptionAddress) {
         return;
       }
@@ -1410,9 +1415,9 @@
       airportPointCount = Math.max(airportPointCount, service === "機場接送" ? Math.min(5, stopCount) : 1);
       renderAirportPointRows();
       receptionPointCount = Math.max(receptionPointCount, showReception ? Math.min(5, stopCount) : 1);
-      renderReceptionPointRows();
       stopCountBlock.classList.toggle("hidden", service === "機場接送" || showReception);
       receptionBlock.classList.toggle("hidden", !showReception);
+      handleReceptionMultiPointChange();
     }
 
     function supportsReceptionAddress(service) {
@@ -1445,18 +1450,43 @@
     }
 
     function addReceptionPoint() {
+      const multiPointSelect = document.getElementById("receptionMultiPoint");
+      if (multiPointSelect) {
+        multiPointSelect.value = "是";
+      }
       if (receptionPointCount < 5) {
         receptionPointCount++;
       }
       document.getElementById("stopCount").value = String(receptionPointCount);
+      handleReceptionMultiPointChange();
+    }
+
+    function handleReceptionMultiPointChange() {
+      const service = valueOf("service");
+      const enabled = supportsReceptionAddress(service) && valueOf("receptionMultiPoint") === "是";
+      const block = document.getElementById("receptionExtraBlock");
+      if (block) {
+        block.classList.toggle("hidden", !enabled);
+      }
+      if (!enabled) {
+        receptionPointCount = 1;
+        document.getElementById("stopCount").value = "1";
+        ["receptionPoint2", "receptionPoint3", "receptionPoint4", "receptionPoint5"].forEach(function(id) {
+          const input = document.getElementById(id);
+          if (input) {
+            input.value = "";
+          }
+        });
+      }
       renderReceptionPointRows();
     }
 
     function renderReceptionPointRows() {
+      const enabled = supportsReceptionAddress(valueOf("service")) && valueOf("receptionMultiPoint") === "是";
       for (let i = 2; i <= 5; i++) {
         const row = document.getElementById("receptionPoint" + i + "Row");
         if (row) {
-          row.classList.toggle("hidden", !supportsReceptionAddress(valueOf("service")) || i > receptionPointCount);
+          row.classList.toggle("hidden", !enabled || i > receptionPointCount);
         }
       }
     }
@@ -1589,11 +1619,6 @@
 
         if (valueOf("service") === "港口接送" && !valueOf("reservedPort")) {
           alert("請選擇預約港口");
-          return false;
-        }
-
-        if (supportsReceptionAddress(valueOf("service")) && !valueOf("receptionAddress")) {
-          alert("請填寫接待地址");
           return false;
         }
 
@@ -1772,7 +1797,7 @@
         stopCount: valueOf("stopCount"),
         multiStop: Number(valueOf("stopCount") || 1) > 1 ? "有" : "無",
         multiStopNote: valueOf("multiStopNote"),
-        receptionAddress: supportsReceptionAddress(service) ? valueOf("receptionAddress") : "",
+        receptionAddress: supportsReceptionAddress(service) ? valueOf("pickup") : "",
         receptionPoint2: valueOf("receptionPoint2"),
         receptionPoint3: valueOf("receptionPoint3"),
         receptionPoint4: valueOf("receptionPoint4"),
@@ -1816,7 +1841,7 @@
         (data.airportServiceType ? "機場接送類型：" + escapeHtml(data.airportServiceType) + "<br>" : "") +
         (data.portServiceType ? "港口接送類型：" + escapeHtml(data.portServiceType) + "<br>" : "") +
         (data.reservedPort ? "預約港口：" + escapeHtml(data.reservedPort) + "<br>" : "") +
-        (data.receptionAddress ? "接待地址：" + escapeHtml(data.receptionAddress) + "<br>" : "") +
+        (data.receptionAddress && data.receptionAddress !== data.pickup ? "接待地址：" + escapeHtml(data.receptionAddress) + "<br>" : "") +
         (data.flight ? "航班資訊：" + escapeHtml(data.flight) + "<br>" : "") +
         (data.flightTime ? escapeHtml(data.airportServiceType === "接機服務" ? "抵達時間：" : "起飛時間：") + escapeHtml(data.flightTime) + "<br>" : "") +
         "上車：" + escapeHtml(data.pickup) + "<br>" +
