@@ -132,6 +132,14 @@ async function handleEvent(context, event, channelAccessToken) {
     return reply(channelAccessToken, event.replyToken, [universalLoungeMessage(context)]);
   }
 
+  if (matchesAny(lowerText, ["保障", "保險", "安全", "隱私", "保密", "服務保障"])) {
+    return reply(channelAccessToken, event.replyToken, [assuranceMessage(context)]);
+  }
+
+  if (matchesAny(lowerText, ["企業接待", "公司接待", "月結", "統編", "發票", "報價單"])) {
+    return reply(channelAccessToken, event.replyToken, [enterpriseReceptionMessage(context)]);
+  }
+
   if (matchesAny(lowerText, ["預約", "book", "booking"])) {
     return reply(channelAccessToken, event.replyToken, [serviceMenuMessage(context)]);
   }
@@ -172,8 +180,9 @@ function simpleOrderLookupMessage(context, text) {
   return {
     type: "text",
     text: [
-      "已為您收到行程查詢需求。",
+      "已為您收到行程查詢需求，禮賓專員將依訂單資料協助核對。",
       orderId ? "訂單編號：" + orderId : "為精準核對行程，請提供訂單編號，例如：查詢 RF20260611184411244",
+      "查詢內容將包含目前狀態、服務項目、用車時間、上下車地點、初步禮賓估價與付款狀態。",
       "若需重新填寫或補充資料，可由下方開啟預約表單：",
       bookingUrl(context)
     ].join("\n")
@@ -187,7 +196,8 @@ function simplePaymentLookupMessage(context, text) {
     text: [
       "已為您收到付款查詢需求。",
       orderId ? "訂單編號：" + orderId : "為精準核對款項，請提供訂單編號，例如：付款 RF20260611184411244",
-      "禮賓專員確認車輛與行程後，將提供專屬訂金付款連結。"
+      "禮賓專員確認車輛與行程後，將提供專屬訂金付款資訊。",
+      "付款確認後將為您保留車輛與司機檔期；尾款、收據、統編發票或企業月結可依需求由專員協助。"
     ].join("\n")
   };
 }
@@ -344,6 +354,7 @@ function serviceMenuMessage(context) {
           flexMessageButton("機場接送", "機場接送", "#111026"),
           flexMessageButton("包車旅遊", "包車旅遊", "#D7AE54"),
           flexMessageButton("寰宇商務中心", "寰宇商務中心禮賓套餐", "#D7AE54"),
+          flexMessageButton("服務保障", "服務保障", "#6B7280"),
           flexUriButton("開啟專屬預約表單", bookingUrl(context), "#6B7280")
         ]
       }
@@ -497,10 +508,12 @@ function universalLoungeMessage(context) {
           flexText("可協助代訂寰宇商務中心禮賓服務，並依行程搭配商務車、豪華保姆車或多人保姆車。", true),
           flexSeparator(),
           flexText("可選方案", true),
-          flexText("代訂寰宇商務中心禮賓服務", false),
-          flexText("商務車 + 寰宇商務中心套餐", false),
-          flexText("保姆車 + 寰宇商務中心套餐", false),
-          flexText("接機 / 送機禮賓 + 車輛接送", false),
+          flexText("寰宇商務中心代訂", false),
+          flexText("接機禮賓 + 商務車", false),
+          flexText("送機禮賓 + 商務車", false),
+          flexText("外賓快速接待方案", false),
+          flexText("企業主管機場禮賓方案", false),
+          flexText("商務車 / 保姆車 + 寰宇商務中心套餐", false),
           flexSeparator(),
           flexText("報價方式", true),
           flexText("車輛費用依所選車型、路線與用車時間計算；商務中心費用、可訂席次與禮賓服務內容需依當日方案確認。", false),
@@ -512,6 +525,44 @@ function universalLoungeMessage(context) {
         flexMessageButton("需要禮賓專員協助", "客服", "#6B7280")
       ])
     },
+    quickReply: quickReply(context)
+  };
+}
+
+function assuranceMessage(context) {
+  return {
+    type: "text",
+    text: [
+      "御澤禮賓服務保障",
+      "",
+      "乘客保障：乘客保險、車況檢核、司機資格與服儀規範。",
+      "車內品質：車內清潔、礦泉水、濕紙巾、充電線、薄荷糖與航班追蹤。",
+      "隱私保密：企業主管、外賓、藝人名流與私人行程皆以保密原則處理。",
+      "航班與等候：接送機可依航班動態協助調整接待時間；停車、等候、跨區與超時費用將於正式報價中確認。",
+      "",
+      "可加選 VIP 商務服務或皇家禮賓服務，包含靜音乘車、一次性拖鞋、薄毯、英文司機、舉牌接待、花束禮品代購與企業 Logo 舉牌等安排。",
+      bookingUrl(context)
+    ].join("\n"),
+    quickReply: quickReply(context)
+  };
+}
+
+function enterpriseReceptionMessage(context) {
+  return {
+    type: "text",
+    text: [
+      "企業接待與單據需求可於預約表單填寫：",
+      "",
+      "公司名稱 / 接待單位",
+      "統一編號",
+      "接待對象與接待層級",
+      "正式報價單、收據或統編發票需求",
+      "企業月結洽談",
+      "多車調度、保密行程、英文司機與企業 Logo 舉牌",
+      "",
+      "禮賓專員會依車輛檔期、司機安排與行程細節，提供正式報價與付款方式。",
+      bookingUrl(context)
+    ].join("\n"),
     quickReply: quickReply(context)
   };
 }
@@ -576,44 +627,44 @@ function vehicleProfiles(context) {
     {
       name: "Lexus LM 40 / 35",
       imageUrl: assetUrl(context, "/assets/vehicles/lexus-lm.jpg"),
-      summary: "旗艦級豪華保姆車，座艙安靜、質感細膩，適合高端貴賓與企業主管。",
-      service: "機場接送、商務接送、外交禮賓、VIP 接待",
-      bestPassengers: "2-4 位"
+      summary: "旗艦級豪華保姆車，靜謐座艙與高規格後座，適合高端貴賓、企業主管與外賓長程移動。",
+      service: "VIP 機場接送、企業主管、外賓接待、婚禮與外交禮賓",
+      bestPassengers: "2-4 位 / 建議 2-4 件行李"
     },
     {
       name: "Toyota Alphard 40 / 35",
       imageUrl: assetUrl(context, "/assets/vehicles/toyota-alphard.jpg"),
-      summary: "高端商務接送主力車型，乘坐舒適、行李彈性佳，適合多數 VIP 行程。",
-      service: "機場接送、商務接送、包車旅遊、婚禮禮車",
-      bestPassengers: "2-5 位"
+      summary: "高端商務接送主力車型，乘坐舒適、行李彈性佳，適合機場接送、家庭貴賓與商務會議。",
+      service: "機場接送、商務接送、包車旅遊、飯店貴賓接待",
+      bestPassengers: "2-5 位 / 建議 3-5 件行李"
     },
     {
       name: "Toyota Granvia 6/7人座",
       imageUrl: assetUrl(context, "/assets/vehicles/toyota-granvia.png"),
-      summary: "多人商務與家庭旅遊適用，空間寬敞，適合中長程與多點移動。",
-      service: "包車旅遊、商務接待、港口接送、多點行程",
-      bestPassengers: "4-6 位"
+      summary: "多人商務與旅遊兼具，座位與行李配置均衡，適合家庭、團體、中長程與多點接待。",
+      service: "商務包車、旅遊包車、港口接送、多點接待",
+      bestPassengers: "4-6 位 / 建議 4-6 件行李"
     },
     {
       name: "Benz V-Class V300d / V250d",
       imageUrl: assetUrl(context, "/assets/vehicles/benz-vclass.jpg"),
-      summary: "歐系商務保姆車，兼具舒適與形象，適合外賓接待與會議行程。",
+      summary: "歐系商務保姆車，座艙質感沉穩，適合外賓、會議接待、長程商務與高階團體。",
       service: "外賓接待、商務接送、會議接送、長程包車",
-      bestPassengers: "3-6 位"
+      bestPassengers: "3-6 位 / 建議 3-5 件行李"
     },
     {
       name: "Benz Vito 9人座",
       imageUrl: assetUrl(context, "/assets/vehicles/benz-vito.jpg"),
-      summary: "團體接送實用車型，座位與行李容量平衡，適合活動與企業團體。",
+      summary: "團體接送實用車型，座位與行李容量平衡，適合活動、港口接送與企業車隊。",
       service: "團體接送、展演活動、港口接送、企業車隊",
-      bestPassengers: "5-8 位"
+      bestPassengers: "5-8 位 / 建議 5-7 件行李"
     },
     {
       name: "VW Crafter / Sprinter 旗艦9人座",
       imageUrl: assetUrl(context, "/assets/vehicles/vw-crafter.jpg"),
-      summary: "大型高端保姆車，同級可安排 Sprinter 或 Crafter，適合 VIP 團體與高規格活動。",
+      summary: "大型高端保姆車，同級可安排 Sprinter 或 Crafter，適合 VIP 團體、展演活動、外交禮賓與高規格企業接待。",
       service: "VIP 團體、展演活動、外交禮賓、企業接待",
-      bestPassengers: "6-9 位"
+      bestPassengers: "6-9 位 / 建議 6-9 件行李"
     }
   ];
 }
@@ -750,6 +801,7 @@ function quickReply(context) {
       quickMessage("專屬預約", "預約"),
       quickMessage("服務車型", "服務車型"),
       quickMessage("禮賓估價", "報價"),
+      quickMessage("服務保障", "服務保障"),
       quickMessage("查詢行程", "查詢行程"),
       quickMessage("付款資訊", "付款"),
       quickMessage("禮賓專員", "客服")

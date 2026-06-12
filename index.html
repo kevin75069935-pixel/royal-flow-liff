@@ -161,6 +161,28 @@
       font-size: 15px;
     }
 
+    .trust-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .trust-item {
+      border: 1px solid rgba(215,174,84,0.26);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(255,255,255,0.03);
+      color: #f2e6c8;
+      font-size: 14px;
+    }
+
+    .trust-item strong {
+      display: block;
+      color: var(--gold-light);
+      margin-bottom: 3px;
+    }
+
     .service-tier-list {
       display: grid;
       gap: 10px;
@@ -464,6 +486,61 @@
       <input id="lineDisplayName" type="text" placeholder="系統將自動帶入，未取得可留空">
 
       <div id="lineStatus" class="status info">LINE 身分讀取中...</div>
+
+      <div class="notice">
+        御澤禮賓重視商務隱私、準時抵達與乘車品質。預約送出後，禮賓專員將依行程性質確認車輛、司機、路線、航班或活動時間。
+      </div>
+
+      <div class="trust-grid">
+        <div class="trust-item"><strong>乘客保障</strong>乘客保險、車況檢核、司機資格與服儀規範。</div>
+        <div class="trust-item"><strong>隱私保密</strong>企業接待、主管用車、藝人與外賓行程皆以保密原則處理。</div>
+        <div class="trust-item"><strong>乘車品質</strong>車內清潔、飲水與基本備品，並可加選 VIP 舒適配備。</div>
+        <div class="trust-item"><strong>航班追蹤</strong>接送機可依航班動態協助調整接待時間。</div>
+      </div>
+
+      <label>公司名稱 / 接待單位</label>
+      <input id="companyName" type="text" placeholder="例：御澤股份有限公司 / 董事長辦公室">
+
+      <div class="row">
+        <div>
+          <label>統一編號</label>
+          <input id="taxId" type="text" inputmode="numeric" placeholder="例：12345678">
+        </div>
+        <div>
+          <label>接待層級</label>
+          <select id="receptionLevel">
+            <option value="">請選擇</option>
+            <option value="企業主管">企業主管</option>
+            <option value="外賓接待">外賓接待</option>
+            <option value="VIP 貴賓">VIP 貴賓</option>
+            <option value="藝人名流">藝人名流</option>
+            <option value="團體接待">團體接待</option>
+            <option value="家庭親子">家庭親子</option>
+          </select>
+        </div>
+      </div>
+
+      <label>接待對象 / 行程性質</label>
+      <input id="receptionTarget" type="text" placeholder="例：海外客戶、公司主管、講師、演出團隊">
+
+      <div class="row">
+        <div>
+          <label>報價文件</label>
+          <select id="quoteDocumentNeed">
+            <option value="不需要">不需要</option>
+            <option value="需要正式報價單">需要正式報價單</option>
+            <option value="需要收據">需要收據</option>
+            <option value="需要統編發票">需要統編發票</option>
+          </select>
+        </div>
+        <div>
+          <label>企業月結</label>
+          <select id="monthlyBilling">
+            <option value="否">否</option>
+            <option value="需要洽談月結">需要洽談月結</option>
+          </select>
+        </div>
+      </div>
     </section>
 
     <section id="step2" class="step card">
@@ -509,7 +586,7 @@
           <img src="assets/vehicles/lexus-lm.jpg" alt="Lexus LM">
           <div class="vehicle-card-body">
             <strong>Lexus LM 40 / 35</strong>
-            旗艦級豪華保姆車，適合高端貴賓、外賓接待、主管用車。最佳 2-4 位乘客。
+            旗艦級豪華保姆車，靜謐座艙與高規格後座，適合外賓、企業主管、VIP 長程移動。最佳 2-4 位乘客，建議 2-4 件行李。
             <button type="button" onclick="selectCarType('Lexus LM 40 / 35')">選擇此車型</button>
           </div>
         </div>
@@ -517,7 +594,7 @@
           <img src="assets/vehicles/toyota-alphard.jpg" alt="Toyota Alphard">
           <div class="vehicle-card-body">
             <strong>Toyota Alphard 40 / 35</strong>
-            高端商務接送主力，乘坐舒適、行李彈性佳。最佳 2-5 位乘客。
+            高端商務接送主力，乘坐舒適、行李彈性佳，適合機場接送、家庭貴賓與商務會議。最佳 2-5 位乘客，建議 3-5 件行李。
             <button type="button" onclick="selectCarType('Toyota Alphard 40 / 35')">選擇此車型</button>
           </div>
         </div>
@@ -525,7 +602,7 @@
           <img src="assets/vehicles/toyota-granvia.png" alt="Toyota Granvia">
           <div class="vehicle-card-body">
             <strong>Toyota Granvia 6/7人座</strong>
-            適合多人商務、家庭旅遊與中長程移動。最佳 4-6 位乘客。
+            多人商務與家庭旅遊兼具，座位與行李配置均衡，適合中長程與多點接待。最佳 4-6 位乘客，建議 4-6 件行李。
             <button type="button" onclick="selectCarType('Toyota Granvia 6/7人座')">選擇此車型</button>
           </div>
         </div>
@@ -533,7 +610,7 @@
           <img src="assets/vehicles/benz-vclass.jpg" alt="Benz V-Class">
           <div class="vehicle-card-body">
             <strong>Benz V-Class V300d / V250d</strong>
-            歐系商務保姆車，適合外賓、會議接待、長程商務。最佳 3-6 位乘客。
+            歐系商務保姆車，座艙質感沉穩，適合外賓、會議接待、長程商務與高階團體。最佳 3-6 位乘客，建議 3-5 件行李。
             <button type="button" onclick="selectCarType('Benz V-Class V300d / V250d')">選擇此車型</button>
           </div>
         </div>
@@ -541,7 +618,7 @@
           <img src="assets/vehicles/benz-vito.jpg" alt="Benz Vito">
           <div class="vehicle-card-body">
             <strong>Benz Vito 9人座</strong>
-            團體接送與活動車隊常用，空間實用、行李容納佳。最佳 5-8 位乘客。
+            團體接送與活動車隊常用，空間實用、行李容納佳，適合展演活動、港口接送與企業車隊。最佳 5-8 位乘客，建議 5-7 件行李。
             <button type="button" onclick="selectCarType('Benz Vito 9人座')">選擇此車型</button>
           </div>
         </div>
@@ -549,7 +626,7 @@
           <img src="assets/vehicles/vw-crafter.jpg" alt="VW Crafter">
           <div class="vehicle-card-body">
             <strong>VW Crafter / Sprinter 旗艦9人座</strong>
-            大型高端保姆車，適合 VIP 團體、展演活動、企業接待。最佳 6-9 位乘客。
+            大型高端保姆車，可安排 VIP 團體、展演活動、外交禮賓與高規格企業接待。最佳 6-9 位乘客，建議 6-9 件行李。
             <button type="button" onclick="selectCarType('VW Crafter 旗艦9人座')">選擇此車型</button>
           </div>
         </div>
@@ -655,11 +732,13 @@
       <div id="universalLoungeBlock" class="hidden">
         <label>寰宇商務中心服務需求</label>
         <select id="universalLoungeType">
-          <option value="代訂寰宇商務中心禮賓服務">代訂寰宇商務中心禮賓服務</option>
+          <option value="寰宇商務中心代訂">寰宇商務中心代訂</option>
+          <option value="接機禮賓 + 商務車">接機禮賓 + 商務車</option>
+          <option value="送機禮賓 + 商務車">送機禮賓 + 商務車</option>
+          <option value="外賓快速接待方案">外賓快速接待方案</option>
+          <option value="企業主管機場禮賓方案">企業主管機場禮賓方案</option>
           <option value="商務車 + 寰宇商務中心套餐">商務車 + 寰宇商務中心套餐</option>
           <option value="保姆車 + 寰宇商務中心套餐">保姆車 + 寰宇商務中心套餐</option>
-          <option value="接機禮賓 + 車輛接送">接機禮賓 + 車輛接送</option>
-          <option value="送機禮賓 + 車輛接送">送機禮賓 + 車輛接送</option>
           <option value="客服協助客製">客服協助客製</option>
         </select>
 
@@ -670,7 +749,7 @@
         <textarea id="universalLoungeNote" placeholder="例：代訂桃園機場寰宇商務中心、需要接機禮賓、外賓接待、航班時間等。"></textarea>
 
         <div class="notice">
-          寰宇商務中心費用、可訂席次與禮賓服務內容，需依當日方案與人數確認；車輛費用依所選車型與路線另行計算。
+          寰宇商務中心席次、禮賓服務與實際費用需依當日方案、人數與航班確認；商務車、保姆車費用依所選車型、路線與用車時間另行計算。
         </div>
       </div>
     </section>
@@ -940,6 +1019,47 @@
 
       <div class="notice">
         標準配備包含礦泉水、濕紙巾、充電線、薄荷糖、車內清潔與航班追蹤。飲品、小點心、舒適配備與禮賓級服務可依現場準備狀況與預約內容確認。
+      </div>
+
+      <label>特殊乘車需求</label>
+      <div class="checkbox-grid">
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="安靜乘車">安靜乘車</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="協助行李">協助行李</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="司機不主動攀談">司機不主動攀談</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="英文司機">英文司機</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="舉牌接待">舉牌接待</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="企業 Logo 舉牌">企業 Logo 舉牌</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="瓶裝水">瓶裝水</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="咖啡 / 茶飲">咖啡 / 茶飲</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="兒童安全座椅">兒童安全座椅</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="保密行程">保密行程</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="多車調度">多車調度</label>
+      </div>
+
+      <label>付款與單據需求</label>
+      <div class="row">
+        <div>
+          <select id="paymentMethodPreference">
+            <option value="客服確認後提供訂金付款">客服確認後提供訂金付款</option>
+            <option value="銀行轉帳">銀行轉帳</option>
+            <option value="線上付款連結">線上付款連結</option>
+            <option value="企業月結">企業月結</option>
+            <option value="現場尾款">現場尾款</option>
+          </select>
+        </div>
+        <div>
+          <select id="invoiceNeed">
+            <option value="不需要">不需要單據</option>
+            <option value="收據">收據</option>
+            <option value="統編發票">統編發票</option>
+            <option value="報價單">報價單</option>
+            <option value="企業月結對帳">企業月結對帳</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="notice">
+        訂金、付款期限、車輛保留時間與尾款方式，將由禮賓專員依車輛檔期與行程內容確認。企業客戶可洽談月結、報價單或統編單據需求。
       </div>
 
       <label>停車費規則</label>
@@ -1600,6 +1720,12 @@
 
         name: valueOf("name"),
         phone: valueOf("phone"),
+        companyName: valueOf("companyName"),
+        taxId: valueOf("taxId"),
+        receptionTarget: valueOf("receptionTarget"),
+        receptionLevel: valueOf("receptionLevel"),
+        quoteDocumentNeed: valueOf("quoteDocumentNeed"),
+        monthlyBilling: valueOf("monthlyBilling"),
 
         service: service,
         date: valueOf("date"),
@@ -1638,6 +1764,9 @@
         childSeat: valueOf("childSeat"),
         serviceTier: valueOf("serviceTier"),
         premiumAddons: checkedValues("premiumAddons"),
+        specialRequests: checkedValues("specialRequests"),
+        paymentMethodPreference: valueOf("paymentMethodPreference"),
+        invoiceNeed: valueOf("invoiceNeed"),
         parkingNotice: valueOf("parkingNotice"),
 
         stopCount: valueOf("stopCount"),
@@ -1673,6 +1802,10 @@
         "<strong>請確認以下資料：</strong><br><br>" +
         "姓名：" + escapeHtml(data.name) + "<br>" +
         "電話：" + escapeHtml(data.phone) + "<br>" +
+        (data.companyName ? "公司 / 單位：" + escapeHtml(data.companyName) + "<br>" : "") +
+        (data.taxId ? "統一編號：" + escapeHtml(data.taxId) + "<br>" : "") +
+        (data.receptionLevel ? "接待層級：" + escapeHtml(data.receptionLevel) + "<br>" : "") +
+        (data.receptionTarget ? "接待對象：" + escapeHtml(data.receptionTarget) + "<br>" : "") +
         "服務：" + escapeHtml(data.service) + "<br>" +
         (data.businessTripType ? "商務行程：" + escapeHtml(data.businessTripType) + " / " + escapeHtml(data.businessHours) + " 小時<br>" : "") +
         (data.businessCrossRegion ? "商務跨區：" + escapeHtml(data.businessCrossRegion) + "<br>" : "") +
@@ -1692,6 +1825,10 @@
         "乘客 / 行李：" + escapeHtml((data.passengers || "-") + " 人 / " + (data.luggage || "-") + " 件") + "<br>" +
         "禮賓服務：" + escapeHtml(data.serviceTier || "尊榮標準服務") + "<br>" +
         (data.premiumAddons ? "加值服務：" + escapeHtml(data.premiumAddons) + "<br>" : "") +
+        (data.specialRequests ? "特殊需求：" + escapeHtml(data.specialRequests) + "<br>" : "") +
+        "付款偏好：" + escapeHtml(data.paymentMethodPreference || "客服確認後提供訂金付款") + "<br>" +
+        "單據需求：" + escapeHtml(data.invoiceNeed || data.quoteDocumentNeed || "不需要") + "<br>" +
+        (data.monthlyBilling && data.monthlyBilling !== "否" ? "企業月結：" + escapeHtml(data.monthlyBilling) + "<br>" : "") +
         (data.universalLoungeNote ? "寰宇備註：" + escapeHtml(data.universalLoungeNote) + "<br>" : "") +
         "備註：" + escapeHtml(data.note || "無") + "<br><br>" +
         "送出後將由禮賓專員確認最終車輛、司機與費用。";
@@ -1725,15 +1862,21 @@
     }
 
     function renderQuote(elementId, quote) {
+      const data = collectData();
       const html =
         '<div class="quote-box">' +
+          '<div class="quote-line"><span>估價性質</span><strong>初步禮賓估價</strong></div>' +
+          '<div class="quote-line"><span>服務項目</span><strong>' + escapeHtml(data.service || "") + '</strong></div>' +
           '<div class="quote-line"><span>系統車型</span><strong>' + escapeHtml(quote.carType || "") + '</strong></div>' +
           '<div class="quote-line"><span>預估距離</span><strong>' + escapeHtml(String(quote.distanceKm || "-")) + ' 公里</strong></div>' +
           '<div class="quote-line"><span>預估車程</span><strong>' + escapeHtml(String(quote.durationMin || "-")) + ' 分鐘</strong></div>' +
+          '<div class="quote-line"><span>禮賓等級</span><strong>' + escapeHtml(data.serviceTier || "尊榮標準服務") + '</strong></div>' +
+          '<div class="quote-line"><span>加值 / 特殊需求</span><strong>' + escapeHtml(data.premiumAddons || data.specialRequests || "未加選") + '</strong></div>' +
           '<div class="quote-line"><span>加價說明</span><strong>' + escapeHtml(quote.surchargeNotes || "無") + '</strong></div>' +
-          '<div class="quote-line"><span>初步報價</span><strong>NT$ ' + escapeHtml(String(quote.finalPrice || 0)) + '</strong></div>' +
+          '<div class="quote-line"><span>初步禮賓估價</span><strong>NT$ ' + escapeHtml(String(quote.finalPrice || 0)) + '</strong></div>' +
           '<div class="quote-line"><span>建議訂金</span><strong>NT$ ' + escapeHtml(String(quote.depositAmount || 0)) + '</strong></div>' +
           '<div class="quote-line"><span>尾款</span><strong>NT$ ' + escapeHtml(String(quote.balanceAmount || 0)) + '</strong></div>' +
+          '<div class="notice">此費用為初步禮賓估價，將由禮賓專員依車輛檔期、司機安排、停車等候、跨區與行程細節確認後，提供正式報價與付款資訊。</div>' +
         '</div>';
 
       document.getElementById(elementId).innerHTML = html;
@@ -1746,8 +1889,11 @@
 
       document.getElementById("submitStatus").innerHTML =
         '<div class="status success">' +
-          '預約成功！訂單編號：' + escapeHtml(result.orderId) +
-          '，初步報價 NT$ ' + escapeHtml(String(result.finalPrice || 0)) + '。' +
+          '已收到您的禮賓預約需求。<br>' +
+          '訂單編號：' + escapeHtml(result.orderId) + '<br>' +
+          '初步禮賓估價：NT$ ' + escapeHtml(String(result.finalPrice || 0)) + '<br><br>' +
+          '禮賓專員將為您確認車輛、司機、路線與費用。確認完成後，將提供正式報價與付款資訊。<br><br>' +
+          '您可在 LINE 輸入「查詢 ' + escapeHtml(result.orderId) + '」或「付款 ' + escapeHtml(result.orderId) + '」追蹤後續狀態。' +
           paymentHtml +
         '</div>';
     }
