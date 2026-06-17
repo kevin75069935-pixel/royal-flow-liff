@@ -1,0 +1,2078 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>御澤禮賓商務預約表單</title>
+
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+    :root {
+      --bg: #050505;
+      --card: #101010;
+      --card-soft: #171411;
+      --black: #070707;
+      --text: #f8f2df;
+      --gold: #d7ae54;
+      --gold-light: #f4d98b;
+      --gold-dark: #8f6424;
+      --line: rgba(215,174,84,0.32);
+      --muted: #c7baa1;
+      --danger: #ff8a9a;
+      --success: #7de0a4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background:
+        radial-gradient(circle at 50% -10%, rgba(215,174,84,0.16), transparent 34%),
+        linear-gradient(180deg, #050505 0%, #0d0a07 46%, #050505 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 18px 16px 110px;
+    }
+
+    .brand {
+      padding: 0 0 18px;
+    }
+
+    .brand-header {
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid rgba(215,174,84,0.34);
+      border-radius: 8px;
+      background: #050505;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.36), 0 0 24px rgba(215,174,84,0.12);
+    }
+
+    .brand-header img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 2048 / 713;
+      object-fit: contain;
+      object-position: center;
+      background: #050505;
+    }
+
+    .brand-sub {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(23,20,17,0.98), rgba(10,10,10,0.98));
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    .step-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--gold-light);
+      letter-spacing: 0;
+    }
+
+    .step-sub {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin: 16px 0 7px;
+      color: #f2e6c8;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-height: 50px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 13px;
+      font-size: 18px;
+      background: #0b0b0b;
+      color: var(--text);
+      outline: none;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(199,186,161,0.58);
+    }
+
+    select option {
+      background: #111;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(215,174,84,0.16);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .notice {
+      background: rgba(215,174,84,0.10);
+      border: 1px solid rgba(215,174,84,0.34);
+      color: #f2e6c8;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 14px;
+      font-size: 15px;
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .trust-item {
+      border: 1px solid rgba(215,174,84,0.26);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(255,255,255,0.03);
+      color: #f2e6c8;
+      font-size: 14px;
+    }
+
+    .trust-item strong {
+      display: block;
+      color: var(--gold-light);
+      margin-bottom: 3px;
+    }
+
+    .service-tier-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .service-tier {
+      border: 1px solid rgba(215,174,84,0.28);
+      border-radius: 8px;
+      padding: 12px;
+      background: rgba(215,174,84,0.07);
+    }
+
+    .service-tier strong {
+      display: block;
+      color: var(--gold-light);
+      margin-bottom: 4px;
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .check-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      border: 1px solid rgba(215,174,84,0.28);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(255,255,255,0.03);
+      font-size: 15px;
+      color: #f2e6c8;
+    }
+
+    .check-option input {
+      width: auto;
+      min-height: auto;
+      margin-top: 4px;
+      accent-color: var(--gold);
+    }
+
+    .vehicle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .vehicle-card {
+      overflow: hidden;
+      border: 1px solid rgba(215,174,84,0.28);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .vehicle-card img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      display: block;
+      background: #050505;
+    }
+
+    .vehicle-card-body {
+      padding: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .vehicle-card-body strong {
+      display: block;
+      color: var(--gold-light);
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .vehicle-card-body button {
+      width: 100%;
+      margin-top: 8px;
+      min-height: 38px;
+      border: 1px solid rgba(244,217,139,0.48);
+      border-radius: 8px;
+      background: linear-gradient(180deg, #d7ae54, #8f6424);
+      color: #110c05;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .quote-box {
+      background: linear-gradient(180deg, #070707, #15110c);
+      color: #fff;
+      border: 1px solid rgba(215,174,84,0.34);
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .quote-box strong {
+      color: var(--gold-light);
+    }
+
+    .quote-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      padding: 8px 0;
+    }
+
+    .quote-line:last-child {
+      border-bottom: none;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 8px;
+      min-height: 52px;
+      padding: 13px 16px;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.22);
+    }
+
+    .btn-primary {
+      background: linear-gradient(180deg, #e7c56d, #ad7628);
+      color: #110c05;
+      border: 1px solid rgba(244,217,139,0.62);
+    }
+
+    .btn-gold {
+      background: linear-gradient(180deg, #d7ae54, #8f6424);
+      color: #110c05;
+      border: 1px solid rgba(244,217,139,0.52);
+    }
+
+    .btn-light {
+      background: #181818;
+      color: #f2e6c8;
+      border: 1px solid rgba(215,174,84,0.28);
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .inline-action {
+      display: grid;
+      grid-template-columns: 1fr 54px;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .icon-btn {
+      min-height: 50px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(180deg, #d7ae54, #8f6424);
+      color: #110c05;
+      font-size: 28px;
+      font-weight: 800;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(5,5,5,0.96);
+      border-top: 1px solid var(--line);
+      padding: 10px 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      z-index: 50;
+    }
+
+    .status {
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 15px;
+    }
+
+    .status.success {
+      background: rgba(10,127,69,0.14);
+      color: var(--success);
+      border: 1px solid rgba(125,224,164,0.36);
+    }
+
+    .status.error {
+      background: rgba(176,0,32,0.16);
+      color: var(--danger);
+      border: 1px solid rgba(255,138,154,0.38);
+    }
+
+    .status.info {
+      background: rgba(215,174,84,0.10);
+      color: #f2e6c8;
+      border: 1px solid rgba(215,174,84,0.30);
+    }
+
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    .progress {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .progress span {
+      height: 7px;
+      background: rgba(215,174,84,0.18);
+      border-radius: 99px;
+    }
+
+    .progress span.active {
+      background: linear-gradient(90deg, #8f6424, #f4d98b);
+      box-shadow: 0 0 12px rgba(215,174,84,0.32);
+    }
+
+    @media (max-width: 560px) {
+      body {
+        font-size: 17px;
+      }
+
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      .checkbox-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .vehicle-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-header img {
+        aspect-ratio: 2048 / 713;
+        object-position: center;
+      }
+
+      .page {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div class="brand">
+      <div class="brand-header">
+        <img src="assets/royal-flow-header.jpg" alt="御澤禮賓商務 Royal Flow Concierge">
+      </div>
+      <div class="brand-sub">Royal Flow Concierge｜高端商務車預約</div>
+    </div>
+
+    <div class="progress">
+      <span id="p1" class="active"></span>
+      <span id="p2"></span>
+      <span id="p3"></span>
+      <span id="p4"></span>
+      <span id="p5"></span>
+    </div>
+
+    <section id="step1" class="step active card">
+      <div class="step-title">1. 貴賓資料</div>
+      <div class="step-sub">請填寫聯絡資訊，禮賓專員將依資料協助確認車輛。</div>
+
+      <label>姓名 *</label>
+      <input id="name" type="text" placeholder="例：王先生 / Ms. Chen">
+
+      <label>手機 *</label>
+      <input id="phone" type="tel" placeholder="例：0912345678">
+
+      <label>LINE 暱稱</label>
+      <input id="lineDisplayName" type="text" placeholder="系統將自動帶入，未取得可留空">
+
+      <div id="lineStatus" class="status info">LINE 身分讀取中...</div>
+
+      <div class="notice">
+        御澤禮賓重視商務隱私、準時抵達與乘車品質。預約送出後，禮賓專員將依行程性質確認車輛、司機、路線、航班或活動時間。
+      </div>
+
+      <div class="trust-grid">
+        <div class="trust-item"><strong>乘客保障</strong>乘客保險、車況檢核、司機資格與服儀規範。</div>
+        <div class="trust-item"><strong>隱私保密</strong>企業接待、主管用車、藝人與外賓行程皆以保密原則處理。</div>
+        <div class="trust-item"><strong>乘車品質</strong>車內清潔、飲水與基本備品，並可加選 VIP 舒適配備。</div>
+        <div class="trust-item"><strong>航班追蹤</strong>接送機可依航班動態協助調整接待時間。</div>
+      </div>
+
+      <label>公司名稱 / 接待單位</label>
+      <input id="companyName" type="text" placeholder="例：御澤股份有限公司 / 董事長辦公室">
+
+      <div class="row">
+        <div>
+          <label>統一編號</label>
+          <input id="taxId" type="text" inputmode="numeric" placeholder="例：12345678">
+        </div>
+        <div>
+          <label>接待層級</label>
+          <select id="receptionLevel">
+            <option value="">請選擇</option>
+            <option value="企業主管">企業主管</option>
+            <option value="外賓接待">外賓接待</option>
+            <option value="VIP 貴賓">VIP 貴賓</option>
+            <option value="藝人名流">藝人名流</option>
+            <option value="團體接待">團體接待</option>
+            <option value="家庭親子">家庭親子</option>
+          </select>
+        </div>
+      </div>
+
+      <label>接待對象 / 行程性質</label>
+      <input id="receptionTarget" type="text" placeholder="例：海外客戶、公司主管、講師、演出團隊">
+
+      <div class="row">
+        <div>
+          <label>報價文件</label>
+          <select id="quoteDocumentNeed">
+            <option value="不需要">不需要</option>
+            <option value="需要正式報價單">需要正式報價單</option>
+            <option value="需要收據">需要收據</option>
+            <option value="需要統編發票">需要統編發票</option>
+          </select>
+        </div>
+        <div>
+          <label>企業月結</label>
+          <select id="monthlyBilling">
+            <option value="否">否</option>
+            <option value="需要洽談月結">需要洽談月結</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section id="step2" class="step card">
+      <div class="step-title">2. 服務需求</div>
+      <div class="step-sub">請選擇服務項目與車型需求。</div>
+
+      <label>服務項目 *</label>
+      <select id="service" onchange="handleServiceChange()">
+        <option value="">請選擇服務項目</option>
+        <option value="機場接送">機場接送</option>
+        <option value="商務接送">商務接送 / 商務用車</option>
+        <option value="商務包車">商務包車</option>
+        <option value="旅遊包車">旅遊包車</option>
+        <option value="私人訂製">私人訂製</option>
+        <option value="港口接送">港口接送</option>
+        <option value="展演活動">展演活動</option>
+        <option value="結婚禮車">結婚禮車</option>
+        <option value="外交禮賓">外交禮賓</option>
+        <option value="寰宇商務中心禮賓套餐">寰宇商務中心禮賓套餐</option>
+      </select>
+
+      <label>車型需求 *</label>
+      <select id="carType">
+        <option value="">請選擇車型</option>
+        <optgroup label="👑 頂級禮賓｜1-2 位（多人商務・旅遊・機場接送）">
+          <option value="Lexus LM 40 / 35">Lexus LM 40 / 35（頂級禮賓）</option>
+          <option value="Toyota Alphard 40 / 35">Toyota Alphard 40 / 35（頂級禮賓）</option>
+          <option value="Benz V-Class V300d">Benz V-Class V300d（頂級禮賓）</option>
+        </optgroup>
+        <optgroup label="💼 高端商務｜3-4 位（多人商務・旅遊・機場接送）">
+          <option value="Benz V-Class V300d / V250d">Benz V-Class V300d / V250d（豪華版）</option>
+          <option value="Toyota Alphard 40 / 35">Toyota Alphard 40 / 35（高端商務）</option>
+          <option value="Benz Vito 豪華版">Benz Vito 豪華版（高端商務）</option>
+        </optgroup>
+        <optgroup label="✨ 高端禮賓｜5-6 位（多人商務・旅遊・機場接送）">
+          <option value="Benz Vito 豪華版">Benz Vito 豪華版（高端禮賓）</option>
+          <option value="Toyota Granvia 6/7人座">Toyota Granvia 6/7人座（高端禮賓）</option>
+          <option value="Benz V-Class V300d / V250d">Benz V-Class V300d / V250d（高端禮賓）</option>
+          <option value="Toyota Alphard 40 / 35">Toyota Alphard 40 / 35（高端禮賓）</option>
+        </optgroup>
+        <optgroup label="🚐 標準商務｜6-8 位（多人商務・旅遊・機場接送）">
+          <option value="Benz Vito 9人座">Benz Vito 9人座（標準商務）</option>
+          <option value="Toyota Granvia 6/7人座">Toyota Granvia 6/7人座（標準商務）</option>
+        </optgroup>
+        <optgroup label="🚌 大型保姆車｜最多 8 位（多人商務・旅遊・機場接送）">
+          <option value="Benz Sprinter 旗艦8人座">Benz Sprinter 旗艦8人座（大型保姆車）</option>
+          <option value="VW Crafter 旗艦8人座">VW Crafter 旗艦8人座（大型保姆車）</option>
+        </optgroup>
+        <optgroup label="🚗 一般車型">
+          <option value="Lexus ES300h / ES200h">Lexus ES300h / ES200h</option>
+          <option value="一般9人座">一般 9 人座</option>
+        </optgroup>
+        <option value="待客服確認">待客服確認</option>
+      </select>
+      <div class="hint" style="margin-top:6px;font-size:13px;color:var(--muted)">
+        💡 系統將依您輸入的乘客人數，自動推薦最適合的車型等級
+      </div>
+
+      <div class="notice">
+        服務車型照片為實車或同級示意，實際派車將依檔期、乘客人數、行李與禮賓需求由專員確認。
+      </div>
+
+      <div class="vehicle-grid">
+        <div class="vehicle-card">
+          <img src="assets/vehicles/lexus-lm.jpg" alt="Lexus LM">
+          <div class="vehicle-card-body">
+            <strong>Lexus LM 40 / 35</strong>
+            旗艦級豪華保姆車，靜謐座艙與高規格後座，適合外賓、企業主管、VIP 長程移動。最佳 2-4 位乘客，建議 2-4 件行李。
+            <button type="button" onclick="selectCarType('Lexus LM 40 / 35')">選擇此車型</button>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <img src="assets/vehicles/toyota-alphard.jpg" alt="Toyota Alphard">
+          <div class="vehicle-card-body">
+            <strong>Toyota Alphard 40 / 35</strong>
+            高端商務接送主力，乘坐舒適、行李彈性佳，適合機場接送、家庭貴賓與商務會議。最佳 2-5 位乘客，建議 3-5 件行李。
+            <button type="button" onclick="selectCarType('Toyota Alphard 40 / 35')">選擇此車型</button>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <img src="assets/vehicles/toyota-granvia.png" alt="Toyota Granvia">
+          <div class="vehicle-card-body">
+            <strong>Toyota Granvia 6/7人座</strong>
+            多人商務與家庭旅遊兼具，座位與行李配置均衡，適合中長程與多點接待。最佳 4-6 位乘客，建議 4-6 件行李。
+            <button type="button" onclick="selectCarType('Toyota Granvia 6/7人座')">選擇此車型</button>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <img src="assets/vehicles/benz-vclass.jpg" alt="Benz V-Class">
+          <div class="vehicle-card-body">
+            <strong>Benz V-Class V300d / V250d</strong>
+            歐系商務保姆車，座艙質感沉穩，適合外賓、會議接待、長程商務與高階團體。最佳 3-6 位乘客，建議 3-5 件行李。
+            <button type="button" onclick="selectCarType('Benz V-Class V300d / V250d')">選擇此車型</button>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <img src="assets/vehicles/benz-vito.jpg" alt="Benz Vito">
+          <div class="vehicle-card-body">
+            <strong>Benz Vito 9人座</strong>
+            團體接送與活動車隊常用，空間實用、行李容納佳，適合展演活動、港口接送與企業車隊。最佳 5-8 位乘客，建議 5-7 件行李。
+            <button type="button" onclick="selectCarType('Benz Vito 9人座')">選擇此車型</button>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <img src="assets/vehicles/vw-crafter.jpg" alt="VW Crafter">
+          <div class="vehicle-card-body">
+            <strong>VW Crafter / Sprinter 旗艦8人座</strong>
+            大型高端保姆車，可安排 VIP 團體、展演活動、外交禮賓與高規格企業接待。最多 8 位乘客，建議 6-8 件行李。
+            <button type="button" onclick="selectCarType('VW Crafter 旗艦8人座')">選擇此車型</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>用車日期 *</label>
+          <input id="date" type="date">
+        </div>
+        <div>
+          <label>用車時間 *</label>
+          <input id="time" type="time">
+        </div>
+      </div>
+
+      <div id="businessBlock" class="hidden">
+        <label>商務行程型態</label>
+        <select id="businessTripType" onchange="handleBusinessTripTypeChange()">
+          <option value="3 小時市區商務">3 小時市區商務</option>
+          <option value="8 小時市區商務">8 小時市區商務</option>
+          <option value="客製化商務行程">客製化商務行程</option>
+        </select>
+
+        <label>預計用車小時</label>
+        <select id="businessHours">
+          <option value="3">3 小時</option>
+          <option value="4">4 小時</option>
+          <option value="5">5 小時</option>
+          <option value="6">6 小時</option>
+          <option value="7">7 小時</option>
+          <option value="8">8 小時</option>
+          <option value="9">9 小時</option>
+          <option value="10">10 小時</option>
+          <option value="11">11 小時</option>
+          <option value="12">12 小時</option>
+          <option value="客服確認">12 小時以上，客服確認</option>
+        </select>
+
+        <label>是否跨縣市</label>
+        <select id="businessCrossRegion">
+          <option value="否，雙北市區內">否，雙北市區內</option>
+          <option value="桃園市區">桃園市</option>
+          <option value="桃園機場">桃園機場</option>
+          <option value="基隆市區">基隆市</option>
+          <option value="新竹市區">新竹市 / 新竹縣</option>
+          <option value="苗栗市區">苗栗縣市</option>
+          <option value="台中市區">台中市</option>
+          <option value="宜蘭市區">宜蘭縣</option>
+          <option value="花蓮市區">花蓮縣</option>
+          <option value="台南市區">台南市</option>
+          <option value="高雄市區">高雄市</option>
+          <option value="其他，客服確認">其他，客服確認</option>
+        </select>
+
+        <div class="notice">
+          市區商務行程以雙北市區為出發基準，依車型套用 3 小時 / 8 小時包時車資，超過基礎時數另計超時費。
+        </div>
+      </div>
+
+      <div id="tourBlock" class="hidden">
+        <label>旅遊型態</label>
+        <select id="tourMode" onchange="handleTourModeChange()">
+          <option value="套裝旅遊">套裝旅遊</option>
+          <option value="客製化旅遊">客製化旅遊</option>
+        </select>
+
+        <label>旅遊區域</label>
+        <select id="tourArea" onchange="refreshPackageRoutes()">
+          <option value="北部">北部</option>
+          <option value="中部">中部</option>
+          <option value="南部">南部</option>
+          <option value="宜花東">宜花東</option>
+          <option value="多日遊">多日遊 / 環島</option>
+        </select>
+
+        <label>套裝 / 建議路線</label>
+        <select id="packageRoute">
+          <option value="">請選擇路線</option>
+        </select>
+
+        <label>旅遊天數</label>
+        <select id="tripDays">
+          <option value="1">1 日遊</option>
+          <option value="2">2 日遊</option>
+          <option value="3">3 日遊</option>
+          <option value="5">5 日遊</option>
+          <option value="7">7 日遊</option>
+        </select>
+
+        <label>司機住宿型態</label>
+        <select id="driverHotelType">
+          <option value="平日">平日住宿：1500 / 晚</option>
+          <option value="假日或連續假期">假日或連續假期：2000 / 晚</option>
+          <option value="客戶提供住宿">客戶提供住宿</option>
+        </select>
+
+        <div class="notice">
+          旅遊包車以套裝行程報價為主；客製化旅遊可使用 Google Routes 估算距離後再由客服確認最終報價。
+        </div>
+      </div>
+
+      <div id="universalLoungeBlock" class="hidden">
+        <label>寰宇商務中心服務需求</label>
+        <select id="universalLoungeType">
+          <option value="寰宇商務中心代訂">寰宇商務中心代訂</option>
+          <option value="接機禮賓 + 商務車">接機禮賓 + 商務車</option>
+          <option value="送機禮賓 + 商務車">送機禮賓 + 商務車</option>
+          <option value="外賓快速接待方案">外賓快速接待方案</option>
+          <option value="企業主管機場禮賓方案">企業主管機場禮賓方案</option>
+          <option value="商務車 + 寰宇商務中心套餐">商務車 + 寰宇商務中心套餐</option>
+          <option value="保姆車 + 寰宇商務中心套餐">保姆車 + 寰宇商務中心套餐</option>
+          <option value="客服協助客製">客服協助客製</option>
+        </select>
+
+        <label>寰宇商務中心使用人數</label>
+        <input id="universalLoungePassengers" type="number" min="1" placeholder="例：2">
+
+        <label>寰宇商務中心需求備註</label>
+        <textarea id="universalLoungeNote" placeholder="例：代訂桃園機場寰宇商務中心、需要接機禮賓、外賓接待、航班時間等。"></textarea>
+
+        <div class="notice">
+          寰宇商務中心席次、禮賓服務與實際費用需依當日方案、人數與航班確認；商務車、保姆車費用依所選車型、路線與用車時間另行計算。
+        </div>
+      </div>
+    </section>
+
+    <section id="step3" class="step card">
+      <div class="step-title">3. 路線資訊</div>
+      <div class="step-sub">機場接送可使用機場選單；一般地址可直接輸入。</div>
+
+      <div id="airportBlock" class="hidden">
+        <label>機場接送類型</label>
+        <select id="airportServiceType" onchange="handleAirportServiceTypeChange()">
+          <option value="送機服務">送機服務</option>
+          <option value="接機服務">接機服務</option>
+        </select>
+
+        <div id="sendAirportFlow">
+          <div class="inline-action">
+            <div>
+              <label>接待地址 *</label>
+              <input id="airportReceptionAddress" type="text" placeholder="例：台北市信義區某飯店">
+            </div>
+            <button class="icon-btn" type="button" onclick="addAirportPoint()" title="增加接待點">+</button>
+          </div>
+
+          <div id="sendAirportPointHost">
+            <div id="airportPointRows">
+              <div id="airportPoint2Row" class="hidden">
+                <label>增加接待點 2</label>
+                <input id="airportPoint2" type="text" placeholder="例：第二接待地址">
+              </div>
+
+              <div id="airportPoint3Row" class="hidden">
+                <label>增加接待點 3</label>
+                <input id="airportPoint3" type="text" placeholder="例：第三接待地址">
+              </div>
+
+              <div id="airportPoint4Row" class="hidden">
+                <label>增加接待點 4</label>
+                <input id="airportPoint4" type="text" placeholder="選填">
+              </div>
+
+              <div id="airportPoint5Row" class="hidden">
+                <label>增加接待點 5</label>
+                <input id="airportPoint5" type="text" placeholder="選填">
+              </div>
+            </div>
+          </div>
+
+          <label>預約機場 *</label>
+          <select id="reservedAirport" onchange="syncAirportFields()">
+            <option value="">請選擇預約機場</option>
+            <option value="桃園國際機場">桃園國際機場</option>
+            <option value="台北松山機場">台北松山機場</option>
+            <option value="台中機場">台中機場</option>
+            <option value="高雄小港機場">高雄小港機場</option>
+          </select>
+
+          <label>接送航廈 *</label>
+          <select id="airportTerminal" onchange="syncAirportFields()">
+            <option value="">請選擇接送航廈</option>
+            <option value="第一航廈">第一航廈</option>
+            <option value="第二航廈">第二航廈</option>
+            <option value="國際線">國際線</option>
+            <option value="國內線">國內線</option>
+          </select>
+        </div>
+
+        <div id="pickupAirportFlow" class="hidden">
+          <label>預約機場 *</label>
+          <select id="pickupReservedAirport" onchange="syncAirportFields()">
+            <option value="">請選擇預約機場</option>
+            <option value="桃園國際機場">桃園國際機場</option>
+            <option value="台北松山機場">台北松山機場</option>
+            <option value="台中機場">台中機場</option>
+            <option value="高雄小港機場">高雄小港機場</option>
+          </select>
+
+          <label>接送航廈 *</label>
+          <select id="pickupAirportTerminal" onchange="syncAirportFields()">
+            <option value="">請選擇接送航廈</option>
+            <option value="第一航廈">第一航廈</option>
+            <option value="第二航廈">第二航廈</option>
+            <option value="國際線">國際線</option>
+            <option value="國內線">國內線</option>
+          </select>
+
+          <div class="inline-action">
+            <div>
+              <label>接待地址 *</label>
+              <input id="pickupAirportReceptionAddress" type="text" placeholder="例：台北市信義區某飯店">
+            </div>
+            <button class="icon-btn" type="button" onclick="addAirportPoint()" title="增加接待點">+</button>
+          </div>
+
+          <div id="pickupAirportPointHost"></div>
+        </div>
+      </div>
+
+      <div id="portBlock" class="hidden">
+        <label>港口接送類型</label>
+        <select id="portServiceType" onchange="syncPortFields()">
+          <option value="送港服務">送港服務</option>
+          <option value="接港服務">接港服務</option>
+        </select>
+
+        <label>預約港口 *</label>
+        <select id="reservedPort" onchange="syncPortFields()">
+          <option value="">請選擇預約港口</option>
+          <optgroup label="豪華郵輪 / 國際港口">
+            <option value="基隆港｜Keelung Port">基隆港｜Keelung Port</option>
+            <option value="台北港｜Taipei Port">台北港｜Taipei Port</option>
+            <option value="蘇澳港｜Suao Port">蘇澳港｜Suao Port</option>
+            <option value="台中港｜Taichung Port">台中港｜Taichung Port</option>
+            <option value="高雄港｜Kaohsiung Port">高雄港｜Kaohsiung Port</option>
+            <option value="花蓮港｜Hualien Port">花蓮港｜Hualien Port</option>
+          </optgroup>
+          <optgroup label="離島快速船 / 客運港口">
+            <option value="布袋港｜嘉義布袋商港">布袋港｜嘉義布袋商港</option>
+            <option value="東港｜屏東東港碼頭">東港｜屏東東港碼頭</option>
+            <option value="富岡漁港｜台東富岡漁港">富岡漁港｜台東富岡漁港</option>
+            <option value="南方澳港｜宜蘭南方澳漁港">南方澳港｜宜蘭南方澳漁港</option>
+            <option value="馬公港｜澎湖馬公港">馬公港｜澎湖馬公港</option>
+            <option value="金門水頭碼頭｜金門水頭港">金門水頭碼頭｜金門水頭港</option>
+            <option value="小琉球白沙尾漁港｜小琉球碼頭">小琉球白沙尾漁港｜小琉球碼頭</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div id="generalRouteBlock">
+        <label>上車地點 *</label>
+        <input id="pickup" type="text" placeholder="例：台北市信義區某飯店 / 桃園機場第二航廈">
+
+        <label>下車地點 *</label>
+        <input id="dropoff" type="text" placeholder="例：台北市信義區市府路45號">
+      </div>
+
+      <div id="receptionBlock" class="hidden">
+        <label>是否需要多點接待</label>
+        <select id="receptionMultiPoint" onchange="handleReceptionMultiPointChange()">
+          <option value="否">否，只有單一上車地點</option>
+          <option value="是">是，需要增加接待點</option>
+        </select>
+
+        <div id="receptionExtraBlock" class="hidden">
+          <div class="notice">
+            上車地點將作為第一接待點。如需多點接待，請點選「+」新增第 2 至第 5 個接待點。
+            <button class="icon-btn" type="button" onclick="addReceptionPoint()" title="增加接待點">+</button>
+          </div>
+
+          <div id="receptionPoint2Row" class="hidden">
+            <label>增加接待點 2</label>
+            <input id="receptionPoint2" type="text" placeholder="例：第二接待地址">
+          </div>
+
+          <div id="receptionPoint3Row" class="hidden">
+            <label>增加接待點 3</label>
+            <input id="receptionPoint3" type="text" placeholder="例：第三接待地址">
+          </div>
+
+          <div id="receptionPoint4Row" class="hidden">
+            <label>增加接待點 4</label>
+            <input id="receptionPoint4" type="text" placeholder="選填">
+          </div>
+
+          <div id="receptionPoint5Row" class="hidden">
+            <label>增加接待點 5</label>
+            <input id="receptionPoint5" type="text" placeholder="選填">
+          </div>
+        </div>
+      </div>
+
+      <label>航班資訊</label>
+      <input id="flight" type="text" placeholder="例：BR198 / CI100 / 無">
+
+      <div id="flightTimeBlock" class="hidden">
+        <label id="flightTimeLabel">航班時間</label>
+        <input id="flightTime" type="time">
+      </div>
+
+      <div id="stopCountBlock">
+        <label>停靠點數</label>
+        <select id="stopCount" onchange="handleStopCountChange()">
+          <option value="1">1 點上車 / 1 點下車</option>
+          <option value="2">2 個停靠點</option>
+          <option value="3">3 個停靠點</option>
+          <option value="4">4 個停靠點</option>
+          <option value="5">5 個停靠點（最多增加 4 點）</option>
+        </select>
+      </div>
+
+      <label>多點 / 行程說明</label>
+      <textarea id="multiStopNote" placeholder="例：先到飯店接A客，再到公司接B客，最後前往機場。"></textarea>
+
+      <div class="action-row">
+        <button class="btn btn-gold" onclick="getRouteEstimate()">取得 Google Routes 估價</button>
+        <button class="btn btn-light" onclick="previewQuote()">預覽目前報價</button>
+      </div>
+
+      <div id="routeStatus"></div>
+      <div id="quotePreview"></div>
+    </section>
+
+    <section id="step4" class="step card">
+      <div class="step-title">4. 乘客與加購</div>
+      <div class="step-sub">請填寫乘客、行李與加購服務。</div>
+
+      <div class="row">
+        <div>
+          <label>乘客人數</label>
+          <input id="passengers" type="number" min="1" placeholder="例：4">
+        </div>
+        <div>
+          <label>行李件數</label>
+          <input id="luggage" type="number" min="0" placeholder="例：2">
+        </div>
+      </div>
+
+      <label>舉牌服務</label>
+      <select id="signService">
+        <option value="否">否</option>
+        <option value="是">是，NT$200 / 次</option>
+      </select>
+
+      <label>英文司機</label>
+      <select id="englishDriver">
+        <option value="否">否</option>
+        <option value="是">是</option>
+      </select>
+
+      <label>兒童安全座椅</label>
+      <select id="childSeat">
+        <option value="否">否</option>
+        <option value="是">是</option>
+      </select>
+
+      <label>禮賓服務等級</label>
+      <select id="serviceTier">
+        <option value="尊榮標準服務">尊榮標準服務</option>
+        <option value="VIP 商務服務">VIP 商務服務</option>
+        <option value="皇家禮賓服務">皇家禮賓服務</option>
+      </select>
+
+      <div class="service-tier-list">
+        <div class="service-tier">
+          <strong>尊榮標準服務</strong>
+          礦泉水、濕紙巾、充電線、薄荷糖、車內清潔、航班追蹤。
+        </div>
+        <div class="service-tier">
+          <strong>VIP 商務服務</strong>
+          尊榮標準服務 + 氣泡水 / 咖啡預選、一次性拖鞋、薄毯、靜音乘車、司機服儀規範。
+        </div>
+        <div class="service-tier">
+          <strong>皇家禮賓服務</strong>
+          VIP 商務服務 + 舉牌接機、英文司機、花束禮品代購、企業接待協助、24 小時專人聯繫。
+        </div>
+      </div>
+
+      <label>尊榮加值服務</label>
+      <div class="checkbox-grid">
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="怡雲礦泉水">怡雲礦泉水</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="氣泡水">氣泡水</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="咖啡 / 茶飲預備">咖啡 / 茶飲預備</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="一次性拖鞋">一次性拖鞋</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="車內薄毯">車內薄毯</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="兒童安全座椅">兒童安全座椅</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="舉牌接機">舉牌接機</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="英文司機">英文司機</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="靜音乘車">靜音乘車</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="花束 / 禮品代購">花束 / 禮品代購</label>
+        <label class="check-option"><input type="checkbox" name="premiumAddons" value="企業 Logo 舉牌">企業 Logo 舉牌</label>
+      </div>
+
+      <div class="notice">
+        標準配備包含礦泉水、濕紙巾、充電線、薄荷糖、車內清潔與航班追蹤。飲品、小點心、舒適配備與禮賓級服務可依現場準備狀況與預約內容確認。
+      </div>
+
+      <label>特殊乘車需求</label>
+      <div class="checkbox-grid">
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="安靜乘車">安靜乘車</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="協助行李">協助行李</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="司機不主動攀談">司機不主動攀談</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="英文司機">英文司機</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="舉牌接待">舉牌接待</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="企業 Logo 舉牌">企業 Logo 舉牌</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="瓶裝水">瓶裝水</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="咖啡 / 茶飲">咖啡 / 茶飲</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="兒童安全座椅">兒童安全座椅</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="保密行程">保密行程</label>
+        <label class="check-option"><input type="checkbox" name="specialRequests" value="多車調度">多車調度</label>
+      </div>
+
+      <label>付款與單據需求</label>
+      <div class="row">
+        <div>
+          <select id="paymentMethodPreference">
+            <option value="客服確認後提供訂金付款">客服確認後提供訂金付款</option>
+            <option value="銀行轉帳">銀行轉帳</option>
+            <option value="線上付款連結">線上付款連結</option>
+            <option value="企業月結">企業月結</option>
+            <option value="現場尾款">現場尾款</option>
+          </select>
+        </div>
+        <div>
+          <select id="invoiceNeed">
+            <option value="不需要">不需要單據</option>
+            <option value="收據">收據</option>
+            <option value="統編發票">統編發票</option>
+            <option value="報價單">報價單</option>
+            <option value="企業月結對帳">企業月結對帳</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="notice">
+        訂金、付款期限、車輛保留時間與尾款方式，將由禮賓專員依車輛檔期與行程內容確認。企業客戶可洽談月結、報價單或統編單據需求。
+      </div>
+
+      <label>停車費規則</label>
+      <select id="parkingNotice">
+        <option value="停車費實支實付">未提供免費停車位時，停車費實支實付另計</option>
+        <option value="客戶提供停車位">客戶提供免費停車位</option>
+      </select>
+
+      <label>其他備註</label>
+      <textarea id="note" placeholder="例：需要安靜行程、接待外賓、公司主管、藝人接送、特殊行李等。"></textarea>
+    </section>
+
+    <section id="step5" class="step card">
+      <div class="step-title">5. 確認送出</div>
+      <div class="step-sub">送出後系統會寫入訂單資料表，禮賓專員將再確認最終車輛與費用。</div>
+
+      <div id="finalSummary" class="notice"></div>
+
+      <div class="action-row">
+        <button id="submitBtn" class="btn btn-primary" onclick="submitBooking()">送出預約</button>
+      </div>
+
+      <div id="submitStatus"></div>
+    </section>
+  </div>
+
+  <div id="bottomBar" class="bottom-bar">
+    <button id="prevBtn" class="btn btn-light" onclick="prevStep()">上一步</button>
+    <button id="nextBtn" class="btn btn-primary" onclick="nextStep()">下一步</button>
+  </div>
+
+  <script>
+    const LIFF_ID = "2010083928-gA1wvCJ0";
+
+    let currentStep = 1;
+    let lineUserId = "LINE_NOT_READY";
+    let lineDisplayName = "";
+    let routeSessionId = "RS_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
+    let routeEstimateCount = 0;
+    let airportPointCount = 1;
+    let receptionPointCount = 1;
+
+    let lastDistanceKm = "";
+    let lastDurationMin = "";
+
+    const packageRoutes = {
+      "北部": [
+        "九份十分野柳一日遊",
+        "水金九深度之旅",
+        "野柳金山十分一日遊",
+        "陽明山淡水一日遊",
+        "北海岸秘境一日遊",
+        "烏來瀑布老街一日遊"
+      ],
+      "中部": [
+        "日月潭清境農場",
+        "高美濕地彩虹眷村",
+        "溪頭妖怪村",
+        "阿里山森林鐵路",
+        "清境合歡山"
+      ],
+      "南部": [
+        "墾丁經典一日遊",
+        "高雄旗津駁二",
+        "台南古都美食",
+        "佛光山美濃"
+      ],
+      "宜花東": [
+        "太魯閣七星潭",
+        "花東縱谷",
+        "伯朗大道",
+        "三仙台"
+      ],
+      "多日遊": [
+        "北台灣三日遊",
+        "中台灣三日遊",
+        "南台灣三日遊",
+        "花東三日遊",
+        "環島五日遊",
+        "環島七日遊"
+      ]
+    };
+
+    document.addEventListener("DOMContentLoaded", function() {
+      initLiff();
+      refreshPackageRoutes();
+      updateStep();
+    });
+
+    async function initLiff() {
+      const statusEl = document.getElementById("lineStatus");
+
+      statusEl.className = "status info";
+      statusEl.innerText = "LINE 身分讀取中... LIFF_ID：" + LIFF_ID;
+
+      let finished = false;
+      const timeoutTimer = setTimeout(function() {
+        if (!finished && lineUserId === "LINE_NOT_READY") {
+          statusEl.className = "status error";
+          statusEl.innerText =
+            "LIFF 初始化逾時。請用 LINE App 開啟 https://liff.line.me/" + LIFF_ID +
+            "，並確認 LINE Developers 的 LIFF Endpoint 是目前 Cloudflare Pages 網址。";
+        }
+      }, 8000);
+
+      if (typeof liff === "undefined") {
+        finished = true;
+        clearTimeout(timeoutTimer);
+        lineUserId = "LIFF_SDK_NOT_LOADED";
+        statusEl.className = "status error";
+        statusEl.innerText = "LIFF SDK 未載入，請確認網路、LINE App 內建瀏覽器與 LIFF Endpoint。";
+        return;
+      }
+
+      try {
+        await liff.init({
+          liffId: LIFF_ID,
+          withLoginOnExternalBrowser: true
+        });
+
+        statusEl.innerText = "LIFF 已初始化。isInClient=" + liff.isInClient() + "，isLoggedIn=" + liff.isLoggedIn();
+
+        if (!liff.isLoggedIn()) {
+          liff.login({
+            redirectUri: window.location.href
+          });
+          return;
+        }
+
+        const profile = await liff.getProfile();
+
+        finished = true;
+        clearTimeout(timeoutTimer);
+
+        lineUserId = profile.userId || "LINE_USER_ID_EMPTY";
+        lineDisplayName = profile.displayName || "";
+
+        document.getElementById("lineDisplayName").value = lineDisplayName;
+
+        statusEl.className = "status success";
+        statusEl.innerText = "已取得 LINE 身分：" + lineDisplayName + " / UserID：" + lineUserId.substring(0, 8) + "...";
+
+      } catch (error) {
+        finished = true;
+        clearTimeout(timeoutTimer);
+        lineUserId = "LINE_PROFILE_ERROR";
+        lineDisplayName = "";
+        statusEl.className = "status error";
+        statusEl.innerText = "LINE 身分讀取失敗：" + (error && error.message ? error.message : String(error));
+        console.log("LIFF ERROR", error);
+      }
+    }
+
+    async function postApi(path, payload) {
+      const response = await fetch(path, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const text = await response.text();
+      let result;
+
+      try {
+        result = text ? JSON.parse(text) : {};
+      } catch (error) {
+        throw new Error("API 回傳不是 JSON：" + text.substring(0, 160));
+      }
+
+      if (!response.ok) {
+        throw new Error(result && result.message ? result.message : "API HTTP " + response.status);
+      }
+
+      return result;
+    }
+
+    function handleServiceChange() {
+      const service = valueOf("service");
+      const tourBlock = document.getElementById("tourBlock");
+      const universalLoungeBlock = document.getElementById("universalLoungeBlock");
+      const businessBlock = document.getElementById("businessBlock");
+      const airportBlock = document.getElementById("airportBlock");
+      const portBlock = document.getElementById("portBlock");
+
+      businessBlock.classList.toggle("hidden", !isBusinessServiceName(service));
+      tourBlock.classList.toggle("hidden", service !== "旅遊包車");
+      universalLoungeBlock.classList.toggle("hidden", service !== "寰宇商務中心禮賓套餐");
+      airportBlock.classList.toggle("hidden", service !== "機場接送");
+      portBlock.classList.toggle("hidden", service !== "港口接送");
+
+      handleBusinessTripTypeChange();
+      handleTourModeChange();
+      handleAirportServiceTypeChange();
+      syncReceptionFields();
+      syncPortFields();
+      handleStopCountChange();
+    }
+
+    function isBusinessServiceName(service) {
+      return service === "商務接送" || service === "商務包車";
+    }
+
+    function isBusinessService(service) {
+      return isBusinessServiceName(service);
+    }
+
+    function handleBusinessTripTypeChange() {
+      if (!isBusinessServiceName(valueOf("service"))) {
+        return;
+      }
+
+      const type = valueOf("businessTripType");
+      if (type === "3 小時市區商務") {
+        document.getElementById("businessHours").value = "3";
+      }
+      if (type === "8 小時市區商務") {
+        document.getElementById("businessHours").value = "8";
+      }
+    }
+
+    function handleTourModeChange() {
+      const service = valueOf("service");
+      const tourMode = valueOf("tourMode");
+
+      if (service === "旅遊包車" && tourMode === "套裝旅遊") {
+        const route = valueOf("packageRoute");
+        if (route) {
+          document.getElementById("dropoff").value = route;
+        }
+      }
+    }
+
+    function refreshPackageRoutes() {
+      const area = valueOf("tourArea") || "北部";
+      const select = document.getElementById("packageRoute");
+
+      select.innerHTML = '<option value="">請選擇路線</option>';
+
+      const list = packageRoutes[area] || [];
+
+      list.forEach(function(route) {
+        const option = document.createElement("option");
+        option.value = route;
+        option.textContent = route;
+        select.appendChild(option);
+      });
+
+      select.onchange = function() {
+        if (valueOf("service") === "旅遊包車") {
+          document.getElementById("dropoff").value = valueOf("packageRoute");
+        }
+      };
+    }
+
+    function syncAirportFields() {
+      const service = valueOf("service");
+      const airportServiceType = valueOf("airportServiceType") || "送機服務";
+      const airportAddress = getAirportAddress();
+      const receptionAddress = getAirportReceptionAddress();
+
+      if (service === "機場接送") {
+        if (airportServiceType === "接機服務") {
+          document.getElementById("pickup").value = airportAddress;
+          document.getElementById("dropoff").value = receptionAddress;
+        } else {
+          document.getElementById("pickup").value = receptionAddress;
+          document.getElementById("dropoff").value = airportAddress;
+        }
+      }
+    }
+
+    function syncPortFields() {
+      if (valueOf("service") !== "港口接送") {
+        return;
+      }
+
+      const reservedPort = valueOf("reservedPort");
+      const receptionAddress = valueOf("pickup");
+      if (!reservedPort) {
+        return;
+      }
+
+      if (valueOf("portServiceType") === "接港服務") {
+        document.getElementById("pickup").value = reservedPort;
+        if (receptionAddress) {
+          document.getElementById("dropoff").value = receptionAddress;
+        }
+      } else {
+        if (receptionAddress) {
+          document.getElementById("pickup").value = receptionAddress;
+        }
+        document.getElementById("dropoff").value = reservedPort;
+      }
+    }
+
+    function syncReceptionFields() {
+      const service = valueOf("service");
+      const receptionAddress = valueOf("pickup");
+      if (!supportsReceptionAddress(service) || !receptionAddress) {
+        return;
+      }
+
+      if (service === "港口接送") {
+        syncPortFields();
+        return;
+      }
+
+      document.getElementById("pickup").value = receptionAddress;
+    }
+
+    function handleAirportServiceTypeChange() {
+      const service = valueOf("service");
+      const airportServiceType = valueOf("airportServiceType") || "送機服務";
+      const flightTimeBlock = document.getElementById("flightTimeBlock");
+      const flightTimeLabel = document.getElementById("flightTimeLabel");
+      const sendAirportFlow = document.getElementById("sendAirportFlow");
+      const pickupAirportFlow = document.getElementById("pickupAirportFlow");
+      const generalRouteBlock = document.getElementById("generalRouteBlock");
+      const airportPointRows = document.getElementById("airportPointRows");
+      const pointHost = airportServiceType === "接機服務"
+        ? document.getElementById("pickupAirportPointHost")
+        : document.getElementById("sendAirportPointHost");
+
+      flightTimeBlock.classList.toggle("hidden", service !== "機場接送");
+      flightTimeLabel.innerText = airportServiceType === "接機服務" ? "抵達時間" : "起飛時間";
+
+      generalRouteBlock.classList.toggle("hidden", service === "機場接送");
+      sendAirportFlow.classList.toggle("hidden", service !== "機場接送" || airportServiceType !== "送機服務");
+      pickupAirportFlow.classList.toggle("hidden", service !== "機場接送" || airportServiceType !== "接機服務");
+
+      if (pointHost && airportPointRows && airportPointRows.parentNode !== pointHost) {
+        pointHost.appendChild(airportPointRows);
+      }
+
+      syncAirportFields();
+      handleStopCountChange();
+    }
+
+    function handleStopCountChange() {
+      const service = valueOf("service");
+      const stopCount = Number(valueOf("stopCount") || 1);
+      const stopCountBlock = document.getElementById("stopCountBlock");
+      const receptionBlock = document.getElementById("receptionBlock");
+      const showReception = supportsReceptionAddress(service);
+
+      airportPointCount = Math.max(airportPointCount, service === "機場接送" ? Math.min(5, stopCount) : 1);
+      renderAirportPointRows();
+      receptionPointCount = Math.max(receptionPointCount, showReception ? Math.min(5, stopCount) : 1);
+      stopCountBlock.classList.toggle("hidden", service === "機場接送" || showReception);
+      receptionBlock.classList.toggle("hidden", !showReception);
+      handleReceptionMultiPointChange();
+    }
+
+    function supportsReceptionAddress(service) {
+      return [
+        "港口接送",
+        "商務接送",
+        "商務包車",
+        "結婚禮車",
+        "展演活動",
+        "外交禮賓",
+        "寰宇商務中心禮賓套餐"
+      ].indexOf(service) >= 0;
+    }
+
+    function addAirportPoint() {
+      if (airportPointCount < 5) {
+        airportPointCount++;
+      }
+      document.getElementById("stopCount").value = String(airportPointCount);
+      renderAirportPointRows();
+    }
+
+    function renderAirportPointRows() {
+      for (let i = 2; i <= 5; i++) {
+        const row = document.getElementById("airportPoint" + i + "Row");
+        if (row) {
+          row.classList.toggle("hidden", valueOf("service") !== "機場接送" || i > airportPointCount);
+        }
+      }
+    }
+
+    function addReceptionPoint() {
+      const multiPointSelect = document.getElementById("receptionMultiPoint");
+      if (multiPointSelect) {
+        multiPointSelect.value = "是";
+      }
+      if (receptionPointCount < 5) {
+        receptionPointCount++;
+      }
+      document.getElementById("stopCount").value = String(receptionPointCount);
+      handleReceptionMultiPointChange();
+    }
+
+    function handleReceptionMultiPointChange() {
+      const service = valueOf("service");
+      const enabled = supportsReceptionAddress(service) && valueOf("receptionMultiPoint") === "是";
+      const block = document.getElementById("receptionExtraBlock");
+      if (block) {
+        block.classList.toggle("hidden", !enabled);
+      }
+      if (!enabled) {
+        receptionPointCount = 1;
+        document.getElementById("stopCount").value = "1";
+        ["receptionPoint2", "receptionPoint3", "receptionPoint4", "receptionPoint5"].forEach(function(id) {
+          const input = document.getElementById(id);
+          if (input) {
+            input.value = "";
+          }
+        });
+      }
+      renderReceptionPointRows();
+    }
+
+    function renderReceptionPointRows() {
+      const enabled = supportsReceptionAddress(valueOf("service")) && valueOf("receptionMultiPoint") === "是";
+      for (let i = 2; i <= 5; i++) {
+        const row = document.getElementById("receptionPoint" + i + "Row");
+        if (row) {
+          row.classList.toggle("hidden", !enabled || i > receptionPointCount);
+        }
+      }
+    }
+
+    function getAirportAddress() {
+      const airportServiceType = valueOf("airportServiceType") || "送機服務";
+      const airport = airportServiceType === "接機服務" ? valueOf("pickupReservedAirport") : valueOf("reservedAirport");
+      const terminal = airportServiceType === "接機服務" ? valueOf("pickupAirportTerminal") : valueOf("airportTerminal");
+      return [airport, terminal].filter(Boolean).join(" ");
+    }
+
+    function isAirportSelectionComplete() {
+      const airportServiceType = valueOf("airportServiceType") || "送機服務";
+      const airport = airportServiceType === "接機服務" ? valueOf("pickupReservedAirport") : valueOf("reservedAirport");
+      const terminal = airportServiceType === "接機服務" ? valueOf("pickupAirportTerminal") : valueOf("airportTerminal");
+      return Boolean(airport && terminal);
+    }
+
+    function getAirportReceptionAddress() {
+      return valueOf("airportServiceType") === "接機服務"
+        ? valueOf("pickupAirportReceptionAddress")
+        : valueOf("airportReceptionAddress");
+    }
+
+    function nextStep() {
+      if (!validateStep(currentStep)) {
+        return;
+      }
+
+      if (currentStep < 5) {
+        currentStep++;
+        updateStep();
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        updateStep();
+      }
+    }
+
+    function updateStep() {
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById("step" + i).classList.toggle("active", i === currentStep);
+        document.getElementById("p" + i).classList.toggle("active", i <= currentStep);
+      }
+
+      document.getElementById("prevBtn").disabled = currentStep === 1;
+
+      if (currentStep === 5) {
+        document.getElementById("nextBtn").classList.add("hidden");
+        renderFinalSummary();
+      } else {
+        document.getElementById("nextBtn").classList.remove("hidden");
+      }
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+    function validateStep(step) {
+      if (step === 1) {
+        if (!valueOf("name")) {
+          alert("請填寫姓名");
+          return false;
+        }
+
+        if (!valueOf("phone")) {
+          alert("請填寫手機");
+          return false;
+        }
+      }
+
+      if (step === 2) {
+        if (!valueOf("service")) {
+          alert("請選擇服務項目");
+          return false;
+        }
+
+        if (!valueOf("carType")) {
+          alert("請選擇車型");
+          return false;
+        }
+
+        if (!valueOf("date")) {
+          alert("請選擇用車日期");
+          return false;
+        }
+
+        if (!valueOf("time")) {
+          alert("請選擇用車時間");
+          return false;
+        }
+
+        if (valueOf("service") === "寰宇商務中心禮賓套餐" && !valueOf("universalLoungePassengers")) {
+          alert("請填寫寰宇商務中心使用人數");
+          return false;
+        }
+      }
+
+      if (step === 3) {
+        syncAirportFields();
+        syncReceptionFields();
+        syncPortFields();
+
+        if (valueOf("service") === "機場接送") {
+          if (!getAirportReceptionAddress()) {
+            alert("請填寫接待地址");
+            return false;
+          }
+
+          if (!isAirportSelectionComplete()) {
+            alert("請選擇預約機場與接送航廈");
+            return false;
+          }
+
+          if (!valueOf("flight")) {
+            alert("機場接送請填寫航班資訊");
+            return false;
+          }
+
+          if (!valueOf("flightTime")) {
+            alert(valueOf("airportServiceType") === "接機服務" ? "請填寫抵達時間" : "請填寫起飛時間");
+            return false;
+          }
+        }
+
+        if (valueOf("service") === "港口接送" && !valueOf("reservedPort")) {
+          alert("請選擇預約港口");
+          return false;
+        }
+
+        if (!valueOf("pickup")) {
+          alert("請填寫上車地點");
+          return false;
+        }
+
+        if (!valueOf("dropoff")) {
+          alert("請填寫下車地點");
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    async function getRouteEstimate() {
+      syncAirportFields();
+
+      if (!valueOf("pickup") || !valueOf("dropoff")) {
+        setStatus("routeStatus", "error", "請先填寫上車與下車地點。");
+        return;
+      }
+
+      if (routeEstimateCount >= 2) {
+        setStatus("routeStatus", "error", "本張預約單已達 2 次估價上限。");
+        return;
+      }
+
+      routeEstimateCount++;
+      setStatus("routeStatus", "info", "Google Routes 估算中，請稍候...");
+
+      try {
+        const result = await postApi("/api/estimate", collectData());
+
+        if (!result || result.status !== "success") {
+          setStatus("routeStatus", "error", result && result.message ? result.message : "路線估算失敗");
+          return;
+        }
+
+        lastDistanceKm = result.distanceKm;
+        lastDurationMin = result.durationMin;
+
+        setStatus(
+          "routeStatus",
+          "success",
+          "已取得路線：預估 " + result.distanceKm + " 公里，約 " + result.durationMin + " 分鐘。"
+        );
+
+        previewQuote();
+
+      } catch (error) {
+        setStatus("routeStatus", "error", error && error.message ? error.message : String(error));
+      }
+    }
+
+    async function previewQuote() {
+      setStatus("quotePreview", "info", "報價計算中...");
+
+      try {
+        const result = await postApi("/api/quote", collectData());
+
+        if (!result || result.status !== "success") {
+          setStatus("quotePreview", "error", result && result.message ? result.message : "報價計算失敗");
+          return;
+        }
+
+        renderQuote("quotePreview", result.quote);
+
+      } catch (error) {
+        setStatus("quotePreview", "error", error && error.message ? error.message : String(error));
+      }
+    }
+
+    async function submitBooking() {
+      if (!validateStep(1) || !validateStep(2) || !validateStep(3)) {
+        return;
+      }
+
+      const btn = document.getElementById("submitBtn");
+      btn.disabled = true;
+      btn.innerText = "送出中...";
+
+      setStatus("submitStatus", "info", "訂單送出中，請勿關閉畫面。");
+
+      try {
+        const result = await postApi("/api/submit", collectData());
+
+        btn.disabled = false;
+        btn.innerText = "送出預約";
+
+        if (!result || result.status !== "success") {
+          setStatus("submitStatus", "error", result && result.message ? result.message : "送出失敗");
+          return;
+        }
+
+        renderSubmitSuccess(result);
+
+      } catch (error) {
+        btn.disabled = false;
+        btn.innerText = "送出預約";
+        setStatus("submitStatus", "error", error && error.message ? error.message : String(error));
+      }
+    }
+
+    function collectData() {
+      syncAirportFields();
+      syncReceptionFields();
+      syncPortFields();
+      const service = valueOf("service");
+      const airportAddress = getAirportAddress();
+      const airportServiceType = service === "機場接送" ? valueOf("airportServiceType") : "";
+      const reservedAirport = airportServiceType === "接機服務" ? valueOf("pickupReservedAirport") : valueOf("reservedAirport");
+      const airportTerminal = airportServiceType === "接機服務" ? valueOf("pickupAirportTerminal") : valueOf("airportTerminal");
+
+      return {
+        routeSessionId: routeSessionId,
+
+        lineUserId: lineUserId,
+        lineDisplayName: valueOf("lineDisplayName") || lineDisplayName,
+        line_user_id: lineUserId,
+        line_display_name: valueOf("lineDisplayName") || lineDisplayName,
+
+        name: valueOf("name"),
+        phone: valueOf("phone"),
+        companyName: valueOf("companyName"),
+        taxId: valueOf("taxId"),
+        receptionTarget: valueOf("receptionTarget"),
+        receptionLevel: valueOf("receptionLevel"),
+        quoteDocumentNeed: valueOf("quoteDocumentNeed"),
+        monthlyBilling: valueOf("monthlyBilling"),
+
+        service: service,
+        date: valueOf("date"),
+        time: valueOf("time"),
+        businessTripType: isBusinessServiceName(service) ? valueOf("businessTripType") : "",
+        businessHours: isBusinessServiceName(service) ? valueOf("businessHours") : "",
+        businessCrossRegion: isBusinessServiceName(service) ? valueOf("businessCrossRegion") : "",
+        universalLoungeType: service === "寰宇商務中心禮賓套餐" ? valueOf("universalLoungeType") : "",
+        universalLoungePassengers: service === "寰宇商務中心禮賓套餐" ? valueOf("universalLoungePassengers") : "",
+        universalLoungeNote: service === "寰宇商務中心禮賓套餐" ? valueOf("universalLoungeNote") : "",
+
+        pickup: valueOf("pickup"),
+        dropoff: valueOf("dropoff"),
+
+        pickupAirport: airportServiceType === "接機服務" ? airportAddress : "",
+        dropoffAirport: airportServiceType === "送機服務" ? airportAddress : "",
+        airportServiceType: airportServiceType,
+        reservedAirport: reservedAirport,
+        airportTerminal: airportTerminal,
+        airportReceptionAddress: service === "機場接送" ? getAirportReceptionAddress() : "",
+        terminal: airportTerminal,
+        portServiceType: service === "港口接送" ? valueOf("portServiceType") : "",
+        reservedPort: service === "港口接送" ? valueOf("reservedPort") : "",
+
+        carType: valueOf("carType"),
+
+        passengers: valueOf("passengers"),
+        luggage: valueOf("luggage"),
+        flight: valueOf("flight"),
+        flightTime: service === "機場接送" ? valueOf("flightTime") : "",
+        departureTime: airportServiceType === "送機服務" ? valueOf("flightTime") : "",
+        arrivalTime: airportServiceType === "接機服務" ? valueOf("flightTime") : "",
+
+        signService: valueOf("signService"),
+        englishDriver: valueOf("englishDriver"),
+        childSeat: valueOf("childSeat"),
+        serviceTier: valueOf("serviceTier"),
+        premiumAddons: checkedValues("premiumAddons"),
+        specialRequests: checkedValues("specialRequests"),
+        paymentMethodPreference: valueOf("paymentMethodPreference"),
+        invoiceNeed: valueOf("invoiceNeed"),
+        parkingNotice: valueOf("parkingNotice"),
+
+        stopCount: valueOf("stopCount"),
+        multiStop: Number(valueOf("stopCount") || 1) > 1 ? "有" : "無",
+        multiStopNote: valueOf("multiStopNote"),
+        receptionAddress: supportsReceptionAddress(service) ? valueOf("pickup") : "",
+        receptionPoint2: valueOf("receptionPoint2"),
+        receptionPoint3: valueOf("receptionPoint3"),
+        receptionPoint4: valueOf("receptionPoint4"),
+        receptionPoint5: valueOf("receptionPoint5"),
+        airportPoint2: valueOf("airportPoint2"),
+        airportPoint3: valueOf("airportPoint3"),
+        airportPoint4: valueOf("airportPoint4"),
+        airportPoint5: valueOf("airportPoint5"),
+
+        tourMode: valueOf("tourMode"),
+        tourArea: valueOf("tourArea"),
+        packageRoute: valueOf("packageRoute"),
+        tripDays: valueOf("tripDays"),
+        driverHotelType: valueOf("driverHotelType"),
+
+        note: valueOf("note"),
+
+        distanceKm: lastDistanceKm || "",
+        durationMin: lastDurationMin || ""
+      };
+    }
+
+    function renderFinalSummary() {
+      const data = collectData();
+
+      const html =
+        "<strong>請確認以下資料：</strong><br><br>" +
+        "姓名：" + escapeHtml(data.name) + "<br>" +
+        "電話：" + escapeHtml(data.phone) + "<br>" +
+        (data.companyName ? "公司 / 單位：" + escapeHtml(data.companyName) + "<br>" : "") +
+        (data.taxId ? "統一編號：" + escapeHtml(data.taxId) + "<br>" : "") +
+        (data.receptionLevel ? "接待層級：" + escapeHtml(data.receptionLevel) + "<br>" : "") +
+        (data.receptionTarget ? "接待對象：" + escapeHtml(data.receptionTarget) + "<br>" : "") +
+        "服務：" + escapeHtml(data.service) + "<br>" +
+        (data.businessTripType ? "商務行程：" + escapeHtml(data.businessTripType) + " / " + escapeHtml(data.businessHours) + " 小時<br>" : "") +
+        (data.businessCrossRegion ? "商務跨區：" + escapeHtml(data.businessCrossRegion) + "<br>" : "") +
+        (data.universalLoungeType ? "寰宇商務中心：" + escapeHtml(data.universalLoungeType) + "<br>" : "") +
+        (data.universalLoungePassengers ? "商務中心人數：" + escapeHtml(data.universalLoungePassengers) + "<br>" : "") +
+        "車型：" + escapeHtml(data.carType) + "<br>" +
+        "日期時間：" + escapeHtml(data.date + " " + data.time) + "<br>" +
+        (data.airportServiceType ? "機場接送類型：" + escapeHtml(data.airportServiceType) + "<br>" : "") +
+        (data.portServiceType ? "港口接送類型：" + escapeHtml(data.portServiceType) + "<br>" : "") +
+        (data.reservedPort ? "預約港口：" + escapeHtml(data.reservedPort) + "<br>" : "") +
+        (data.receptionAddress && data.receptionAddress !== data.pickup ? "接待地址：" + escapeHtml(data.receptionAddress) + "<br>" : "") +
+        (data.flight ? "航班資訊：" + escapeHtml(data.flight) + "<br>" : "") +
+        (data.flightTime ? escapeHtml(data.airportServiceType === "接機服務" ? "抵達時間：" : "起飛時間：") + escapeHtml(data.flightTime) + "<br>" : "") +
+        "上車：" + escapeHtml(data.pickup) + "<br>" +
+        "下車：" + escapeHtml(data.dropoff) + "<br>" +
+        renderPointSummary(data) +
+        "乘客 / 行李：" + escapeHtml((data.passengers || "-") + " 人 / " + (data.luggage || "-") + " 件") + "<br>" +
+        "禮賓服務：" + escapeHtml(data.serviceTier || "尊榮標準服務") + "<br>" +
+        (data.premiumAddons ? "加值服務：" + escapeHtml(data.premiumAddons) + "<br>" : "") +
+        (data.specialRequests ? "特殊需求：" + escapeHtml(data.specialRequests) + "<br>" : "") +
+        "付款偏好：" + escapeHtml(data.paymentMethodPreference || "客服確認後提供訂金付款") + "<br>" +
+        "單據需求：" + escapeHtml(data.invoiceNeed || data.quoteDocumentNeed || "不需要") + "<br>" +
+        (data.monthlyBilling && data.monthlyBilling !== "否" ? "企業月結：" + escapeHtml(data.monthlyBilling) + "<br>" : "") +
+        (data.universalLoungeNote ? "寰宇備註：" + escapeHtml(data.universalLoungeNote) + "<br>" : "") +
+        "備註：" + escapeHtml(data.note || "無") + "<br><br>" +
+        "送出後將由禮賓專員確認最終車輛、司機與費用。";
+
+      document.getElementById("finalSummary").innerHTML = html;
+    }
+
+    function renderPointSummary(data) {
+      const airportPoints = [
+        data.airportPoint2,
+        data.airportPoint3,
+        data.airportPoint4,
+        data.airportPoint5
+      ].filter(Boolean);
+
+      const receptionPoints = [
+        data.receptionPoint2,
+        data.receptionPoint3,
+        data.receptionPoint4,
+        data.receptionPoint5
+      ].filter(Boolean);
+
+      let html = "";
+      if (airportPoints.length) {
+        html += "機場接送接待點：" + escapeHtml(airportPoints.join(" / ")) + "<br>";
+      }
+      if (receptionPoints.length) {
+        html += "多點接待：" + escapeHtml(receptionPoints.join(" / ")) + "<br>";
+      }
+      return html;
+    }
+
+    function renderQuote(elementId, quote) {
+      const data = collectData();
+      const html =
+        '<div class="quote-box">' +
+          '<div class="quote-line"><span>估價性質</span><strong>初步禮賓估價</strong></div>' +
+          '<div class="quote-line"><span>服務項目</span><strong>' + escapeHtml(data.service || "") + '</strong></div>' +
+          '<div class="quote-line"><span>系統車型</span><strong>' + escapeHtml(quote.carType || "") + '</strong></div>' +
+          '<div class="quote-line"><span>預估距離</span><strong>' + escapeHtml(String(quote.distanceKm || "-")) + ' 公里</strong></div>' +
+          '<div class="quote-line"><span>預估車程</span><strong>' + escapeHtml(String(quote.durationMin || "-")) + ' 分鐘</strong></div>' +
+          '<div class="quote-line"><span>禮賓等級</span><strong>' + escapeHtml(data.serviceTier || "尊榮標準服務") + '</strong></div>' +
+          '<div class="quote-line"><span>加值 / 特殊需求</span><strong>' + escapeHtml(data.premiumAddons || data.specialRequests || "未加選") + '</strong></div>' +
+          '<div class="quote-line"><span>加價說明</span><strong>' + escapeHtml(quote.surchargeNotes || "無") + '</strong></div>' +
+          '<div class="quote-line"><span>初步禮賓估價</span><strong>NT$ ' + escapeHtml(String(quote.finalPrice || 0)) + '</strong></div>' +
+          '<div class="quote-line"><span>建議訂金</span><strong>NT$ ' + escapeHtml(String(quote.depositAmount || 0)) + '</strong></div>' +
+          '<div class="quote-line"><span>尾款</span><strong>NT$ ' + escapeHtml(String(quote.balanceAmount || 0)) + '</strong></div>' +
+          '<div class="notice">此費用為初步禮賓估價，將由禮賓專員依車輛檔期、司機安排、停車等候、跨區與行程細節確認後，提供正式報價與付款資訊。</div>' +
+        '</div>';
+
+      document.getElementById(elementId).innerHTML = html;
+    }
+
+    function renderSubmitSuccess(result) {
+      const paymentHtml = result.paymentUrl
+        ? '<br><br><a href="' + escapeHtml(result.paymentUrl) + '" target="_blank" rel="noopener">前往支付訂金 NT$ ' + escapeHtml(String(result.depositAmount || 0)) + '</a>'
+        : '<br><br>客服確認車輛後會提供訂金付款連結。';
+
+      document.getElementById("submitStatus").innerHTML =
+        '<div class="status success">' +
+          '已收到您的禮賓預約需求。<br>' +
+          '訂單編號：' + escapeHtml(result.orderId) + '<br>' +
+          '初步禮賓估價：NT$ ' + escapeHtml(String(result.finalPrice || 0)) + '<br><br>' +
+          '禮賓專員將為您確認車輛、司機、路線與費用。確認完成後，將提供正式報價與付款資訊。<br><br>' +
+          '您可在 LINE 輸入「查詢 ' + escapeHtml(result.orderId) + '」或「付款 ' + escapeHtml(result.orderId) + '」追蹤後續狀態。' +
+          paymentHtml +
+        '</div>';
+    }
+
+    function setStatus(elementId, type, message) {
+      const el = document.getElementById(elementId);
+      el.innerHTML = '<div class="status ' + type + '">' + escapeHtml(message) + '</div>';
+    }
+
+    function valueOf(id) {
+      const el = document.getElementById(id);
+      return el ? String(el.value || "").trim() : "";
+    }
+
+    function checkedValues(name) {
+      return Array.from(document.querySelectorAll('input[name="' + name + '"]:checked'))
+        .map(function(input) {
+          return String(input.value || "").trim();
+        })
+        .filter(Boolean)
+        .join("、");
+    }
+
+    function selectCarType(carType) {
+      const select = document.getElementById("carType");
+      if (select) {
+        select.value = carType;
+      }
+    }
+
+    // 御澤禮賓車型推薦邏輯（依乘客人數）
+    function recommendVehicleByPax(pax) {
+      const n = Number(pax) || 0;
+      if (n === 0) return null;
+      if (n <= 2) {
+        return {
+          tier: "頂級禮賓",
+          tierEmoji: "👑",
+          primary: "Lexus LM 40 / 35",
+          alternatives: ["Toyota Alphard 40 / 35", "Benz V-Class V300d"]
+        };
+      }
+      if (n <= 4) {
+        return {
+          tier: "高端商務",
+          tierEmoji: "💼",
+          primary: "Benz V-Class V300d / V250d",
+          alternatives: ["Toyota Alphard 40 / 35", "Benz Vito 豪華版"]
+        };
+      }
+      if (n <= 6) {
+        return {
+          tier: "高端禮賓",
+          tierEmoji: "✨",
+          primary: "Benz Vito 豪華版",
+          alternatives: ["Toyota Granvia 6/7人座", "Benz V-Class V300d / V250d", "Toyota Alphard 40 / 35"]
+        };
+      }
+      if (n <= 8) {
+        return {
+          tier: "標準商務",
+          tierEmoji: "🚐",
+          primary: "Benz Vito 9人座",
+          alternatives: ["Toyota Granvia 6/7人座"]
+        };
+      }
+      return {
+        tier: "大型保姆車",
+        tierEmoji: "🚌",
+        primary: "Benz Sprinter 旗艦8人座",
+        alternatives: ["VW Crafter 旗艦8人座"]
+      };
+    }
+
+    // 監聽人數輸入，自動顯示推薦車型提示
+    document.addEventListener("DOMContentLoaded", function() {
+      const paxInput = document.getElementById("passengers");
+      const carSelect = document.getElementById("carType");
+      if (!paxInput || !carSelect) return;
+
+      // 建立推薦提示框
+      const hintBox = document.createElement("div");
+      hintBox.id = "vehicleRecHint";
+      hintBox.style.cssText = "margin-top:8px;padding:10px 12px;background:rgba(215,174,84,0.08);border:1px solid rgba(215,174,84,0.32);border-radius:8px;font-size:13px;color:var(--text);display:none";
+      carSelect.parentNode.appendChild(hintBox);
+
+      function updateRecommendation() {
+        const rec = recommendVehicleByPax(paxInput.value);
+        if (!rec) {
+          hintBox.style.display = "none";
+          return;
+        }
+        hintBox.innerHTML =
+          '<div style="color:var(--gold);font-weight:bold;margin-bottom:4px">' +
+            rec.tierEmoji + ' ' + rec.tier + '｜建議車型' +
+          '</div>' +
+          '<div style="color:var(--gold-light);font-weight:bold;margin-bottom:4px">' + rec.primary + '</div>' +
+          '<div style="color:var(--muted);font-size:12px">備選：' + rec.alternatives.join("、") + '</div>' +
+          '<button type="button" onclick="applyRecommendedVehicle(\'' + rec.primary + '\')" ' +
+            'style="margin-top:8px;padding:6px 12px;background:var(--gold);color:#000;border:0;border-radius:6px;font-size:12px;cursor:pointer">' +
+            '✨ 套用建議車型' +
+          '</button>';
+        hintBox.style.display = "block";
+      }
+
+      paxInput.addEventListener("input", updateRecommendation);
+      paxInput.addEventListener("change", updateRecommendation);
+    });
+
+    // 套用推薦車型到下拉選單
+    window.applyRecommendedVehicle = function(vehicleName) {
+      const select = document.getElementById("carType");
+      if (!select) return;
+      // 找出對應的 option（支援名稱包含建議車型字串）
+      for (let i = 0; i < select.options.length; i++) {
+        if (select.options[i].value === vehicleName ||
+            select.options[i].text.indexOf(vehicleName) === 0) {
+          select.selectedIndex = i;
+          select.dispatchEvent(new Event("change"));
+          break;
+        }
+      }
+    };
+
+    function escapeHtml(text) {
+      return String(text || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>

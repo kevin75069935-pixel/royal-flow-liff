@@ -1,0 +1,9 @@
+node_modules/
+.wrangler/
+.cf-pages-diagnostic/
+.codex-remote-attachments/
+.archive/
+*.bak
+*.bak-*
+*.old
+*.log

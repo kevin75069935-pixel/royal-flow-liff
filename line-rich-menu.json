@@ -1,0 +1,59 @@
+{
+  "size": {
+    "width": 2500,
+    "height": 1686
+  },
+  "selected": true,
+  "name": "御澤禮賓主選單",
+  "chatBarText": "御澤禮賓選單",
+  "areas": [
+    {
+      "bounds": { "x": 0, "y": 0, "width": 833, "height": 843 },
+      "action": {
+        "type": "uri",
+        "label": "立即預約",
+        "uri": "https://liff.line.me/2010083928-gA1wvCJ0"
+      }
+    },
+    {
+      "bounds": { "x": 833, "y": 0, "width": 834, "height": 843 },
+      "action": {
+        "type": "message",
+        "label": "AI 報價",
+        "text": "報價"
+      }
+    },
+    {
+      "bounds": { "x": 1667, "y": 0, "width": 833, "height": 843 },
+      "action": {
+        "type": "message",
+        "label": "查詢行程",
+        "text": "查詢行程"
+      }
+    },
+    {
+      "bounds": { "x": 0, "y": 843, "width": 833, "height": 843 },
+      "action": {
+        "type": "message",
+        "label": "付款",
+        "text": "付款"
+      }
+    },
+    {
+      "bounds": { "x": 833, "y": 843, "width": 834, "height": 843 },
+      "action": {
+        "type": "message",
+        "label": "機場接送",
+        "text": "機場接送"
+      }
+    },
+    {
+      "bounds": { "x": 1667, "y": 843, "width": 833, "height": 843 },
+      "action": {
+        "type": "message",
+        "label": "人工客服",
+        "text": "客服"
+      }
+    }
+  ]
+}

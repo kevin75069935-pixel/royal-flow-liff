@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&#x5FA1;&#x6FA4;&#x79AE;&#x8CD3;&#xFF5C;&#x4ED8;&#x6B3E;&#x8CC7;&#x8A0A;</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --card: #11100e;
+      --gold: #d7ae54;
+      --gold-soft: #f4d98b;
+      --text: #f8f2df;
+      --muted: #c9bda4;
+      --line: rgba(215, 174, 84, 0.34);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 50% -12%, rgba(215, 174, 84, 0.18), transparent 35%),
+        linear-gradient(180deg, #050505 0%, #0f0c08 58%, #050505 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      line-height: 1.55;
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 22px 16px 42px;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      color: var(--gold-soft);
+      font-size: 26px;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(24, 21, 17, 0.98), rgba(8, 8, 8, 0.98));
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.34);
+    }
+
+    .order {
+      display: none;
+      margin: 0 0 14px;
+      padding: 10px 12px;
+      border: 1px solid rgba(215, 174, 84, 0.24);
+      border-radius: 8px;
+      color: var(--gold-soft);
+      background: rgba(215, 174, 84, 0.08);
+      word-break: break-word;
+    }
+
+    .qr {
+      width: 100%;
+      display: block;
+      margin-bottom: 16px;
+      border: 1px solid rgba(215, 174, 84, 0.28);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 106px 1fr;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(215, 174, 84, 0.16);
+    }
+
+    .row span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .row strong {
+      color: var(--text);
+      word-break: break-all;
+      font-size: 16px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button,
+    a.button {
+      width: 100%;
+      min-height: 50px;
+      border: 0;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #f4d98b, #c99633);
+      color: #12100b;
+      font-size: 17px;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    a.secondary,
+    button.secondary {
+      background: #1d1d1d;
+      color: var(--gold-soft);
+      border: 1px solid var(--line);
+    }
+
+    .notice {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      max-width: min(92vw, 420px);
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: rgba(244, 217, 139, 0.94);
+      color: #12100b;
+      font-weight: 800;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="brand">
+      <h1>&#x5FA1;&#x6FA4;&#x79AE;&#x8CD3;&#xFF5C;&#x4ED8;&#x6B3E;&#x8CC7;&#x8A0A;</h1>
+      <p>Royal Flow Concierge &#x9280;&#x884C;&#x8F49;&#x5E33;&#x8207; QR Code</p>
+    </section>
+
+    <section class="card">
+      <p class="order" id="orderBox">&#x8A02;&#x55AE;&#x7DE8;&#x865F;&#xFF1A;<strong id="orderId"></strong></p>
+
+      <img class="qr" src="assets/payment/ctbc-bank-qr.jpg" alt="CTBC bank transfer QR Code">
+
+      <div class="row">
+        <span>&#x9280;&#x884C;</span>
+        <strong>&#x4E2D;&#x570B;&#x4FE1;&#x8A17;&#x5546;&#x696D;&#x9280;&#x884C;</strong>
+      </div>
+      <div class="row">
+        <span>&#x9280;&#x884C;&#x4EE3;&#x78BC;</span>
+        <strong>822</strong>
+      </div>
+      <div class="row">
+        <span>&#x6236;&#x540D;</span>
+        <strong id="accountName">&#x6731;&#x6069;&#x7DEF;</strong>
+      </div>
+      <div class="row">
+        <span>&#x5E33;&#x865F;</span>
+        <strong id="accountNumber">141531285651</strong>
+      </div>
+
+      <div class="actions">
+        <button type="button" onclick="copyText('accountNumber', 'account')">&#x8907;&#x88FD;&#x9280;&#x884C;&#x5E33;&#x865F;</button>
+        <button class="secondary" type="button" onclick="copyText('accountName', 'name')">&#x8907;&#x88FD;&#x6236;&#x540D;</button>
+        <a class="button" href="assets/payment/ctbc-bank-qr.jpg" download="royal-flow-ctbc-bank-qr.jpg">&#x4E0B;&#x8F09; QR Code</a>
+        <a class="button secondary" href="https://www.ctbcbank.com/" target="_blank" rel="noopener">&#x958B;&#x555F;&#x4E2D;&#x570B;&#x4FE1;&#x8A17;&#x7DB2;&#x7AD9;</a>
+      </div>
+
+      <div class="notice">
+        &#x532F;&#x6B3E;&#x524D;&#x8ACB;&#x518D;&#x6B21;&#x78BA;&#x8A8D;&#x5E33;&#x865F;&#x8207;&#x91D1;&#x984D;&#x3002;&#x5B8C;&#x6210;&#x532F;&#x6B3E;&#x5F8C;&#xFF0C;&#x8ACB;&#x65BC; LINE &#x56DE;&#x50B3;&#x8A02;&#x55AE;&#x7DE8;&#x865F;&#x3001;&#x532F;&#x6B3E;&#x91D1;&#x984D;&#x8207;&#x5E33;&#x865F;&#x672B;&#x4E94;&#x78BC;&#xFF0C;&#x79AE;&#x8CD3;&#x5C08;&#x54E1;&#x5C07;&#x70BA;&#x60A8;&#x6838;&#x5C0D;&#x6B3E;&#x9805;&#x4E26;&#x4FDD;&#x7559;&#x8ECA;&#x8F1B;&#x6A94;&#x671F;&#x3002;
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get("orderId") || "";
+    const labels = {
+      account: "\u5df2\u8907\u88fd\u9280\u884c\u5e33\u865f",
+      name: "\u5df2\u8907\u88fd\u6236\u540d",
+      manual: "\u8acb\u624b\u52d5\u8907\u88fd\u4ee5\u4e0b\u5167\u5bb9"
+    };
+
+    if (orderId) {
+      document.getElementById("orderId").innerText = orderId;
+      document.getElementById("orderBox").style.display = "block";
+    }
+
+    async function copyText(id, labelKey) {
+      const text = document.getElementById(id).innerText.trim();
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(labels[labelKey] + ": " + text);
+      } catch (error) {
+        window.prompt(labels.manual, text);
+      }
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById("toast");
+      toast.innerText = text;
+      toast.classList.add("show");
+      window.setTimeout(function() {
+        toast.classList.remove("show");
+      }, 1800);
+    }
+  </script>
+</body>
+</html>

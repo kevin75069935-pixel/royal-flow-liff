@@ -1,0 +1,10 @@
+{
+  "type": "module",
+  "scripts": {
+    "dev:static": "npx wrangler pages dev .",
+    "check:functions": "node --check functions/api/estimate.js && node --check functions/api/quote.js && node --check functions/api/submit.js && node --check functions/api/sync-order.js && node --check functions/api/line/webhook.js"
+  },
+  "devDependencies": {
+    "wrangler": "^4.99.0"
+  }
+}

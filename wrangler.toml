@@ -1,0 +1,7 @@
+name = "royal-flow-liff"
+pages_build_output_dir = "."
+compatibility_date = "2026-06-12"
+
+[[kv_namespaces]]
+binding = "ORDER_KV"
+id = "442d02b310d6499e8264bcac03d61098"

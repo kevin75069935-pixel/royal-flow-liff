@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>御澤禮賓｜社群行銷內容產生器</title>
+  <style>
+    :root {
+      --bg: #070707;
+      --panel: #111;
+      --panel-soft: #17130e;
+      --line: rgba(215, 174, 84, 0.32);
+      --text: #f7f0df;
+      --muted: #c9bda6;
+      --gold: #d7ae54;
+      --gold-light: #f4d98b;
+      --danger: #ff8a9a;
+      --success: #7de0a4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 50% -12%, rgba(215, 174, 84, 0.18), transparent 34%),
+        linear-gradient(180deg, #050505 0%, #0c0906 48%, #050505 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      line-height: 1.55;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 22px 16px 56px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      padding-bottom: 18px;
+    }
+
+    .brand-title {
+      margin: 0;
+      color: var(--gold-light);
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+
+    .brand-sub {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 9px 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.04);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(320px, 420px) 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(23, 19, 14, 0.98), rgba(10, 10, 10, 0.98));
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      color: var(--gold-light);
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      color: #f1e5c8;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0b0b0b;
+      color: var(--text);
+      padding: 10px 12px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 94px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(215, 174, 84, 0.16);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      min-height: 48px;
+      border: 1px solid rgba(244, 217, 139, 0.52);
+      border-radius: 8px;
+      padding: 10px 13px;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      color: #110c05;
+      background: linear-gradient(180deg, #e7c56d, #ad7628);
+    }
+
+    .btn-light {
+      color: var(--text);
+      background: #181818;
+      border-color: var(--line);
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .notice {
+      border: 1px solid rgba(215, 174, 84, 0.34);
+      border-radius: 8px;
+      padding: 11px;
+      margin-top: 12px;
+      color: #f2e6c8;
+      background: rgba(215, 174, 84, 0.09);
+      font-size: 14px;
+    }
+
+    .status {
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .status.success {
+      color: var(--success);
+      border: 1px solid rgba(125, 224, 164, 0.36);
+      background: rgba(10, 127, 69, 0.14);
+    }
+
+    .status.error {
+      color: var(--danger);
+      border: 1px solid rgba(255, 138, 154, 0.38);
+      background: rgba(176, 0, 32, 0.16);
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .output {
+      min-height: 220px;
+      white-space: pre-wrap;
+      font-size: 15px;
+    }
+
+    .asset-list {
+      display: grid;
+      gap: 8px;
+      max-height: 230px;
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .asset-item {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid rgba(215, 174, 84, 0.2);
+      border-radius: 8px;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--muted);
+      font-size: 13px;
+      overflow: hidden;
+    }
+
+    .asset-thumb {
+      width: 56px;
+      height: 70px;
+      border-radius: 6px;
+      object-fit: cover;
+      background: #050505;
+    }
+
+    .video-wrap {
+      display: grid;
+      grid-template-columns: minmax(220px, 320px) 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    canvas {
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 9 / 16;
+      border: 1px solid rgba(215, 174, 84, 0.34);
+      border-radius: 8px;
+      background: #050505;
+    }
+
+    .download-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      margin-top: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(125, 224, 164, 0.36);
+      color: var(--success);
+      text-decoration: none;
+      background: rgba(10, 127, 69, 0.14);
+      font-weight: 800;
+    }
+
+    @media (max-width: 920px) {
+      .layout,
+      .result-grid,
+      .video-wrap {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .topbar,
+      .row,
+      .btn-row {
+        grid-template-columns: 1fr;
+        display: grid;
+      }
+
+      .brand-title {
+        font-size: 23px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div>
+        <h1 class="brand-title">御澤禮賓社群行銷內容產生器</h1>
+        <div class="brand-sub">台灣四季花季包車自由行｜文案、分鏡、素材挑選、短影音輸出</div>
+      </div>
+      <a class="nav-link" href="index.html">返回預約表單</a>
+    </header>
+
+    <div class="layout">
+      <section>
+        <div class="panel">
+          <h2>內容設定</h2>
+          <label for="serviceType">行銷類型</label>
+          <select id="serviceType">
+            <option value="tour">旅遊包車自由行</option>
+            <option value="airport">機場接送</option>
+            <option value="business">商務接送</option>
+          </select>
+
+          <div class="row">
+            <div>
+              <label for="season">季節主題</label>
+              <select id="season">
+                <option value="spring">春季賞花</option>
+                <option value="summer">夏季海岸</option>
+                <option value="autumn">秋季楓紅溫泉</option>
+                <option value="winter">冬季跨年雪季</option>
+              </select>
+            </div>
+            <div>
+              <label for="theme">花季 / 玩法</label>
+              <select id="theme">
+                <option value="sakura">櫻花</option>
+                <option value="calla">海芋</option>
+                <option value="hydrangea">繡球花</option>
+                <option value="firefly">螢火蟲</option>
+                <option value="coast">花東海岸</option>
+                <option value="maple">楓葉</option>
+                <option value="hotspring">溫泉</option>
+                <option value="snow">合歡山雪季</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="days">旅遊天數</label>
+              <select id="days">
+                <option value="1">1天</option>
+                <option value="3">3天2夜</option>
+                <option value="5" selected>5天4夜</option>
+                <option value="6">6天5夜</option>
+                <option value="8">8天7夜</option>
+              </select>
+            </div>
+            <div>
+              <label for="audience">客群</label>
+              <select id="audience">
+                <option value="first">第一次來台灣</option>
+                <option value="family">親子家庭</option>
+                <option value="couple">情侶紀念日</option>
+                <option value="elder">長輩慢遊</option>
+                <option value="company">企業團建</option>
+                <option value="hkmo">港澳旅客</option>
+                <option value="sea">新馬旅客</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="pickup">接送點</label>
+              <select id="pickup">
+                <option value="桃園機場">桃園機場</option>
+                <option value="松山機場">松山機場</option>
+                <option value="台北飯店">台北飯店</option>
+                <option value="台中高鐵">台中高鐵</option>
+                <option value="高雄機場">高雄機場</option>
+              </select>
+            </div>
+            <div>
+              <label for="price">主打價格</label>
+              <input id="price" type="text" value="專人報價" placeholder="例：人均 NT$6,800 起">
+            </div>
+          </div>
+
+          <label for="language">輸出語言</label>
+          <select id="language">
+            <option value="zhHant">繁體中文</option>
+            <option value="zhHans">简体中文</option>
+            <option value="en">English</option>
+            <option value="ja">日本語</option>
+            <option value="yue">粵語</option>
+          </select>
+
+          <label for="brandTone">品牌語氣</label>
+          <select id="brandTone">
+            <option value="premium">高端禮賓、安心細緻</option>
+            <option value="friendly">親切省心、像朋友推薦</option>
+            <option value="urgent">限量早鳥、私訊轉換</option>
+          </select>
+
+          <label for="customNote">補充需求</label>
+          <textarea id="customNote" placeholder="例：主打無購物、商務車、可安排飯店與導遊、適合港澳台旅客。"></textarea>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" type="button" onclick="generateContent()">產生文案</button>
+            <button class="btn btn-light" type="button" onclick="downloadCsv()">下載排程 CSV</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>D 槽素材</h2>
+          <input id="assetInput" type="file" accept="image/*,video/*" multiple webkitdirectory>
+          <div class="notice">
+            建議素材來源：D:\2019台湾就要酱玩行程资料\KevinTour\playTaiwan8官網行銷資料\playtaiwan8文宣。季節內容可選春季1-3、夏季4-6、秋季7-9、冬季10-12；美食可選 photoshop拼圖資料\美食篇；機場與商務接送可選 桃园机场资讯、机场接送举牌、服務車輛及車導資料。
+          </div>
+          <div class="notice">點選後可選 D 槽旅遊素材資料夾。瀏覽器只會讀取你選取的檔案，不會自動掃描整個硬碟。</div>
+          <div id="assetStatus" class="status success">尚未選取素材。</div>
+          <div id="assetList" class="asset-list"></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="panel">
+          <h2>產出內容</h2>
+          <div class="result-grid">
+            <div>
+              <label for="postOutput">FB / IG 文案</label>
+              <textarea id="postOutput" class="output"></textarea>
+              <button class="btn btn-light" type="button" onclick="copyText('postOutput')">複製文案</button>
+            </div>
+            <div>
+              <label for="scriptOutput">短影音分鏡 / 字幕</label>
+              <textarea id="scriptOutput" class="output"></textarea>
+              <button class="btn btn-light" type="button" onclick="copyText('scriptOutput')">複製分鏡</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>9:16 短影音產生器</h2>
+          <div class="video-wrap">
+            <canvas id="videoCanvas" width="1080" height="1920"></canvas>
+            <div>
+              <label for="videoTitle">封面標題</label>
+              <input id="videoTitle" type="text" value="台灣賞花包車自由行">
+
+              <label for="videoSub">封面副標</label>
+              <input id="videoSub" type="text" value="機場接送｜專車慢遊｜行程可客製">
+
+              <div class="row">
+                <div>
+                  <label for="videoSeconds">影片秒數</label>
+                  <select id="videoSeconds">
+                    <option value="15">15秒</option>
+                    <option value="30" selected>30秒</option>
+                    <option value="45">45秒</option>
+                    <option value="60">60秒</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="clipSpeed">節奏</label>
+                  <select id="clipSpeed">
+                    <option value="2.2">快節奏</option>
+                    <option value="3" selected>標準</option>
+                    <option value="4">慢遊感</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn btn-light" type="button" onclick="startPreview()">預覽播放</button>
+                <button class="btn btn-primary" id="recordBtn" type="button" onclick="recordVideo()">錄成短片</button>
+              </div>
+              <div id="videoStatus" class="status success">選取素材後可預覽並輸出 WebM 短片。</div>
+              <div id="downloadHost"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const routeData = {
+      spring: {
+        label: "台灣春季賞花",
+        intro: "從台北城市夜景、陽明山花季，到日月潭湖景與阿里山櫻花，一路專車接送，不用搬行李轉車。",
+        routes: ["台北101", "陽明山花季", "北投溫泉", "日月潭", "阿里山森林遊樂區", "奮起湖老街", "茶園景觀"],
+        tags: ["櫻花", "海芋", "紫藤", "螢火蟲", "阿里山", "陽明山"]
+      },
+      summer: {
+        label: "台灣夏季海岸",
+        intro: "把東北角、宜蘭、花蓮與台東海岸串成舒服路線，白天看海，晚上吃夜市與在地小吃。",
+        routes: ["九份山城", "東北角海岸", "宜蘭傳藝中心", "清水斷崖", "七星潭", "伯朗大道", "鹿野高台"],
+        tags: ["海岸", "花東", "宜蘭", "清水斷崖", "伯朗大道"]
+      },
+      autumn: {
+        label: "台灣秋季楓紅溫泉",
+        intro: "秋天適合慢慢走進山林、茶園與溫泉區，避開趕路行程，把拍照、美食與休息時間留足。",
+        routes: ["台北飯店", "烏來溫泉", "武陵農場", "福壽山農場", "清境農場", "日月潭", "溪頭森林"],
+        tags: ["楓葉", "溫泉", "清境", "武陵", "日月潭"]
+      },
+      winter: {
+        label: "台灣冬季跨年雪季",
+        intro: "冬季可以安排台北跨年、溫泉、合歡山雪季與南投山景，專車掌握天候與路況更省心。",
+        routes: ["台北101跨年", "北投溫泉", "清境農場", "合歡山", "日月潭", "嘉義", "阿里山日出"],
+        tags: ["跨年", "溫泉", "合歡山", "雪季", "阿里山"]
+      }
+    };
+
+    const themeLabels = {
+      sakura: "櫻花",
+      calla: "海芋",
+      hydrangea: "繡球花",
+      firefly: "螢火蟲",
+      coast: "花東海岸",
+      maple: "楓葉",
+      hotspring: "溫泉",
+      snow: "合歡山雪季"
+    };
+
+    const audienceText = {
+      first: "第一次來台灣，又不想自己研究交通與景點的人",
+      family: "親子家庭，行程保留休息與彈性停留時間",
+      couple: "情侶與紀念日旅客，重視拍照、飯店與氛圍",
+      elder: "長輩慢遊，不早起、不趕路、上下車方便",
+      company: "企業團建與貴賓接待，可搭配多車調度",
+      hkmo: "港澳旅客，重視接送機、中文溝通與省心安排",
+      sea: "新馬旅客，適合第一次深度認識台灣"
+    };
+
+    let selectedAssets = [];
+    let previewTimer = null;
+    let previewStart = 0;
+
+    document.getElementById("assetInput").addEventListener("change", handleAssets);
+    document.getElementById("season").addEventListener("change", syncSeasonTheme);
+    document.addEventListener("DOMContentLoaded", function() {
+      generateContent();
+      drawPoster(0);
+    });
+
+    function syncSeasonTheme() {
+      const season = valueOf("season");
+      const defaultTheme = {
+        spring: "sakura",
+        summer: "coast",
+        autumn: "maple",
+        winter: "snow"
+      };
+      document.getElementById("theme").value = defaultTheme[season] || "sakura";
+    }
+
+    function generateContent() {
+      const season = valueOf("season");
+      const theme = valueOf("theme");
+      const days = Number(valueOf("days"));
+      const pickup = valueOf("pickup");
+      const price = valueOf("price") || "專人報價";
+      const tone = valueOf("brandTone");
+      const data = routeData[season];
+      const themeName = themeLabels[theme] || "四季景點";
+      const route = buildRoute(data.routes, days);
+      const title = "台灣" + themeName + days + "天" + (days > 1 ? (days - 1) + "夜" : "") + "｜" + pickup + "接送＋專車包車超省心";
+      const promiseLine = tone === "urgent"
+        ? "小團與熱門花季檔期有限，建議提早卡位。"
+        : tone === "friendly"
+          ? "不用自己查交通、不用搬行李轉車，像自由行一樣輕鬆。"
+          : "以禮賓規格安排車輛、司機、動線與停留節奏。";
+
+      const post = [
+        title,
+        price !== "專人報價" ? "主打價格：" + price : "依人數、車型、飯店與季節檔期提供透明報價",
+        "",
+        "第一次規劃台灣" + themeName + "旅行，又不想交通查到頭大？",
+        "這條「" + data.label + "」路線很適合" + audienceText[valueOf("audience")] + "。",
+        data.intro,
+        promiseLine,
+        "",
+        "📍" + days + "日精華行程",
+        ...route.map(function(item, index) {
+          return "Day" + (index + 1) + "：" + item;
+        }),
+        "",
+        "我們可以安排：",
+        "✅ 專屬司機＋舒適商務車",
+        "✅ 機場接送、飯店接送、行李隨車",
+        "✅ 可依花況、天氣、體力調整停留時間",
+        "✅ 親子／長輩／情侶／企業小團皆可客製",
+        "✅ 無購物、無強迫行程、費用透明",
+        valueOf("customNote") ? "✅ " + valueOf("customNote") : "",
+        "",
+        "想拿完整行程與報價，直接私訊 Messenger / LINE 聯絡我們。",
+        "",
+        "#台灣旅遊 #台灣包車 #自由行包車 #" + themeName + " #機場接送 #客製小團 #御澤禮賓 #RoyalFlowConcierge"
+      ].filter(Boolean).join("\n");
+
+      const script = [
+        "短影音分鏡｜9:16｜" + valueOf("videoSeconds") + "秒",
+        "",
+        "0-3秒：封面大字「" + title + "」",
+        "畫面：車門開啟、機場接送、第一個景點快切",
+        "字幕：第一次來台灣，不想自己研究交通？",
+        "",
+        "3-8秒：景點氛圍",
+        "畫面：" + route.slice(0, 2).join("／"),
+        "字幕：" + themeName + "、城市夜景、在地美食一次安排",
+        "",
+        "8-16秒：行程亮點",
+        "畫面：" + route.slice(2, 4).join("／"),
+        "字幕：專車接送，不搬行李轉車，停留時間可調整",
+        "",
+        "16-24秒：服務信任",
+        "畫面：車內、司機、飯店門口、行李上車",
+        "字幕：舒適商務車＋專屬司機＋1對1行程規劃",
+        "",
+        "24秒後：CTA",
+        "畫面：最佳花季照片＋品牌字卡",
+        "字幕：私訊索取完整行程與報價",
+        "",
+        "建議素材關鍵字：" + data.tags.concat([themeName, "車", "飯店", "機場"]).join("、")
+      ].join("\n");
+
+      document.getElementById("postOutput").value = post;
+      document.getElementById("scriptOutput").value = script;
+      document.getElementById("videoTitle").value = "台灣" + themeName + days + "天包車自由行";
+      document.getElementById("videoSub").value = pickup + "接送｜專車慢遊｜行程可客製";
+      renderAssetList();
+      drawPoster(0);
+    }
+
+    function buildRoute(routes, days) {
+      const result = [];
+      for (let i = 0; i < days; i++) {
+        const first = routes[(i * 2) % routes.length];
+        const second = routes[(i * 2 + 1) % routes.length];
+        const third = routes[(i * 2 + 2) % routes.length];
+        if (i === 0) {
+          result.push(valueOf("pickup") + "接機/接站→" + first + "→" + second);
+        } else if (i === days - 1) {
+          result.push(first + "→" + second + "→返回機場/高鐵");
+        } else {
+          result.push(first + "→" + second + "→" + third);
+        }
+      }
+      return result;
+    }
+
+    function handleAssets(event) {
+      selectedAssets.forEach(function(asset) {
+        URL.revokeObjectURL(asset.url);
+      });
+      selectedAssets = Array.from(event.target.files || [])
+        .filter(function(file) {
+          return /^image\//.test(file.type) || /^video\//.test(file.type);
+        })
+        .map(function(file) {
+          const media = document.createElement(file.type.indexOf("video/") === 0 ? "video" : "img");
+          media.src = URL.createObjectURL(file);
+          media.muted = true;
+          media.loop = true;
+          media.playsInline = true;
+          media.preload = "auto";
+          return {
+            file: file,
+            name: file.name,
+            path: file.webkitRelativePath || file.name,
+            type: file.type,
+            url: media.src,
+            media: media,
+            score: scoreAsset(file.name + " " + (file.webkitRelativePath || ""))
+          };
+        })
+        .sort(function(a, b) {
+          return b.score - a.score || a.name.localeCompare(b.name);
+        });
+
+      renderAssetList();
+      drawPoster(0);
+    }
+
+    function scoreAsset(text) {
+      const season = routeData[valueOf("season")];
+      const themeName = themeLabels[valueOf("theme")];
+      const haystack = String(text || "").toLowerCase();
+      let score = 0;
+      season.tags.concat([themeName, "taiwan", "台灣", "包車", "車", "hotel", "飯店"]).forEach(function(tag) {
+        if (haystack.indexOf(String(tag).toLowerCase()) >= 0) {
+          score += 5;
+        }
+      });
+      if (/cover|封面|精選|hero/i.test(text)) {
+        score += 3;
+      }
+      return score;
+    }
+
+    function renderAssetList() {
+      const host = document.getElementById("assetList");
+      const status = document.getElementById("assetStatus");
+      host.innerHTML = "";
+
+      if (!selectedAssets.length) {
+        status.className = "status success";
+        status.innerText = "尚未選取素材。";
+        return;
+      }
+
+      status.className = "status success";
+      status.innerText = "已載入 " + selectedAssets.length + " 個素材，已依目前季節與花季關鍵字排序。";
+      selectedAssets.slice(0, 24).forEach(function(asset) {
+        const row = document.createElement("div");
+        row.className = "asset-item";
+        const thumb = asset.media.cloneNode(false);
+        thumb.className = "asset-thumb";
+        thumb.muted = true;
+        thumb.playsInline = true;
+        const text = document.createElement("div");
+        text.innerHTML = "<strong>" + escapeHtml(asset.name) + "</strong><br>" + escapeHtml(asset.path) + "<br>匹配分數：" + asset.score;
+        row.appendChild(thumb);
+        row.appendChild(text);
+        host.appendChild(row);
+      });
+    }
+
+    function startPreview() {
+      stopPreview();
+      previewStart = performance.now();
+      const seconds = Number(valueOf("videoSeconds") || 30);
+      function tick(now) {
+        const elapsed = (now - previewStart) / 1000;
+        drawPoster(elapsed);
+        if (elapsed < seconds) {
+          previewTimer = requestAnimationFrame(tick);
+        } else {
+          stopPreview();
+        }
+      }
+      previewTimer = requestAnimationFrame(tick);
+    }
+
+    function stopPreview() {
+      if (previewTimer) {
+        cancelAnimationFrame(previewTimer);
+        previewTimer = null;
+      }
+    }
+
+    async function recordVideo() {
+      const canvas = document.getElementById("videoCanvas");
+      const stream = canvas.captureStream(30);
+      const chunks = [];
+      const mimeType = MediaRecorder.isTypeSupported("video/webm;codecs=vp9")
+        ? "video/webm;codecs=vp9"
+        : "video/webm";
+      const recorder = new MediaRecorder(stream, { mimeType: mimeType });
+      const seconds = Number(valueOf("videoSeconds") || 30);
+      const btn = document.getElementById("recordBtn");
+      const status = document.getElementById("videoStatus");
+
+      btn.disabled = true;
+      status.className = "status success";
+      status.innerText = "短片錄製中，請稍候 " + seconds + " 秒。";
+      document.getElementById("downloadHost").innerHTML = "";
+
+      recorder.ondataavailable = function(event) {
+        if (event.data && event.data.size) {
+          chunks.push(event.data);
+        }
+      };
+
+      recorder.onstop = function() {
+        const blob = new Blob(chunks, { type: "video/webm" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = buildFileName() + ".webm";
+        link.className = "download-link";
+        link.innerText = "下載短片 WebM";
+        document.getElementById("downloadHost").appendChild(link);
+        btn.disabled = false;
+        status.innerText = "短片已完成。若要上傳 Reels / Shorts，可用剪輯軟體或轉檔工具轉成 MP4。";
+      };
+
+      recorder.start();
+      previewStart = performance.now();
+      function tick(now) {
+        const elapsed = (now - previewStart) / 1000;
+        drawPoster(elapsed);
+        if (elapsed < seconds && recorder.state === "recording") {
+          requestAnimationFrame(tick);
+        } else if (recorder.state === "recording") {
+          recorder.stop();
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function drawPoster(elapsed) {
+      const canvas = document.getElementById("videoCanvas");
+      const ctx = canvas.getContext("2d");
+      const width = canvas.width;
+      const height = canvas.height;
+      const clipSeconds = Number(valueOf("clipSpeed") || 3);
+      const asset = selectedAssets.length ? selectedAssets[Math.floor(elapsed / clipSeconds) % selectedAssets.length] : null;
+
+      ctx.fillStyle = "#050505";
+      ctx.fillRect(0, 0, width, height);
+
+      if (asset) {
+        drawAsset(ctx, asset, width, height);
+      } else {
+        const grd = ctx.createLinearGradient(0, 0, width, height);
+        grd.addColorStop(0, "#14100a");
+        grd.addColorStop(0.48, "#2a2114");
+        grd.addColorStop(1, "#050505");
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, width, height);
+      }
+
+      ctx.fillStyle = "rgba(0, 0, 0, 0.38)";
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = "rgba(0, 0, 0, 0.68)";
+      ctx.fillRect(0, height - 620, width, 620);
+
+      ctx.fillStyle = "#f4d98b";
+      ctx.font = "900 76px Microsoft JhengHei, sans-serif";
+      wrapText(ctx, valueOf("videoTitle"), 72, height - 500, width - 144, 92);
+
+      ctx.fillStyle = "#f7f0df";
+      ctx.font = "700 42px Microsoft JhengHei, sans-serif";
+      wrapText(ctx, valueOf("videoSub"), 72, height - 285, width - 144, 56);
+
+      ctx.fillStyle = "#d7ae54";
+      ctx.fillRect(72, height - 142, width - 144, 3);
+      ctx.fillStyle = "#f7f0df";
+      ctx.font = "800 34px Microsoft JhengHei, sans-serif";
+      const lang = valueOf("language") || "zhHant";
+      const footerText = localizedContent[lang] ? localizedContent[lang].footer : localizedContent.zhHant.footer;
+      ctx.fillText(footerText, 72, height - 88);
+    }
+
+    function drawAsset(ctx, asset, width, height) {
+      const element = asset.media;
+      if (!element) {
+        return;
+      }
+      if (asset.type.indexOf("video/") === 0) {
+        element.currentTime = element.currentTime || 0.1;
+        element.play().catch(function() {});
+      }
+      const sourceWidth = element.videoWidth || element.naturalWidth || width;
+      const sourceHeight = element.videoHeight || element.naturalHeight || height;
+      const scale = Math.max(width / sourceWidth, height / sourceHeight);
+      const drawWidth = sourceWidth * scale;
+      const drawHeight = sourceHeight * scale;
+      const x = (width - drawWidth) / 2;
+      const y = (height - drawHeight) / 2;
+      try {
+        ctx.drawImage(element, x, y, drawWidth, drawHeight);
+      } catch (error) {
+        ctx.fillStyle = "#14100a";
+        ctx.fillRect(0, 0, width, height);
+      }
+    }
+
+    function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+      const chars = String(text || "").split("");
+      let line = "";
+      let lineCount = 0;
+      chars.forEach(function(char) {
+        const testLine = line + char;
+        if (ctx.measureText(testLine).width > maxWidth && line) {
+          ctx.fillText(line, x, y + lineCount * lineHeight);
+          line = char;
+          lineCount++;
+        } else {
+          line = testLine;
+        }
+      });
+      if (line) {
+        ctx.fillText(line, x, y + lineCount * lineHeight);
+      }
+    }
+
+    function downloadCsv() {
+      generateContent();
+      const post = valueOf("postOutput").replace(/\r?\n/g, "\\n");
+      const title = valueOf("videoTitle");
+      const rows = [
+        ["date", "platform", "topic", "caption", "video_title", "status"],
+        [new Date().toISOString().slice(0, 10), "Facebook", title, post, title, "draft"],
+        [new Date(Date.now() + 86400000).toISOString().slice(0, 10), "Instagram Reels", title, post, title, "draft"],
+        [new Date(Date.now() + 172800000).toISOString().slice(0, 10), "YouTube Shorts", title, post, title, "draft"]
+      ];
+      const csv = rows.map(function(row) {
+        return row.map(function(cell) {
+          return '"' + String(cell).replace(/"/g, '""') + '"';
+        }).join(",");
+      }).join("\n");
+      const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = buildFileName() + "-schedule.csv";
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function buildFileName() {
+      return "royal-flow-" + valueOf("season") + "-" + valueOf("theme") + "-" + valueOf("days") + "d";
+    }
+
+    function copyText(id) {
+      const el = document.getElementById(id);
+      el.select();
+      document.execCommand("copy");
+    }
+
+    function valueOf(id) {
+      const el = document.getElementById(id);
+      return el ? String(el.value || "").trim() : "";
+    }
+
+    function escapeHtml(text) {
+      return String(text || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    const localizedContent = {
+      zhHant: {
+        taiwan: "台灣",
+        day: "天",
+        night: "夜",
+        pickupJoin: "接送＋專車包車超省心",
+        customPrice: "依人數、車型、飯店與季節檔期提供透明報價",
+        firstLine: "第一次規劃台灣旅行，又不想交通查到頭大？",
+        routeFit: "這條路線很適合",
+        highlights: "日精華行程",
+        arrange: "我們可以安排：",
+        bullets: ["專屬司機＋舒適商務車", "機場接送、飯店接送、行李隨車", "可依花況、天氣、體力調整停留時間", "親子／長輩／情侶／企業小團皆可客製", "無購物、無強迫行程、費用透明"],
+        cta: "想拿完整行程與報價，直接私訊 Messenger / LINE 聯絡我們。",
+        scriptTitle: "短影音分鏡｜9:16",
+        cover: "封面大字",
+        subtitle: "字幕",
+        scene: "畫面",
+        material: "建議素材關鍵字",
+        posterSuffix: "包車自由行",
+        posterSub: "接送｜專車慢遊｜行程可客製",
+        footer: "Royal Flow Concierge｜私訊索取完整行程與報價",
+        audiences: {
+          first: "第一次來台灣、不想自己研究交通的人",
+          family: "親子家庭，行程保留休息與彈性停留",
+          couple: "情侶與紀念日旅客，重視拍照與氛圍",
+          elder: "長輩慢遊，不早起、不趕路、上下車方便",
+          company: "企業團建與貴賓接待，可搭配多車調度",
+          hkmo: "港澳旅客，重視接送機與省心安排",
+          sea: "新馬旅客，適合第一次深度認識台灣"
+        }
+      },
+      zhHans: {
+        taiwan: "台湾",
+        day: "天",
+        night: "晚",
+        pickupJoin: "接送＋专车包车超省心",
+        customPrice: "按人数、车型、酒店与季节档期提供透明报价",
+        firstLine: "第一次规划台湾旅行，又不想自己研究交通？",
+        routeFit: "这条路线很适合",
+        highlights: "日精华行程",
+        arrange: "我们可以安排：",
+        bullets: ["专属司机＋舒适商务车", "机场接送、酒店接送、行李随车", "可按花况、天气、体力调整停留时间", "亲子／长辈／情侣／企业小团都可定制", "无购物、无强制行程、费用透明"],
+        cta: "想获取完整行程和报价，直接私信 Messenger / LINE 联系我们。",
+        scriptTitle: "短视频分镜｜9:16",
+        cover: "封面大字",
+        subtitle: "字幕",
+        scene: "画面",
+        material: "建议素材关键词",
+        posterSuffix: "包车自由行",
+        posterSub: "接送｜专车慢游｜行程可定制",
+        footer: "Royal Flow Concierge｜私信获取完整行程与报价",
+        audiences: {
+          first: "第一次来台湾、不想自己研究交通的人",
+          family: "亲子家庭，行程保留休息与弹性停留",
+          couple: "情侣与纪念日旅客，重视拍照与氛围",
+          elder: "长辈慢游，不早起、不赶路、上下车方便",
+          company: "企业团建与贵宾接待，可搭配多车调度",
+          hkmo: "港澳旅客，重视接送机与省心安排",
+          sea: "新马旅客，适合第一次深度认识台湾"
+        }
+      },
+      en: {
+        taiwan: "Taiwan",
+        day: "D",
+        night: "N",
+        pickupJoin: "private charter with pickup, easy and flexible",
+        customPrice: "Transparent quote based on group size, vehicle, hotel class, and season",
+        firstLine: "Planning your first Taiwan trip without spending hours on transport research?",
+        routeFit: "This itinerary is ideal for",
+        highlights: "day highlights",
+        arrange: "We can arrange:",
+        bullets: ["Private driver and comfortable business van", "Airport pickup, hotel pickup, luggage in vehicle", "Flexible stops based on blooms, weather, and pace", "Custom routes for families, seniors, couples, and corporate groups", "No shopping stops, no forced itinerary, transparent pricing"],
+        cta: "Message us on Messenger / LINE for the full itinerary and quote.",
+        scriptTitle: "Short video storyboard | 9:16",
+        cover: "Cover title",
+        subtitle: "Caption",
+        scene: "Visual",
+        material: "Suggested asset keywords",
+        posterSuffix: "Private Taiwan Tour",
+        posterSub: "Pickup | Private charter | Custom itinerary",
+        footer: "Royal Flow Concierge | Message us for itinerary and quote",
+        audiences: {
+          first: "first-time visitors who want transport handled",
+          family: "families who need rest time and flexible stops",
+          couple: "couples who care about photos, hotels, and atmosphere",
+          elder: "senior travelers who prefer a slower, easier route",
+          company: "corporate groups and VIP reception trips",
+          hkmo: "Hong Kong and Macau travelers who value pickup and easy planning",
+          sea: "Singapore and Malaysia travelers exploring Taiwan in depth"
+        }
+      },
+      ja: {
+        taiwan: "台湾",
+        day: "日",
+        night: "泊",
+        pickupJoin: "送迎付き専用車チャーターで安心",
+        customPrice: "人数、車種、ホテル、季節に合わせて明朗にお見積り",
+        firstLine: "初めての台湾旅行、交通手配で悩みたくない方へ。",
+        routeFit: "このルートは次の方におすすめです：",
+        highlights: "日間おすすめ行程",
+        arrange: "手配できる内容：",
+        bullets: ["専属ドライバー＋快適なビジネス車両", "空港送迎、ホテル送迎、荷物は車内で保管", "開花状況、天候、体力に合わせて滞在時間を調整", "家族、年配の方、カップル、企業小グループに対応", "買い物立ち寄りなし、強制行程なし、料金明瞭"],
+        cta: "詳しい行程とお見積りは Messenger / LINE でお問い合わせください。",
+        scriptTitle: "ショート動画構成｜9:16",
+        cover: "表紙タイトル",
+        subtitle: "字幕",
+        scene: "映像",
+        material: "おすすめ素材キーワード",
+        posterSuffix: "専用車自由旅行",
+        posterSub: "送迎｜専用車でゆったり｜行程カスタム可",
+        footer: "Royal Flow Concierge｜行程と見積りはメッセージで",
+        audiences: {
+          first: "初めて台湾を訪れ、交通を任せたい方",
+          family: "休憩と柔軟な滞在時間を重視する家族旅行",
+          couple: "写真、ホテル、雰囲気を大切にするカップル",
+          elder: "早起きせず、急がず楽しみたい年配の方",
+          company: "企業旅行やVIP送迎を伴うグループ",
+          hkmo: "香港・マカオからの旅行者",
+          sea: "シンガポール・マレーシアからの旅行者"
+        }
+      },
+      yue: {
+        taiwan: "台灣",
+        day: "日",
+        night: "晚",
+        pickupJoin: "接送＋專車包車，輕鬆又省心",
+        customPrice: "按人數、車款、酒店同季節檔期透明報價",
+        firstLine: "第一次去台灣，又唔想自己研究交通研究到頭痛？",
+        routeFit: "呢條路線好啱",
+        highlights: "日精華行程",
+        arrange: "我哋可以安排：",
+        bullets: ["專屬司機＋舒適商務車", "機場接送、酒店接送、行李跟車", "可按花況、天氣、體力調整停留時間", "親子／長輩／情侶／公司小團都可以客製", "無購物、無硬性行程、收費透明"],
+        cta: "想攞完整行程同報價，直接私訊 Messenger / LINE 搵我哋。",
+        scriptTitle: "短片分鏡｜9:16",
+        cover: "封面大字",
+        subtitle: "字幕",
+        scene: "畫面",
+        material: "建議素材關鍵字",
+        posterSuffix: "包車自由行",
+        posterSub: "接送｜專車慢遊｜行程可客製",
+        footer: "Royal Flow Concierge｜私訊索取完整行程同報價",
+        audiences: {
+          first: "第一次去台灣、唔想自己研究交通嘅朋友",
+          family: "親子家庭，行程保留休息同彈性停留",
+          couple: "情侶同紀念日旅客，重視影相同氣氛",
+          elder: "長輩慢遊，唔早起、唔趕路、上落車方便",
+          company: "公司團建同貴賓接待，可配合多車調度",
+          hkmo: "港澳旅客，重視接送機同省心安排",
+          sea: "新馬旅客，適合第一次深度玩台灣"
+        }
+      }
+    };
+
+    const localizedRouteData = {
+      spring: {
+        theme: { zhHant: "春季賞花", zhHans: "春季赏花", en: "Spring Flower", ja: "春の花めぐり", yue: "春季賞花" },
+        intro: {
+          zhHant: "從台北城市夜景、陽明山花季，到日月潭湖景與阿里山櫻花，一路專車接送，不用搬行李轉車。",
+          zhHans: "从台北城市夜景、阳明山花季，到日月潭湖景与阿里山樱花，一路专车接送，不用搬行李转车。",
+          en: "From Taipei night views and Yangmingshan blooms to Sun Moon Lake and Alishan sakura, the route is fully handled by private vehicle.",
+          ja: "台北の夜景、陽明山の花、日月潭、阿里山の桜まで、専用車で移動も荷物もスムーズです。",
+          yue: "由台北夜景、陽明山花季，到日月潭湖景同阿里山櫻花，全程專車接送，唔使搬行李轉車。"
+        },
+        routes: ["台北101", "陽明山花季", "北投溫泉", "日月潭", "阿里山森林遊樂區", "奮起湖老街", "茶園景觀"],
+        tags: ["櫻花", "海芋", "紫藤", "螢火蟲", "阿里山", "陽明山"]
+      },
+      summer: {
+        theme: { zhHant: "夏季海岸", zhHans: "夏季海岸", en: "Summer Coast", ja: "夏の海岸線", yue: "夏季海岸" },
+        intro: {
+          zhHant: "把東北角、宜蘭、花蓮與台東海岸串成舒服路線，白天看海，晚上吃夜市與在地小吃。",
+          zhHans: "把东北角、宜兰、花莲与台东海岸串成舒服路线，白天看海，晚上吃夜市与在地小吃。",
+          en: "A relaxed coastal route through the Northeast Coast, Yilan, Hualien, and Taitung, with ocean views by day and local food by night.",
+          ja: "東北角、宜蘭、花蓮、台東をゆったり巡り、昼は海、夜はローカルグルメを楽しめます。",
+          yue: "將東北角、宜蘭、花蓮同台東海岸串成舒服路線，日頭睇海，夜晚食夜市同地道小食。"
+        },
+        routes: ["九份山城", "東北角海岸", "宜蘭傳藝中心", "清水斷崖", "七星潭", "伯朗大道", "鹿野高台"],
+        tags: ["海岸", "花東", "宜蘭", "清水斷崖", "伯朗大道"]
+      },
+      autumn: {
+        theme: { zhHant: "秋季楓紅溫泉", zhHans: "秋季枫红温泉", en: "Autumn Maple and Hot Spring", ja: "秋の紅葉と温泉", yue: "秋季楓紅溫泉" },
+        intro: {
+          zhHant: "秋天適合慢慢走進山林、茶園與溫泉區，避開趕路行程，把拍照、美食與休息時間留足。",
+          zhHans: "秋天适合慢慢走进山林、茶园与温泉区，避开赶路行程，把拍照、美食与休息时间留足。",
+          en: "Autumn is ideal for mountain forests, tea fields, and hot springs, with enough time for photos, food, and proper rest.",
+          ja: "秋は山林、茶畑、温泉をゆっくり楽しむ季節。写真、食事、休憩の時間をしっかり確保します。",
+          yue: "秋天最啱慢慢行山林、茶園同溫泉區，唔趕路，留足影相、食嘢同休息時間。"
+        },
+        routes: ["台北飯店", "烏來溫泉", "武陵農場", "福壽山農場", "清境農場", "日月潭", "溪頭森林"],
+        tags: ["楓葉", "溫泉", "清境", "武陵", "日月潭"]
+      },
+      winter: {
+        theme: { zhHant: "冬季跨年雪季", zhHans: "冬季跨年雪季", en: "Winter Countdown and Snow Season", ja: "冬の年越しと雪景色", yue: "冬季跨年雪季" },
+        intro: {
+          zhHant: "冬季可以安排台北跨年、溫泉、合歡山雪季與南投山景，專車掌握天候與路況更省心。",
+          zhHans: "冬季可以安排台北跨年、温泉、合欢山雪季与南投山景，专车掌握天候与路况更省心。",
+          en: "Winter can combine Taipei countdowns, hot springs, Hehuanshan snow season, and Nantou mountain views with safer private transport.",
+          ja: "冬は台北カウントダウン、温泉、合歓山の雪、南投の山景色を専用車で安心して巡れます。",
+          yue: "冬季可以安排台北跨年、溫泉、合歡山雪季同南投山景，專車掌握天氣同路況更安心。"
+        },
+        routes: ["台北101跨年", "北投溫泉", "清境農場", "合歡山", "日月潭", "嘉義", "阿里山日出"],
+        tags: ["跨年", "溫泉", "合歡山", "雪季", "阿里山"]
+      }
+    };
+
+    const localizedThemeLabels = {
+      sakura: { zhHant: "櫻花", zhHans: "樱花", en: "Sakura", ja: "桜", yue: "櫻花" },
+      calla: { zhHant: "海芋", zhHans: "海芋", en: "Calla Lily", ja: "カラー", yue: "海芋" },
+      hydrangea: { zhHant: "繡球花", zhHans: "绣球花", en: "Hydrangea", ja: "紫陽花", yue: "繡球花" },
+      firefly: { zhHant: "螢火蟲", zhHans: "萤火虫", en: "Firefly", ja: "ホタル", yue: "螢火蟲" },
+      coast: { zhHant: "花東海岸", zhHans: "花东海岸", en: "East Coast", ja: "花東海岸", yue: "花東海岸" },
+      maple: { zhHant: "楓葉", zhHans: "枫叶", en: "Maple", ja: "紅葉", yue: "楓葉" },
+      hotspring: { zhHant: "溫泉", zhHans: "温泉", en: "Hot Spring", ja: "温泉", yue: "溫泉" },
+      snow: { zhHant: "合歡山雪季", zhHans: "合欢山雪季", en: "Hehuanshan Snow", ja: "合歓山の雪", yue: "合歡山雪季" }
+    };
+
+    function generateContent() {
+      const lang = valueOf("language") || "zhHant";
+      const text = localizedContent[lang] || localizedContent.zhHant;
+      const seasonKey = valueOf("season") || "spring";
+      const themeKey = valueOf("theme") || "sakura";
+      const season = localizedRouteData[seasonKey] || localizedRouteData.spring;
+      const themeName = localizedThemeLabels[themeKey] ? localizedThemeLabels[themeKey][lang] : localizedThemeLabels.sakura[lang];
+      const days = Number(valueOf("days") || 5);
+      const nights = Math.max(0, days - 1);
+      const pickup = valueOf("pickup");
+      const price = valueOf("price");
+      const audience = text.audiences[valueOf("audience")] || text.audiences.first;
+      const route = buildLocalizedRoute(season.routes, days, pickup, lang);
+      const title = buildLocalizedTitle(text, themeName, days, nights, pickup);
+      const intro = season.intro[lang] || season.intro.zhHant;
+      const priceLine = price && price.indexOf("專人") < 0 && price.indexOf("专人") < 0 ? price : text.customPrice;
+      const customNote = valueOf("customNote");
+
+      const post = [
+        title,
+        priceLine,
+        "",
+        text.firstLine,
+        text.routeFit + " " + audience + "。",
+        intro,
+        "",
+        "📍" + days + text.highlights,
+        ...route.map(function(item, index) {
+          return "Day" + (index + 1) + "：" + item;
+        }),
+        "",
+        text.arrange,
+        ...text.bullets.map(function(item) {
+          return "✅ " + item;
+        }),
+        customNote ? "✅ " + customNote : "",
+        "",
+        text.cta,
+        "",
+        buildHashtags(lang, themeName)
+      ].filter(Boolean).join("\n");
+
+      const script = [
+        text.scriptTitle + "｜" + valueOf("videoSeconds") + "s",
+        "",
+        "0-3s：" + text.cover + "「" + title + "」",
+        text.scene + "：" + pickup + " / " + route[0],
+        text.subtitle + "：" + text.firstLine,
+        "",
+        "3-8s：" + text.scene + "：" + route.slice(0, 2).join(" / "),
+        text.subtitle + "：" + themeName + " + private charter + flexible stops",
+        "",
+        "8-16s：" + text.scene + "：" + route.slice(2, 4).join(" / "),
+        text.subtitle + "：" + text.bullets[1],
+        "",
+        "16-24s：" + text.scene + "：vehicle interior / driver / hotel pickup / luggage",
+        text.subtitle + "：" + text.bullets[0],
+        "",
+        "24s+：" + text.scene + "：best seasonal view + brand card",
+        text.subtitle + "：" + text.cta,
+        "",
+        text.material + "：" + season.tags.concat([themeName, "Royal Flow", "vehicle", "hotel", "airport"]).join("、")
+      ].join("\n");
+
+      document.getElementById("postOutput").value = post;
+      document.getElementById("scriptOutput").value = script;
+      document.getElementById("videoTitle").value = text.taiwan + themeName + days + text.day + text.posterSuffix;
+      document.getElementById("videoSub").value = pickup + "｜" + text.posterSub;
+      renderAssetList();
+      drawPoster(0);
+    }
+
+    function buildLocalizedTitle(text, themeName, days, nights, pickup) {
+      if ((valueOf("language") || "zhHant") === "en") {
+        return text.taiwan + " " + themeName + " " + days + text.day + nights + text.night + " | " + pickup + " " + text.pickupJoin;
+      }
+      if ((valueOf("language") || "zhHant") === "ja") {
+        return text.taiwan + themeName + days + text.day + nights + text.night + "｜" + pickup + "送迎付き専用車";
+      }
+      return text.taiwan + themeName + days + text.day + nights + text.night + "｜" + pickup + text.pickupJoin;
+    }
+
+    function buildLocalizedRoute(routes, days, pickup, lang) {
+      const result = [];
+      const joiner = lang === "en" ? " -> " : "→";
+      for (let i = 0; i < days; i++) {
+        const first = routes[(i * 2) % routes.length];
+        const second = routes[(i * 2 + 1) % routes.length];
+        const third = routes[(i * 2 + 2) % routes.length];
+        if (i === 0) {
+          result.push([pickup, first, second].join(joiner));
+        } else if (i === days - 1) {
+          result.push([first, second, lang === "en" ? "Airport / HSR drop-off" : "返回機場/高鐵"].join(joiner));
+        } else {
+          result.push([first, second, third].join(joiner));
+        }
+      }
+      return result;
+    }
+
+    function buildHashtags(lang, themeName) {
+      if (lang === "en") {
+        return "#TaiwanTravel #PrivateCharter #TaiwanItinerary #" + themeName.replace(/\s+/g, "") + " #RoyalFlowConcierge";
+      }
+      if (lang === "ja") {
+        return "#台湾旅行 #台湾チャーター #台湾観光 #" + themeName + " #RoyalFlowConcierge";
+      }
+      return "#台灣旅遊 #台灣包車 #自由行包車 #" + themeName + " #機場接送 #客製小團 #御澤禮賓 #RoyalFlowConcierge";
+    }
+
+    function scoreAsset(text) {
+      const lang = valueOf("language") || "zhHant";
+      const season = localizedRouteData[valueOf("season")] || localizedRouteData.spring;
+      const themeItem = localizedThemeLabels[valueOf("theme")] || localizedThemeLabels.sakura;
+      const haystack = String(text || "").toLowerCase();
+      let score = 0;
+      const keywords = season.tags.concat(Object.values(themeItem), ["taiwan", "台灣", "台湾", "包車", "包车", "車", "车", "hotel", "飯店", "酒店", lang]);
+      keywords.forEach(function(tag) {
+        if (tag && haystack.indexOf(String(tag).toLowerCase()) >= 0) {
+          score += 5;
+        }
+      });
+      if (/cover|封面|精選|精选|hero/i.test(text)) {
+        score += 3;
+      }
+      return score;
+    }
+
+    const languageSelect = document.getElementById("language");
+    if (languageSelect) {
+      languageSelect.addEventListener("change", generateContent);
+    }
+
+    const serviceTypeSelect = document.getElementById("serviceType");
+    if (serviceTypeSelect) {
+      serviceTypeSelect.addEventListener("change", generateContent);
+    }
+
+    const cleanThemeLabels = {
+      sakura: { zhHant: "櫻花", zhHans: "樱花", en: "Sakura", ja: "桜", yue: "櫻花" },
+      calla: { zhHant: "海芋", zhHans: "海芋", en: "Calla Lily", ja: "カラー", yue: "海芋" },
+      hydrangea: { zhHant: "繡球花", zhHans: "绣球花", en: "Hydrangea", ja: "紫陽花", yue: "繡球花" },
+      firefly: { zhHant: "螢火蟲", zhHans: "萤火虫", en: "Firefly", ja: "ホタル", yue: "螢火蟲" },
+      coast: { zhHant: "花東海岸", zhHans: "花东海岸", en: "East Coast", ja: "花東海岸", yue: "花東海岸" },
+      maple: { zhHant: "楓葉", zhHans: "枫叶", en: "Maple", ja: "紅葉", yue: "楓葉" },
+      hotspring: { zhHant: "溫泉", zhHans: "温泉", en: "Hot Spring", ja: "温泉", yue: "溫泉" },
+      snow: { zhHant: "合歡山雪季", zhHans: "合欢山雪季", en: "Hehuanshan Snow", ja: "合歓山の雪", yue: "合歡山雪季" }
+    };
+
+    const cleanSeasonData = {
+      spring: {
+        label: { zhHant: "春季賞花", zhHans: "春季赏花", en: "Spring Flower", ja: "春の花めぐり", yue: "春季賞花" },
+        intro: {
+          zhHant: "從台北城市夜景、陽明山花季，到日月潭湖景與阿里山櫻花，一路專車接送，不用搬行李轉車。",
+          zhHans: "从台北城市夜景、阳明山花季，到日月潭湖景与阿里山樱花，一路专车接送，不用搬行李转车。",
+          en: "From Taipei night views and Yangmingshan blooms to Sun Moon Lake and Alishan sakura, private transport keeps the route smooth.",
+          ja: "台北の夜景、陽明山の花、日月潭、阿里山の桜まで、専用車で移動も荷物もスムーズです。",
+          yue: "由台北夜景、陽明山花季，到日月潭湖景同阿里山櫻花，全程專車接送，唔使搬行李轉車。"
+        },
+        spots: ["台北101", "陽明山花季", "北投溫泉", "日月潭", "阿里山森林遊樂區", "奮起湖老街", "茶園景觀"],
+        photoSpots: ["台北101觀景台", "陽明山竹子湖", "日月潭向山遊客中心", "阿里山小火車", "茶園景觀步道"],
+        localFoods: ["台北牛肉麵", "淡水阿給", "北投溫泉拉麵", "日月潭總統魚", "阿里山高山茶與奮起湖便當"],
+        michelinFoods: ["台北：頤宮 Le Palais", "台北：態芮 Taïrroir", "台北：富錦樹台菜香檳", "可依最新米其林／必比登名單與訂位狀況安排"],
+        tags: ["櫻花", "海芋", "紫藤", "螢火蟲", "阿里山", "陽明山", "牛肉麵", "米其林"]
+      },
+      summer: {
+        label: { zhHant: "夏季海岸", zhHans: "夏季海岸", en: "Summer Coast", ja: "夏の海岸線", yue: "夏季海岸" },
+        intro: {
+          zhHant: "把東北角、宜蘭、花蓮與台東海岸串成舒服路線，白天看海，晚上吃夜市與在地小吃。",
+          zhHans: "把东北角、宜兰、花莲与台东海岸串成舒服路线，白天看海，晚上吃夜市与在地小吃。",
+          en: "A relaxed coastal route through the Northeast Coast, Yilan, Hualien, and Taitung, with ocean views and local food.",
+          ja: "東北角、宜蘭、花蓮、台東をゆったり巡り、昼は海、夜はローカルグルメを楽しめます。",
+          yue: "將東北角、宜蘭、花蓮同台東海岸串成舒服路線，日頭睇海，夜晚食夜市同地道小食。"
+        },
+        spots: ["九份山城", "東北角海岸", "宜蘭傳藝中心", "清水斷崖", "七星潭", "伯朗大道", "鹿野高台"],
+        photoSpots: ["九份山城夜景", "陰陽海", "清水斷崖", "七星潭海岸", "伯朗大道金城武樹"],
+        localFoods: ["九份芋圓", "宜蘭蔥油餅", "三星蔥料理", "花蓮扁食", "台東米苔目與釋迦"],
+        michelinFoods: ["台北：頤宮 Le Palais", "台北：態芮 Taïrroir", "宜花東段可安排在地私房餐廳與海鮮餐", "可依最新米其林／必比登名單與訂位狀況安排"],
+        tags: ["海岸", "花東", "宜蘭", "清水斷崖", "伯朗大道", "芋圓", "海鮮"]
+      },
+      autumn: {
+        label: { zhHant: "秋季楓紅溫泉", zhHans: "秋季枫红温泉", en: "Autumn Maple and Hot Spring", ja: "秋の紅葉と温泉", yue: "秋季楓紅溫泉" },
+        intro: {
+          zhHant: "秋天適合慢慢走進山林、茶園與溫泉區，避開趕路行程，把拍照、美食與休息時間留足。",
+          zhHans: "秋天适合慢慢走进山林、茶园与温泉区，避开赶路行程，把拍照、美食与休息时间留足。",
+          en: "Autumn is ideal for mountain forests, tea fields, and hot springs, with enough time for photos, meals, and rest.",
+          ja: "秋は山林、茶畑、温泉をゆっくり楽しむ季節。写真、食事、休憩の時間をしっかり確保します。",
+          yue: "秋天最啱慢慢行山林、茶園同溫泉區，唔趕路，留足影相、食嘢同休息時間。"
+        },
+        spots: ["台北飯店", "烏來溫泉", "武陵農場", "福壽山農場", "清境農場", "日月潭", "溪頭森林"],
+        photoSpots: ["烏來瀑布", "武陵農場楓紅", "福壽山天池", "清境高空步道", "溪頭森林步道"],
+        localFoods: ["烏來山產", "南投甕仔雞", "埔里紹興料理", "日月潭紅茶甜點", "台中太陽餅"],
+        michelinFoods: ["台中：JL Studio", "台中：MINIMAL", "台中：俺達の肉屋", "可依最新米其林／必比登名單與訂位狀況安排"],
+        tags: ["楓葉", "溫泉", "清境", "武陵", "日月潭", "甕仔雞", "台中米其林"]
+      },
+      winter: {
+        label: { zhHant: "冬季跨年雪季", zhHans: "冬季跨年雪季", en: "Winter Countdown and Snow Season", ja: "冬の年越しと雪景色", yue: "冬季跨年雪季" },
+        intro: {
+          zhHant: "冬季可以安排台北跨年、溫泉、合歡山雪季與南投山景，專車掌握天候與路況更省心。",
+          zhHans: "冬季可以安排台北跨年、温泉、合欢山雪季与南投山景，专车掌握天候与路况更省心。",
+          en: "Winter can combine Taipei countdowns, hot springs, Hehuanshan snow season, and Nantou mountain views with safer private transport.",
+          ja: "冬は台北カウントダウン、温泉、合歓山の雪、南投の山景色を専用車で安心して巡れます。",
+          yue: "冬季可以安排台北跨年、溫泉、合歡山雪季同南投山景，專車掌握天氣同路況更安心。"
+        },
+        spots: ["台北101跨年", "北投溫泉", "清境農場", "合歡山", "日月潭", "嘉義", "阿里山日出"],
+        photoSpots: ["台北101跨年煙火", "北投溫泉博物館", "清境草原", "合歡山雪景", "阿里山日出"],
+        localFoods: ["台北熱炒", "北投酒家菜", "嘉義火雞肉飯", "阿里山高山茶", "南投暖胃鍋物"],
+        michelinFoods: ["台北：頤宮 Le Palais", "台北：態芮 Taïrroir", "台中：JL Studio", "可依最新米其林／必比登名單與訂位狀況安排"],
+        tags: ["跨年", "溫泉", "合歡山", "雪季", "阿里山", "火雞肉飯", "米其林"]
+      }
+    };
+
+    const serviceCopy = {
+      tour: {
+        title: {
+          zhHant: "台灣{theme}{days}天{nights}夜｜{pickup}接送＋專車包車超省心",
+          zhHans: "台湾{theme}{days}天{nights}晚｜{pickup}接送＋专车包车超省心",
+          en: "Taiwan {theme} {days}D{nights}N | Private charter from {pickup}",
+          ja: "台湾{theme}{days}日{nights}泊｜{pickup}送迎付き専用車",
+          yue: "台灣{theme}{days}日{nights}晚｜{pickup}接送＋專車包車"
+        },
+        opener: {
+          zhHant: "第一次規劃台灣旅行，又不想交通查到頭大？",
+          zhHans: "第一次规划台湾旅行，又不想自己研究交通？",
+          en: "Planning a Taiwan trip without spending hours on transport research?",
+          ja: "台湾旅行の交通手配で悩みたくない方へ。",
+          yue: "第一次去台灣，又唔想自己研究交通研究到頭痛？"
+        },
+        bullets: {
+          zhHant: ["專屬司機＋舒適商務車", "機場接送、飯店接送、行李隨車", "依花況、天氣、體力彈性調整", "親子／長輩／情侶／企業小團皆可客製", "無購物、無強迫行程、費用透明"],
+          zhHans: ["专属司机＋舒适商务车", "机场接送、酒店接送、行李随车", "按花况、天气、体力弹性调整", "亲子／长辈／情侣／企业小团都可定制", "无购物、无强制行程、费用透明"],
+          en: ["Private driver and comfortable business van", "Airport and hotel pickup, luggage stays in vehicle", "Flexible stops based on blooms, weather, and pace", "Custom routes for families, seniors, couples, and corporate groups", "No shopping stops, no forced itinerary, transparent pricing"],
+          ja: ["専属ドライバー＋快適なビジネス車両", "空港送迎、ホテル送迎、荷物は車内で保管", "開花状況、天候、体力に合わせて調整", "家族、年配の方、カップル、企業小グループに対応", "買い物立ち寄りなし、強制行程なし、料金明瞭"],
+          yue: ["專屬司機＋舒適商務車", "機場接送、酒店接送、行李跟車", "按花況、天氣、體力彈性調整", "親子／長輩／情侶／公司小團都可以客製", "無購物、無硬性行程、收費透明"]
+        }
+      },
+      airport: {
+        title: {
+          zhHant: "{pickup}機場接送｜商務車禮賓接送，航班追蹤超省心",
+          zhHans: "{pickup}机场接送｜商务车礼宾接送，航班追踪超省心",
+          en: "{pickup} Airport Transfer | Chauffeur service with flight tracking",
+          ja: "{pickup}空港送迎｜フライト追跡付き専用車サービス",
+          yue: "{pickup}機場接送｜商務車禮賓接送，航班追蹤夠省心"
+        },
+        opener: {
+          zhHant: "紅眼班機、長輩同行、商務貴賓抵台，最怕臨時叫不到車或行李放不下。",
+          zhHans: "红眼航班、长辈同行、商务贵宾抵台，最怕临时叫不到车或行李放不下。",
+          en: "Late flights, senior guests, VIP arrivals, and bulky luggage need a transfer that is already handled.",
+          ja: "深夜便、ご年配の方、VIP来台、大きな荷物も、事前手配なら安心です。",
+          yue: "紅眼航班、長輩同行、商務貴賓到台，最怕臨時叫唔到車或者行李放唔落。"
+        },
+        intro: {
+          zhHant: "御澤禮賓提供桃園、松山、台中、高雄等機場接送，依航班時間、行李數與乘客人數安排合適車型。",
+          zhHans: "御泽礼宾提供桃园、松山、台中、高雄等机场接送，按航班时间、行李数与乘客人数安排合适车型。",
+          en: "Royal Flow Concierge handles airport transfers across Taoyuan, Songshan, Taichung, and Kaohsiung with vehicles matched to flight time, luggage, and group size.",
+          ja: "桃園、松山、台中、高雄などの空港送迎を、便名、荷物、人数に合わせて車種手配します。",
+          yue: "御澤禮賓提供桃園、松山、台中、高雄等機場接送，按航班時間、行李數同人數安排合適車款。"
+        },
+        bullets: {
+          zhHant: ["航班追蹤，提早或延誤皆可協助調整", "機場舉牌、飯店門口接送、行李協助", "Lexus LM、Alphard、V-Class、9人座可選", "適合外賓、主管、親子、長輩與高端旅客", "可加購英文司機、兒童座椅、保密行程"],
+          zhHans: ["航班追踪，提前或延误都可协助调整", "机场举牌、酒店门口接送、行李协助", "Lexus LM、Alphard、V-Class、9人座可选", "适合外宾、主管、亲子、长辈与高端旅客", "可加购英文司机、儿童座椅、保密行程"],
+          en: ["Flight tracking for early arrivals or delays", "Meet-and-greet sign, hotel pickup, luggage assistance", "Lexus LM, Alphard, V-Class, and 9-seater options", "Ideal for VIPs, executives, families, seniors, and premium travelers", "English-speaking driver, child seat, and confidential itinerary available"],
+          ja: ["フライト追跡で早着・遅延にも対応", "空港ネームボード、ホテル送迎、荷物サポート", "Lexus LM、Alphard、V-Class、9人乗りに対応", "海外ゲスト、役員、家族、ご年配の方に最適", "英語対応ドライバー、チャイルドシート、秘匿行程も相談可"],
+          yue: ["航班追蹤，早到或延誤都可以協助調整", "機場舉牌、酒店門口接送、行李協助", "Lexus LM、Alphard、V-Class、9人座可選", "適合外賓、主管、親子、長輩同高端旅客", "可加英文司機、兒童座椅、保密行程"]
+        },
+        scenes: ["航班資訊", "司機舉牌", "行李上車", "商務車內裝", "飯店門口抵達"],
+        tags: ["機場接送", "航班追蹤", "舉牌接機", "商務車", "飯店接送"]
+      },
+      business: {
+        title: {
+          zhHant: "商務接送｜主管用車、外賓接待、多點行程一站安排",
+          zhHans: "商务接送｜主管用车、外宾接待、多点行程一站安排",
+          en: "Business Chauffeur Service | Executive rides, VIP reception, multi-stop itinerary",
+          ja: "ビジネス送迎｜役員車、VIP接遇、複数地点の移動手配",
+          yue: "商務接送｜主管用車、外賓接待、多點行程一站安排"
+        },
+        opener: {
+          zhHant: "重要會議、外賓來訪、主管多點行程，交通不能臨時才處理。",
+          zhHans: "重要会议、外宾来访、主管多点行程，交通不能临时才处理。",
+          en: "Important meetings, visiting guests, and executive multi-stop schedules need transport planned before the day starts.",
+          ja: "重要会議、海外ゲスト、役員の複数移動は、当日の手配では間に合いません。",
+          yue: "重要會議、外賓到訪、主管多點行程，交通唔可以臨時先處理。"
+        },
+        intro: {
+          zhHant: "御澤禮賓依會議時間、接待層級、停留點與保密需求安排車輛與司機，讓企業接待維持穩定與體面。",
+          zhHans: "御泽礼宾按会议时间、接待层级、停留点与保密需求安排车辆与司机，让企业接待稳定体面。",
+          en: "Royal Flow Concierge plans vehicles and chauffeurs around meeting times, reception level, stops, and privacy needs so every business movement feels composed.",
+          ja: "会議時間、接遇レベル、立ち寄り地点、秘匿性に合わせて車両とドライバーを手配します。",
+          yue: "御澤禮賓按會議時間、接待級別、停留點同保密需求安排車輛同司機，令企業接待穩定得體。"
+        },
+        bullets: {
+          zhHant: ["3小時／8小時／全天包時可規劃", "企業主管、外賓、藝人、VIP接待適用", "多點接送、飯店、會場、餐廳、機場可串接", "可安排英文司機、舉牌、企業 Logo、保密行程", "可協助報價單、統編、月結與多車調度需求"],
+          zhHans: ["3小时／8小时／全天包时可规划", "企业主管、外宾、艺人、VIP接待适用", "多点接送、酒店、会场、餐厅、机场可串接", "可安排英文司机、举牌、企业 Logo、保密行程", "可协助报价单、税号、月结与多车调度需求"],
+          en: ["3-hour, 8-hour, and full-day charter options", "For executives, visiting guests, artists, and VIP reception", "Multi-stop routing across hotel, venue, restaurant, and airport", "English-speaking driver, signboard, company logo, and confidential itinerary available", "Quotation, company billing, monthly settlement, and multi-car dispatch support"],
+          ja: ["3時間、8時間、終日チャーターに対応", "役員、海外ゲスト、芸能関係、VIP接遇に最適", "ホテル、会場、レストラン、空港など複数地点を接続", "英語対応、ネームボード、企業ロゴ、秘匿行程も相談可", "見積書、会社請求、月締め、複数台手配にも対応"],
+          yue: ["3小時／8小時／全日包時都可以規劃", "企業主管、外賓、藝人、VIP接待適用", "多點接送、酒店、會場、餐廳、機場可以串接", "可安排英文司機、舉牌、企業 Logo、保密行程", "可協助報價單、統編、月結同多車調度"]
+        },
+        scenes: ["主管上車", "飯店門口接待", "會議場館", "車內安靜乘坐", "機場或餐廳送達"],
+        tags: ["商務接送", "主管用車", "外賓接待", "多點行程", "保密行程"]
+      }
+    };
+
+    function generateContent() {
+      const serviceType = valueOf("serviceType") || "tour";
+      const lang = valueOf("language") || "zhHant";
+      if (serviceType === "airport" || serviceType === "business") {
+        generateServiceMarketing(serviceType, lang);
+        return;
+      }
+      generateTourMarketing(lang);
+    }
+
+    function generateTourMarketing(lang) {
+      const service = serviceCopy.tour;
+      const seasonKey = valueOf("season") || "spring";
+      const themeKey = valueOf("theme") || "sakura";
+      const season = cleanSeasonData[seasonKey] || cleanSeasonData.spring;
+      const themeName = cleanThemeLabels[themeKey] ? cleanThemeLabels[themeKey][lang] : cleanThemeLabels.sakura[lang];
+      const days = Number(valueOf("days") || 5);
+      const nights = Math.max(0, days - 1);
+      const pickup = normalizePickup(valueOf("pickup"), lang);
+      const route = buildOrderedTourRoute(seasonKey, days, pickup, lang);
+      const title = fillTemplate(service.title[lang], { theme: themeName, days: days, nights: nights, pickup: pickup });
+      const priceLine = normalizePrice(lang);
+      const customNote = valueOf("customNote");
+
+      const post = [
+        title,
+        priceLine,
+        "",
+        service.opener[lang],
+        season.intro[lang],
+        "",
+        "📍" + days + localizedHighlightsLabel(lang),
+        ...route.map(function(item, index) { return "Day" + (index + 1) + "：" + item; }),
+        "",
+        localizedFoodSection(lang, season),
+        "",
+        localizedArrangeLabel(lang),
+        ...service.bullets[lang].map(function(item) { return "✅ " + item; }),
+        customNote ? "✅ " + customNote : "",
+        "",
+        localizedCta(lang),
+        "",
+        buildCleanHashtags(lang, themeName, "tour")
+      ].filter(Boolean).join("\n");
+
+      setMarketingOutputs({
+        lang: lang,
+        title: title,
+        subtitle: pickup + "｜" + localizedPosterSub(lang, "tour"),
+        post: post,
+        script: buildCleanScript(lang, title, service.opener[lang], route.concat(season.localFoods.slice(0, 2), season.photoSpots.slice(0, 2)), service.bullets[lang], season.tags.concat([themeName, "包車", "旅遊", "飯店", "機場", "美食", "米其林"]))
+      });
+    }
+
+    function generateServiceMarketing(serviceType, lang) {
+      const service = serviceCopy[serviceType];
+      const pickup = normalizePickup(valueOf("pickup"), lang);
+      const title = fillTemplate(service.title[lang], { pickup: pickup });
+      const priceLine = normalizePrice(lang);
+      const customNote = valueOf("customNote");
+      const route = service.scenes;
+
+      const post = [
+        title,
+        priceLine,
+        "",
+        service.opener[lang],
+        service.intro[lang],
+        "",
+        localizedArrangeLabel(lang),
+        ...service.bullets[lang].map(function(item) { return "✅ " + item; }),
+        customNote ? "✅ " + customNote : "",
+        "",
+        localizedCta(lang),
+        "",
+        buildCleanHashtags(lang, service.tags[0], serviceType)
+      ].filter(Boolean).join("\n");
+
+      setMarketingOutputs({
+        lang: lang,
+        title: title,
+        subtitle: pickup + "｜" + localizedPosterSub(lang, serviceType),
+        post: post,
+        script: buildCleanScript(lang, title, service.opener[lang], route, service.bullets[lang], service.tags.concat(["Royal Flow", "vehicle", "hotel", "airport"]))
+      });
+    }
+
+    function setMarketingOutputs(output) {
+      document.getElementById("postOutput").value = output.post;
+      document.getElementById("scriptOutput").value = output.script;
+      document.getElementById("videoTitle").value = output.title;
+      document.getElementById("videoSub").value = output.subtitle;
+      renderAssetList();
+      drawPoster(0);
+    }
+
+    function buildCleanScript(lang, title, opener, scenes, bullets, keywords) {
+      const labels = {
+        zhHant: ["短影音分鏡｜9:16", "封面大字", "畫面", "字幕", "建議素材關鍵字"],
+        zhHans: ["短视频分镜｜9:16", "封面大字", "画面", "字幕", "建议素材关键词"],
+        en: ["Short video storyboard | 9:16", "Cover title", "Visual", "Caption", "Suggested asset keywords"],
+        ja: ["ショート動画構成｜9:16", "表紙タイトル", "映像", "字幕", "おすすめ素材キーワード"],
+        yue: ["短片分鏡｜9:16", "封面大字", "畫面", "字幕", "建議素材關鍵字"]
+      }[lang] || [];
+      return [
+        labels[0] + "｜" + valueOf("videoSeconds") + "s",
+        "",
+        "0-3s：" + labels[1] + "「" + title + "」",
+        labels[2] + "：" + scenes[0],
+        labels[3] + "：" + opener,
+        "",
+        "3-8s：" + labels[2] + "：" + scenes.slice(0, 2).join(" / "),
+        labels[3] + "：" + bullets[0],
+        "",
+        "8-16s：" + labels[2] + "：" + scenes.slice(2, 4).join(" / "),
+        labels[3] + "：" + bullets[1],
+        "",
+        "16-24s：" + labels[2] + "：vehicle interior / driver / hotel entrance / luggage",
+        labels[3] + "：" + bullets[2],
+        "",
+        "24s+：" + labels[2] + "：brand card + best service shot",
+        labels[3] + "：" + localizedCta(lang),
+        "",
+        labels[4] + "：" + keywords.join("、")
+      ].join("\n");
+    }
+
+    function buildCleanRoute(spots, days, pickup, lang) {
+      const joiner = lang === "en" ? " -> " : "→";
+      const back = lang === "en" ? "Airport / HSR drop-off" : lang === "ja" ? "空港 / 高鉄へお送り" : "返回機場/高鐵";
+      const route = [];
+      for (let i = 0; i < days; i++) {
+        const first = spots[(i * 2) % spots.length];
+        const second = spots[(i * 2 + 1) % spots.length];
+        const third = spots[(i * 2 + 2) % spots.length];
+        route.push(i === 0 ? [pickup, first, second].join(joiner) : i === days - 1 ? [first, second, back].join(joiner) : [first, second, third].join(joiner));
+      }
+      return route;
+    }
+
+    const orderedTourRoutes = {
+      spring: [
+        ["台北飯店 / 桃園機場", "台北101", "大稻埕", "寧夏夜市"],
+        ["台北", "陽明山竹子湖花季", "北投溫泉", "淡水老街"],
+        ["台北", "野柳地質公園", "陰陽海", "九份老街", "十分放天燈"],
+        ["台北", "台中宮原眼科", "日月潭向山遊客中心", "伊達邵"],
+        ["日月潭", "奮起湖老街", "阿里山森林遊樂區", "嘉義火雞肉飯"]
+      ],
+      summer: [
+        ["台北飯店 / 桃園機場", "九份山城", "東北角海岸", "宜蘭住宿"],
+        ["宜蘭", "蘇澳冷泉", "清水斷崖", "七星潭", "花蓮東大門夜市"],
+        ["花蓮", "太魯閣", "砂卡礑步道", "洄瀾灣", "花蓮扁食"],
+        ["花蓮", "石梯坪", "北回歸線", "三仙台", "台東住宿"],
+        ["台東", "伯朗大道", "鹿野高台", "台東米苔目", "台東車站 / 機場"]
+      ],
+      autumn: [
+        ["台中高鐵", "宮原眼科", "審計新村", "逢甲夜市"],
+        ["台中", "日月潭向山遊客中心", "文武廟", "埔里酒廠", "清境住宿"],
+        ["清境", "清境農場", "合歡山觀景點", "小瑞士花園"],
+        ["清境", "溪頭森林遊樂區", "妖怪村", "南投甕仔雞"],
+        ["南投", "烏來溫泉", "新店碧潭", "台北飯店"]
+      ],
+      winter: [
+        ["桃園機場 / 台北飯店", "台北101", "信義商圈", "饒河夜市"],
+        ["台北", "北投溫泉", "淡水老街", "漁人碼頭夕陽"],
+        ["台北", "清境農場", "合歡山雪季觀景", "清境住宿"],
+        ["清境", "日月潭", "向山遊客中心", "嘉義住宿"],
+        ["嘉義", "阿里山日出", "奮起湖便當", "嘉義火雞肉飯", "高鐵 / 機場送站"]
+      ]
+    };
+
+    function buildOrderedTourRoute(seasonKey, days, pickup, lang) {
+      const joiner = lang === "en" ? " -> " : "→";
+      const source = orderedTourRoutes[seasonKey] || orderedTourRoutes.spring;
+      const route = [];
+      for (let i = 0; i < days; i++) {
+        const day = source[i] || source[source.length - 1];
+        const normalized = day.slice();
+        if (i === 0 && pickup) {
+          normalized[0] = pickup;
+        }
+        route.push(localizeRouteStops(normalized, lang).join(joiner));
+      }
+      return route;
+    }
+
+    function localizeRouteStops(stops, lang) {
+      if (lang !== "en" && lang !== "ja") {
+        return stops;
+      }
+      const en = {
+        "台北飯店 / 桃園機場": "Taipei hotel / Taoyuan Airport",
+        "桃園機場 / 台北飯店": "Taoyuan Airport / Taipei hotel",
+        "台北飯店": "Taipei hotel",
+        "台北": "Taipei",
+        "台北101": "Taipei 101",
+        "大稻埕": "Dadaocheng",
+        "寧夏夜市": "Ningxia Night Market",
+        "陽明山竹子湖花季": "Yangmingshan Zhuzihu flower season",
+        "北投溫泉": "Beitou Hot Spring",
+        "淡水老街": "Tamsui Old Street",
+        "野柳地質公園": "Yehliu Geopark",
+        "陰陽海": "Yin Yang Sea",
+        "九份老街": "Jiufen Old Street",
+        "十分放天燈": "Shifen sky lantern",
+        "台中宮原眼科": "Miyahara, Taichung",
+        "日月潭向山遊客中心": "Sun Moon Lake Xiangshan Visitor Center",
+        "伊達邵": "Ita Thao",
+        "日月潭": "Sun Moon Lake",
+        "奮起湖老街": "Fenqihu Old Street",
+        "阿里山森林遊樂區": "Alishan Forest Recreation Area",
+        "嘉義火雞肉飯": "Chiayi turkey rice",
+        "九份山城": "Jiufen mountain town",
+        "東北角海岸": "Northeast Coast",
+        "宜蘭住宿": "Yilan stay",
+        "宜蘭": "Yilan",
+        "蘇澳冷泉": "Suao Cold Spring",
+        "清水斷崖": "Qingshui Cliff",
+        "七星潭": "Qixingtan",
+        "花蓮東大門夜市": "Hualien Dongdamen Night Market",
+        "花蓮": "Hualien",
+        "太魯閣": "Taroko",
+        "砂卡礑步道": "Shakadang Trail",
+        "洄瀾灣": "Huilan Bay",
+        "花蓮扁食": "Hualien wonton",
+        "石梯坪": "Shitiping",
+        "北回歸線": "Tropic of Cancer Marker",
+        "三仙台": "Sanxiantai",
+        "台東住宿": "Taitung stay",
+        "台東": "Taitung",
+        "伯朗大道": "Brown Boulevard",
+        "鹿野高台": "Luye Highland",
+        "台東米苔目": "Taitung rice noodles",
+        "台東車站 / 機場": "Taitung Station / Airport",
+        "台中高鐵": "Taichung HSR",
+        "宮原眼科": "Miyahara",
+        "審計新村": "Shen Ji New Village",
+        "逢甲夜市": "Fengjia Night Market",
+        "文武廟": "Wenwu Temple",
+        "埔里酒廠": "Puli Winery",
+        "清境住宿": "Cingjing stay",
+        "清境": "Cingjing",
+        "清境農場": "Cingjing Farm",
+        "合歡山觀景點": "Hehuanshan viewpoint",
+        "小瑞士花園": "Small Swiss Garden",
+        "溪頭森林遊樂區": "Xitou Forest Recreation Area",
+        "妖怪村": "Monster Village",
+        "南投甕仔雞": "Nantou urn-roasted chicken",
+        "南投": "Nantou",
+        "烏來溫泉": "Wulai Hot Spring",
+        "新店碧潭": "Bitan",
+        "信義商圈": "Xinyi District",
+        "饒河夜市": "Raohe Night Market",
+        "漁人碼頭夕陽": "Fisherman's Wharf sunset",
+        "合歡山雪季觀景": "Hehuanshan snow season viewpoint",
+        "嘉義住宿": "Chiayi stay",
+        "嘉義": "Chiayi",
+        "阿里山日出": "Alishan sunrise",
+        "奮起湖便當": "Fenqihu lunchbox",
+        "高鐵 / 機場送站": "HSR / airport drop-off"
+      };
+      const ja = {
+        "台北飯店 / 桃園機場": "台北ホテル / 桃園空港",
+        "桃園機場 / 台北飯店": "桃園空港 / 台北ホテル",
+        "台北飯店": "台北ホテル",
+        "台北": "台北",
+        "台北101": "台北101",
+        "陽明山竹子湖花季": "陽明山竹子湖の花季",
+        "北投溫泉": "北投温泉",
+        "淡水老街": "淡水老街",
+        "野柳地質公園": "野柳地質公園",
+        "九份老街": "九份老街",
+        "十分放天燈": "十分ランタン",
+        "日月潭向山遊客中心": "日月潭向山ビジターセンター",
+        "阿里山森林遊樂區": "阿里山森林遊楽区",
+        "清水斷崖": "清水断崖",
+        "七星潭": "七星潭",
+        "太魯閣": "太魯閣",
+        "三仙台": "三仙台",
+        "伯朗大道": "伯朗大道",
+        "清境農場": "清境農場",
+        "合歡山觀景點": "合歓山展望スポット",
+        "合歡山雪季觀景": "合歓山雪景色",
+        "阿里山日出": "阿里山の日の出"
+      };
+      const dictionary = lang === "en" ? en : ja;
+      return stops.map(function(stop) {
+        return dictionary[stop] || stop;
+      });
+    }
+
+    function normalizePickup(value, lang) {
+      const raw = String(value || "");
+      if (/桃|獢/.test(raw)) return lang === "en" ? "Taoyuan Airport" : lang === "ja" ? "桃園空港" : "桃園機場";
+      if (/松|曉/.test(raw)) return lang === "en" ? "Songshan Airport" : lang === "ja" ? "松山空港" : "松山機場";
+      if (/中|唬/.test(raw)) return lang === "en" ? "Taichung HSR" : lang === "ja" ? "台中高鉄" : "台中高鐵";
+      if (/高|擃/.test(raw)) return lang === "en" ? "Kaohsiung Airport" : lang === "ja" ? "高雄空港" : "高雄機場";
+      return lang === "en" ? "Taipei Hotel" : lang === "ja" ? "台北ホテル" : "台北飯店";
+    }
+
+    function normalizePrice(lang) {
+      const price = valueOf("price");
+      if (price && !/專人|专人|撠|犖/.test(price)) return price;
+      return {
+        zhHant: "依車型、時間、路線與服務需求提供透明報價",
+        zhHans: "按车型、时间、路线与服务需求提供透明报价",
+        en: "Transparent quote based on vehicle, schedule, route, and service details",
+        ja: "車種、時間、ルート、サービス内容に合わせて明朗にお見積り",
+        yue: "按車款、時間、路線同服務需求透明報價"
+      }[lang];
+    }
+
+    function localizedHighlightsLabel(lang) {
+      return ({ zhHant: "日精華行程", zhHans: "日精华行程", en: "-day highlights", ja: "日間おすすめ行程", yue: "日精華行程" })[lang];
+    }
+
+    function localizedArrangeLabel(lang) {
+      return ({ zhHant: "我們可以安排：", zhHans: "我们可以安排：", en: "We can arrange:", ja: "手配できる内容：", yue: "我哋可以安排：" })[lang];
+    }
+
+    function localizedFoodSection(lang, season) {
+      const labels = {
+        zhHant: ["📸 網紅打卡點", "🍜 道地台灣美食", "⭐ 米其林／必比登美食候選"],
+        zhHans: ["📸 网红打卡点", "🍜 地道台湾美食", "⭐ 米其林／必比登美食候选"],
+        en: ["📸 Photo spots", "🍜 Local Taiwanese food", "⭐ Michelin / Bib Gourmand dining candidates"],
+        ja: ["📸 写真スポット", "🍜 台湾ローカルグルメ", "⭐ ミシュラン／ビブグルマン候補"],
+        yue: ["📸 網紅打卡位", "🍜 地道台灣美食", "⭐ 米芝蓮／必比登美食候選"]
+      }[lang] || [];
+      const note = {
+        zhHant: "餐廳會依最新名單、訂位狀況、路線與預算協助調整。",
+        zhHans: "餐厅会按最新名单、订位状况、路线与预算协助调整。",
+        en: "Restaurants are adjusted based on the latest list, reservation status, route, and budget.",
+        ja: "レストランは最新リスト、予約状況、ルート、予算に合わせて調整します。",
+        yue: "餐廳會按最新名單、訂位情況、路線同預算協助調整。"
+      }[lang];
+      return [
+        labels[0] + "：" + season.photoSpots.join("、"),
+        labels[1] + "：" + season.localFoods.join("、"),
+        labels[2] + "：" + season.michelinFoods.join("、"),
+        note
+      ].join("\n");
+    }
+
+    function localizedCta(lang) {
+      return ({ zhHant: "想拿完整行程與報價，直接私訊 Messenger / LINE 聯絡我們。", zhHans: "想获取完整行程和报价，直接私信 Messenger / LINE 联系我们。", en: "Message us on Messenger / LINE for the full itinerary and quote.", ja: "詳しい行程とお見積りは Messenger / LINE でお問い合わせください。", yue: "想攞完整行程同報價，直接私訊 Messenger / LINE 搵我哋。" })[lang];
+    }
+
+    function localizedPosterSub(lang, serviceType) {
+      const map = {
+        tour: { zhHant: "專車慢遊｜行程可客製", zhHans: "专车慢游｜行程可定制", en: "Private charter | Custom itinerary", ja: "専用車でゆったり｜行程カスタム可", yue: "專車慢遊｜行程可客製" },
+        airport: { zhHant: "航班追蹤｜舉牌接機｜行李協助", zhHans: "航班追踪｜举牌接机｜行李协助", en: "Flight tracking | Meet-and-greet | Luggage support", ja: "フライト追跡｜ネームボード｜荷物サポート", yue: "航班追蹤｜舉牌接機｜行李協助" },
+        business: { zhHant: "主管用車｜外賓接待｜多點行程", zhHans: "主管用车｜外宾接待｜多点行程", en: "Executive rides | VIP reception | Multi-stop route", ja: "役員車｜VIP接遇｜複数地点移動", yue: "主管用車｜外賓接待｜多點行程" }
+      };
+      return map[serviceType][lang];
+    }
+
+    function buildCleanHashtags(lang, themeName, serviceType) {
+      const base = {
+        tour: {
+          zhHant: "#台灣旅遊 #台灣包車 #自由行包車 #",
+          zhHans: "#台湾旅游 #台湾包车 #自由行包车 #",
+          en: "#TaiwanTravel #PrivateCharter #TaiwanItinerary #",
+          ja: "#台湾旅行 #台湾チャーター #台湾観光 #",
+          yue: "#台灣旅遊 #台灣包車 #自由行包車 #"
+        },
+        airport: {
+          zhHant: "#機場接送 #桃園機場接送 #商務車接送 #",
+          zhHans: "#机场接送 #桃园机场接送 #商务车接送 #",
+          en: "#AirportTransfer #TaiwanAirportTransfer #ChauffeurService #",
+          ja: "#空港送迎 #台湾空港送迎 #専用車送迎 #",
+          yue: "#機場接送 #桃園機場接送 #商務車接送 #"
+        },
+        business: {
+          zhHant: "#商務接送 #主管用車 #外賓接待 #",
+          zhHans: "#商务接送 #主管用车 #外宾接待 #",
+          en: "#BusinessChauffeur #ExecutiveRide #VIPReception #",
+          ja: "#ビジネス送迎 #役員車 #VIP接遇 #",
+          yue: "#商務接送 #主管用車 #外賓接待 #"
+        }
+      };
+      return base[serviceType][lang] + String(themeName).replace(/\s+/g, "") + " #RoyalFlowConcierge";
+    }
+
+    function fillTemplate(template, data) {
+      return String(template).replace(/\{(\w+)\}/g, function(_, key) {
+        return data[key] == null ? "" : data[key];
+      });
+    }
+  </script>
+</body>
+</html>
