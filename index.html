@@ -565,17 +565,39 @@
       <label>車型需求 *</label>
       <select id="carType">
         <option value="">請選擇車型</option>
-        <option value="Lexus LM 40 / 35">Lexus LM 40 / 35</option>
-        <option value="Toyota Alphard 40 / 35">Toyota Alphard 40 / 35</option>
-        <option value="Toyota Granvia 6/7人座">Toyota Granvia 6/7人座</option>
-        <option value="Benz V-Class V300d / V250d">Benz V-Class V300d / V250d</option>
-        <option value="Benz Vito 9人座">Benz Vito 9人座</option>
-        <option value="Benz Sprinter 旗艦9人座">Benz Sprinter 旗艦9人座</option>
-        <option value="VW Crafter 旗艦9人座">VW Crafter 旗艦9人座</option>
-        <option value="Lexus ES300h / ES200h">Lexus ES300h / ES200h</option>
-        <option value="一般9人座">一般9人座</option>
+        <optgroup label="👑 頂級禮賓｜1-2 位（多人商務・旅遊・機場接送）">
+          <option value="Lexus LM 40 / 35">Lexus LM 40 / 35（頂級禮賓）</option>
+          <option value="Toyota Alphard 40 / 35">Toyota Alphard 40 / 35（頂級禮賓）</option>
+          <option value="Benz V-Class V300d">Benz V-Class V300d（頂級禮賓）</option>
+        </optgroup>
+        <optgroup label="💼 高端商務｜3-4 位（多人商務・旅遊・機場接送）">
+          <option value="Benz V-Class V300d / V250d">Benz V-Class V300d / V250d（豪華版）</option>
+          <option value="Toyota Alphard 40 / 35">Toyota Alphard 40 / 35（高端商務）</option>
+          <option value="Benz Vito 豪華版">Benz Vito 豪華版（高端商務）</option>
+        </optgroup>
+        <optgroup label="✨ 高端禮賓｜5-6 位（多人商務・旅遊・機場接送）">
+          <option value="Benz Vito 豪華版">Benz Vito 豪華版（高端禮賓）</option>
+          <option value="Toyota Granvia 6/7人座">Toyota Granvia 6/7人座（高端禮賓）</option>
+          <option value="Benz V-Class V300d / V250d">Benz V-Class V300d / V250d（高端禮賓）</option>
+          <option value="Toyota Alphard 40 / 35">Toyota Alphard 40 / 35（高端禮賓）</option>
+        </optgroup>
+        <optgroup label="🚐 標準商務｜6-8 位（多人商務・旅遊・機場接送）">
+          <option value="Benz Vito 9人座">Benz Vito 9人座（標準商務）</option>
+          <option value="Toyota Granvia 6/7人座">Toyota Granvia 6/7人座（標準商務）</option>
+        </optgroup>
+        <optgroup label="🚌 大型保姆車｜9+ 位（多人商務・旅遊・機場接送）">
+          <option value="Benz Sprinter 旗艦9人座">Benz Sprinter 旗艦9人座（大型保姆車）</option>
+          <option value="VW Crafter 旗艦9人座">VW Crafter 旗艦9人座（大型保姆車）</option>
+        </optgroup>
+        <optgroup label="🚗 一般車型">
+          <option value="Lexus ES300h / ES200h">Lexus ES300h / ES200h</option>
+          <option value="一般9人座">一般 9 人座</option>
+        </optgroup>
         <option value="待客服確認">待客服確認</option>
       </select>
+      <div class="hint" style="margin-top:6px;font-size:13px;color:var(--muted)">
+        💡 系統將依您輸入的乘客人數，自動推薦最適合的車型等級
+      </div>
 
       <div class="notice">
         服務車型照片為實車或同級示意，實際派車將依檔期、乘客人數、行李與禮賓需求由專員確認。
@@ -1948,6 +1970,100 @@
         select.value = carType;
       }
     }
+
+    // 御澤禮賓車型推薦邏輯（依乘客人數）
+    function recommendVehicleByPax(pax) {
+      const n = Number(pax) || 0;
+      if (n === 0) return null;
+      if (n <= 2) {
+        return {
+          tier: "頂級禮賓",
+          tierEmoji: "👑",
+          primary: "Lexus LM 40 / 35",
+          alternatives: ["Toyota Alphard 40 / 35", "Benz V-Class V300d"]
+        };
+      }
+      if (n <= 4) {
+        return {
+          tier: "高端商務",
+          tierEmoji: "💼",
+          primary: "Benz V-Class V300d / V250d",
+          alternatives: ["Toyota Alphard 40 / 35", "Benz Vito 豪華版"]
+        };
+      }
+      if (n <= 6) {
+        return {
+          tier: "高端禮賓",
+          tierEmoji: "✨",
+          primary: "Benz Vito 豪華版",
+          alternatives: ["Toyota Granvia 6/7人座", "Benz V-Class V300d / V250d", "Toyota Alphard 40 / 35"]
+        };
+      }
+      if (n <= 8) {
+        return {
+          tier: "標準商務",
+          tierEmoji: "🚐",
+          primary: "Benz Vito 9人座",
+          alternatives: ["Toyota Granvia 6/7人座"]
+        };
+      }
+      return {
+        tier: "大型保姆車",
+        tierEmoji: "🚌",
+        primary: "Benz Sprinter 旗艦9人座",
+        alternatives: ["VW Crafter 旗艦9人座"]
+      };
+    }
+
+    // 監聽人數輸入，自動顯示推薦車型提示
+    document.addEventListener("DOMContentLoaded", function() {
+      const paxInput = document.getElementById("passengers");
+      const carSelect = document.getElementById("carType");
+      if (!paxInput || !carSelect) return;
+
+      // 建立推薦提示框
+      const hintBox = document.createElement("div");
+      hintBox.id = "vehicleRecHint";
+      hintBox.style.cssText = "margin-top:8px;padding:10px 12px;background:rgba(215,174,84,0.08);border:1px solid rgba(215,174,84,0.32);border-radius:8px;font-size:13px;color:var(--text);display:none";
+      carSelect.parentNode.appendChild(hintBox);
+
+      function updateRecommendation() {
+        const rec = recommendVehicleByPax(paxInput.value);
+        if (!rec) {
+          hintBox.style.display = "none";
+          return;
+        }
+        hintBox.innerHTML =
+          '<div style="color:var(--gold);font-weight:bold;margin-bottom:4px">' +
+            rec.tierEmoji + ' ' + rec.tier + '｜建議車型' +
+          '</div>' +
+          '<div style="color:var(--gold-light);font-weight:bold;margin-bottom:4px">' + rec.primary + '</div>' +
+          '<div style="color:var(--muted);font-size:12px">備選：' + rec.alternatives.join("、") + '</div>' +
+          '<button type="button" onclick="applyRecommendedVehicle(\'' + rec.primary + '\')" ' +
+            'style="margin-top:8px;padding:6px 12px;background:var(--gold);color:#000;border:0;border-radius:6px;font-size:12px;cursor:pointer">' +
+            '✨ 套用建議車型' +
+          '</button>';
+        hintBox.style.display = "block";
+      }
+
+      paxInput.addEventListener("input", updateRecommendation);
+      paxInput.addEventListener("change", updateRecommendation);
+    });
+
+    // 套用推薦車型到下拉選單
+    window.applyRecommendedVehicle = function(vehicleName) {
+      const select = document.getElementById("carType");
+      if (!select) return;
+      // 找出對應的 option（支援名稱包含建議車型字串）
+      for (let i = 0; i < select.options.length; i++) {
+        if (select.options[i].value === vehicleName ||
+            select.options[i].text.indexOf(vehicleName) === 0) {
+          select.selectedIndex = i;
+          select.dispatchEvent(new Event("change"));
+          break;
+        }
+      }
+    };
 
     function escapeHtml(text) {
       return String(text || "")
