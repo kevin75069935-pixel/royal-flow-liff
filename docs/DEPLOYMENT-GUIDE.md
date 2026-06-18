@@ -14,7 +14,7 @@
 
 ### 步驟 1：推上 GitHub
 ```powershell
-cd "C:\Users\playtaiwan8\OneDrive\文件\御澤禮賓商務預約系統"
+cd "D:\AI自動營運團隊\訂單管家\御澤禮賓商務預約系統"
 git add .
 git commit -m "feat: driver dispatch, AI auto quote, trip reminders + review invites"
 git push
@@ -162,7 +162,7 @@ Cloudflare Pages 會自動部署（5 分鐘內生效）。
 
 ```powershell
 # Code.gs 還原
-cd "C:\Users\playtaiwan8\OneDrive\文件\御澤禮賓商務預約系統\apps-script"
+cd "D:\AI自動營運團隊\訂單管家\御澤禮賓商務預約系統\apps-script"
 Copy-Item "Code.gs.bak-before-reminder" "Code.gs" -Force
 ```
 
