@@ -214,9 +214,8 @@ async function orderLookupMessage(context, userId, text, lineDisplayName) {
     };
   }
 
-  const result = orderId
-    ? await gasAction(context, "getOrder", { orderId })
-    : await gasAction(context, "getLatestOrder", { lineUserId: userId, lineDisplayName });
+  const cachedOrder = await findCachedOrder(context, userId, orderId);
+  const result = cachedOrder ? { status: "success", order: cachedOrder } : null;
 
   if (!result || result.status !== "success" || !result.order) {
     return {
@@ -227,7 +226,7 @@ async function orderLookupMessage(context, userId, text, lineDisplayName) {
   }
 
   const order = result.order;
-  return orderSummaryFlexMessage(context, order);
+  return orderSummaryTextMessage(context, order);
 }
 
 async function paymentLookupMessage(context, userId, text, lineDisplayName) {
@@ -240,9 +239,8 @@ async function paymentLookupMessage(context, userId, text, lineDisplayName) {
     };
   }
 
-  const result = orderId
-    ? await gasAction(context, "getOrder", { orderId })
-    : await gasAction(context, "getLatestOrder", { lineUserId: userId, lineDisplayName });
+  const cachedOrder = await findCachedOrder(context, userId, orderId);
+  const result = cachedOrder ? { status: "success", order: cachedOrder } : null;
 
   if (!result || result.status !== "success" || !result.order) {
     return {
@@ -252,7 +250,108 @@ async function paymentLookupMessage(context, userId, text, lineDisplayName) {
     };
   }
 
-  return bankTransferFlexMessage(context, result.order);
+  return bankTransferTextMessage(context, result.order);
+}
+
+async function findCachedOrder(context, userId, orderId) {
+  const kv = context.env.ORDER_KV;
+  if (!kv) {
+    console.log("ORDER_KV lookup skipped: missing binding");
+    return null;
+  }
+
+  try {
+    if (orderId) {
+      return await kv.get("order:" + orderId, "json");
+    }
+
+    if (!userId) {
+      return null;
+    }
+
+    const latestOrderId = await kv.get("line:" + userId + ":latest");
+    if (!latestOrderId) {
+      return null;
+    }
+
+    return await kv.get("order:" + latestOrderId, "json");
+  } catch (error) {
+    console.log("ORDER_KV lookup failed", error && error.message ? error.message : String(error));
+    return null;
+  }
+}
+
+function orderSummaryTextMessage(context, order) {
+  const orderId = display(order.order_id);
+  const lines = [
+    "御澤禮賓｜行程查詢",
+    "訂單編號：" + orderId,
+    "訂單狀態：" + orderStatusText(order.order_status || "pending"),
+    "付款狀態：" + paymentStatusText(order.payment_status || "pending"),
+    "",
+    "服務項目：" + display(order.service),
+    "車型：" + display(order.car_type || "禮賓專員確認中"),
+    "用車日期：" + displayDate(order.date),
+    "用車時間：" + displayTime(order.time),
+    "上車地點：" + display(order.pickup || order.airport_reception_address || order.reception_address),
+    "下車地點：" + display(order.dropoff || order.dropoff_airport || order.reserved_airport || order.reserved_port),
+    "人數 / 行李：" + display(order.passengers || "-") + " / " + display(order.luggage || "-"),
+    "",
+    "初步估價：" + money(order.final_price),
+    "訂金金額：" + money(order.deposit_amount),
+    "",
+    "若要查看付款資訊，請回覆：付款 " + orderId,
+    "若需補充或重新預約：",
+    bookingUrl(context)
+  ];
+
+  return {
+    type: "text",
+    text: lines.join("\n"),
+    quickReply: quickReply(context)
+  };
+}
+
+function bankTransferTextMessage(context, order) {
+  const bank = bankTransferInfo(context);
+  const orderId = order ? display(order.order_id) : "";
+  const amount = order ? money(order.balance_amount || order.final_price || order.deposit_amount) : "請由禮賓專員確認";
+  const deposit = order ? money(order.deposit_amount) : "請由禮賓專員確認";
+  const lines = [
+    "御澤禮賓｜付款資訊"
+  ];
+
+  if (order) {
+    lines.push(
+      "訂單編號：" + orderId,
+      "服務項目：" + display(order.service),
+      "用車時間：" + displayDate(order.date) + " " + displayTime(order.time),
+      "初步估價：" + money(order.final_price),
+      "訂金金額：" + deposit,
+      "待付金額：" + amount,
+      ""
+    );
+  }
+
+  lines.push(
+    "銀行：" + bank.bankName,
+    "銀行代碼：" + bank.bankCode,
+    "戶名：" + bank.accountName,
+    "帳號：" + bank.accountNumber,
+    "",
+    "轉帳 QR Code：",
+    bankQrImageUrl(context),
+    "",
+    bank.note,
+    "",
+    orderId ? "匯款完成後請回覆：已匯款 " + orderId + " 末五碼：" : "匯款完成後請回覆：已匯款 末五碼："
+  );
+
+  return {
+    type: "text",
+    text: lines.join("\n"),
+    quickReply: quickReply(context)
+  };
 }
 
 function orderSummaryFlexMessage(context, order) {
